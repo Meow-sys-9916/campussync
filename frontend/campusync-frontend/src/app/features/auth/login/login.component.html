@@ -1,0 +1,93 @@
+<div class="login-container">
+  <mat-card class="login-card">
+    <mat-card-header>
+      <div class="logo-section">
+        <mat-icon class="logo-icon">school</mat-icon>
+        <mat-card-title class="main-title">CampusSync</mat-card-title>
+      </div>
+      <mat-card-subtitle>
+        {{ isRegistering ? 'Create Account' : 'Sign In' }}
+      </mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+        
+        <div *ngIf="isRegistering" class="registration-fields">
+          <div class="form-row">
+            <mat-form-field appearance="outline" class="half-width">
+              <mat-label>First Name</mat-label>
+              <input matInput formControlName="firstName" type="text">
+              <mat-error *ngIf="getFieldError('firstName')">
+                {{ getFieldError('firstName') }}
+              </mat-error>
+            </mat-form-field>
+            <mat-form-field appearance="outline" class="half-width">
+              <mat-label>Last Name</mat-label>
+              <input matInput formControlName="lastName" type="text">
+              <mat-error *ngIf="getFieldError('lastName')">
+                {{ getFieldError('lastName') }}
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Student ID</mat-label>
+            <input matInput formControlName="studentId" type="text">
+            <mat-error *ngIf="getFieldError('studentId')">
+              {{ getFieldError('studentId') }}
+            </mat-error>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Major</mat-label>
+            <input matInput formControlName="major" type="text">
+          </mat-form-field>
+
+          <mat-form-field appearance="outline" class="full-width">
+            <mat-label>Phone Number</mat-label>
+            <input matInput formControlName="phone" type="tel">
+          </mat-form-field>
+        </div>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Email Address</mat-label>
+          <input matInput formControlName="email" type="email">
+          <mat-error *ngIf="getFieldError('email')">
+            {{ getFieldError('email') }}
+          </mat-error>
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width password-field">
+          <mat-label>Password</mat-label>
+          <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password">
+          <button mat-icon-button matSuffix type="button" (click)="togglePasswordVisibility()" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword">
+            <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+          </button>
+          <mat-error *ngIf="getFieldError('password')">
+            {{ getFieldError('password') }}
+          </mat-error>
+        </mat-form-field>
+
+        <div *ngIf="errorMessage" class="error-message">
+          <mat-icon class="error-icon">error</mat-icon>
+          <span>{{ errorMessage }}</span>
+        </div>
+
+        <button mat-raised-button color="primary" type="submit" [disabled]="isLoading" class="full-width submit-button">
+          <mat-spinner diameter="20" *ngIf="isLoading"></mat-spinner>
+          <span>
+            {{ isRegistering ? 'Create Account' : 'Sign In' }}
+          </span>
+        </button>
+      </form>
+
+      <p class="toggle-link">
+        {{ isRegistering ? 'Already have an account?' : 'Do not have an account?' }}
+        <a (click)="toggleRegistration()">
+          {{ isRegistering ? 'Sign In' : 'Create Account' }}
+        </a>
+      </p>
+    </mat-card-content>
+  </mat-card>
+</div>
