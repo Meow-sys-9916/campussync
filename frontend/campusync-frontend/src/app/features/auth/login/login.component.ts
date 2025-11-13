@@ -1,37 +1,15 @@
 import { Component, OnInit } from '@angular/core';
-import { CommonModule } from '@angular/common';
-import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
-import { Router, ActivatedRoute, RouterModule } from '@angular/router';
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
-import { MatCardModule } from '@angular/material/card';
-import { MatFormFieldModule } from '@angular/material/form-field';
-import { MatInputModule } from '@angular/material/input';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
-import { AuthService } from '../../../core/services/auth.service';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { Router, ActivatedRoute } from '@angular/router';
+import { MatSnackBar } from '@angular/material/snack-bar';
+import { AuthService } from './../../../core/services/auth.service'; // <-- FIX 1: Corrected Path
 
 @Component({
   selector: 'app-login',
-  standalone: true,
-  imports: [
-    CommonModule,
-    ReactiveFormsModule,
-    RouterModule,
-    MatCardModule,
-    MatFormFieldModule,
-    MatInputModule,
-    MatButtonModule,
-    MatIconModule,
-    MatProgressSpinnerModule,
-    MatSnackBarModule
-  ],
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
 export class LoginComponent implements OnInit {
-  // ... (Paste the rest of the class code from the previous message) ...
-  // If you need the full class code again, let me know!
   loginForm!: FormGroup;
   isLoading = false;
   isRegistering = false;
@@ -100,12 +78,12 @@ export class LoginComponent implements OnInit {
       password: this.loginForm.get('password')?.value
     };
     this.authService.login(credentials.email, credentials.password).subscribe({
-      next: (response: any) => {
+      next: (response: any) => { // <-- FIX 2: Added ': any'
         console.log('Login successful:', response);
         this.snackBar.open('Login successful!', 'Close', { duration: 3000 });
         this.router.navigateByUrl(this.returnUrl);
       },
-      error: (error: any) => {
+      error: (error: any) => { // <-- FIX 2: Added ': any'
         console.error('Login failed:', error);
         this.errorMessage = error.error?.message || 'Login failed. Please try again';
         this.isLoading = false;
@@ -124,12 +102,12 @@ export class LoginComponent implements OnInit {
       phone: this.loginForm.get('phone')?.value
     };
     this.authService.register(userData).subscribe({
-      next: (response: any) => {
+      next: (response: any) => { // <-- FIX 2: Added ': any'
         console.log('Registration successful:', response);
         this.snackBar.open('Registration successful!', 'Close', { duration: 3000 });
         this.router.navigateByUrl(this.returnUrl);
       },
-      error: (error: any) => {
+      error: (error: any) => { // <-- FIX 2: Added ': any'
         console.error('Registration failed:', error);
         this.errorMessage = error.error?.message || 'Registration failed. Please try again';
         this.isLoading = false;
