@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+<<<<<<< Updated upstream
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router, ActivatedRoute } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
@@ -6,6 +7,37 @@ import { AuthService } from './../../../core/services/auth.service'; // <-- FIX 
 
 @Component({
   selector: 'app-login',
+=======
+import { CommonModule } from '@angular/common';
+import { FormBuilder, FormGroup, Validators, ReactiveFormsModule } from '@angular/forms';
+import { Router, ActivatedRoute, RouterModule } from '@angular/router';
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatCardModule } from '@angular/material/card';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
+import { MatIconModule } from '@angular/material/icon';
+import { MatProgressSpinnerModule } from '@angular/material/progress-spinner';
+import { MatSelectModule } from '@angular/material/select'; // <--- 1. NEW IMPORT ADDED
+import { AuthService } from '../../../core/services/auth.service';
+
+@Component({
+  selector: 'app-login',
+  standalone: true,
+  imports: [
+    CommonModule,
+    ReactiveFormsModule,
+    RouterModule,
+    MatCardModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
+    MatIconModule,
+    MatProgressSpinnerModule,
+    MatSnackBarModule,
+    MatSelectModule // <--- 2. ADDED MODULE HERE
+  ],
+>>>>>>> Stashed changes
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.scss']
 })
@@ -16,6 +48,9 @@ export class LoginComponent implements OnInit {
   errorMessage = '';
   returnUrl = '';
   hidePassword = true;
+
+  // 3. ADDED SEMESTERS LIST HERE
+  semesters: string[] = ['I', 'II', 'III', 'IV', 'V', 'VI', 'VII', 'VIII'];
 
   constructor(
     private fb: FormBuilder,
@@ -34,14 +69,21 @@ export class LoginComponent implements OnInit {
     this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/dashboard';
   }
 
+  // 4. UPDATED THIS FUNCTION (Renamed controls)
   createLoginForm(): void {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
       firstName: ['', [Validators.minLength(2), Validators.maxLength(50)]],
       lastName: ['', [Validators.minLength(2), Validators.maxLength(50)]],
-      studentId: ['', [Validators.minLength(3), Validators.maxLength(20)]],
-      major: [''],
+      
+      // Renamed 'studentId' -> 'usn'
+      usn: ['', [Validators.minLength(3), Validators.maxLength(20)]],
+      // Renamed 'major' -> 'branch'
+      branch: [''], 
+      // Added 'semester'
+      semester: [''],
+      
       phone: ['']
     });
   }
@@ -91,16 +133,23 @@ export class LoginComponent implements OnInit {
     });
   }
 
+  // 5. UPDATED THIS FUNCTION (Mapped new names to backend names)
   private register(): void {
     const userData = {
       firstName: this.loginForm.get('firstName')?.value,
       lastName: this.loginForm.get('lastName')?.value,
       email: this.loginForm.get('email')?.value,
       password: this.loginForm.get('password')?.value,
-      studentId: this.loginForm.get('studentId')?.value,
-      major: this.loginForm.get('major')?.value,
+      
+      // Mapping: Frontend 'usn' -> Backend 'studentId'
+      studentId: this.loginForm.get('usn')?.value,
+      // Mapping: Frontend 'branch' -> Backend 'major'
+      major: this.loginForm.get('branch')?.value,
+      
+      // Note: Semester isn't sent yet because backend doesn't have it
       phone: this.loginForm.get('phone')?.value
     };
+
     this.authService.register(userData).subscribe({
       next: (response: any) => { // <-- FIX 2: Added ': any'
         console.log('Registration successful:', response);

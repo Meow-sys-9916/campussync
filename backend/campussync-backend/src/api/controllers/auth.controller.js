@@ -17,19 +17,38 @@ class AuthController {
                     errors: errors.array()
                 });
             }
+<<<<<<< Updated upstream
             const { firstName, lastName, email, studentId,
                 password, major, phone } = req.body;
             const existingUser = await User.findOne({
                 where: { email: email.toLowerCase() }
             });
+=======
+
+            // UPDATED: Added 'semester' to this list
+            const { firstName, lastName, email, studentId,
+                password, major, phone, semester } = req.body;
+
+            const existingUser = await User.findOne({
+                where: { email: email.toLowerCase() }
+            });
+
+>>>>>>> Stashed changes
             if (existingUser) {
                 return res.status(400).json({
                     success: false,
                     message: 'Email already registered'
                 });
             }
+<<<<<<< Updated upstream
             const saltRounds = 12;
             const hashedPassword = await bcrypt.hash(password, saltRounds);
+=======
+
+            const saltRounds = 12;
+            const hashedPassword = await bcrypt.hash(password, saltRounds);
+
+>>>>>>> Stashed changes
             const user = await User.create({
                 firstName,
                 lastName,
@@ -37,6 +56,7 @@ class AuthController {
                 studentId,
                 password: hashedPassword,
                 major,
+<<<<<<< Updated upstream
                 phone,
                 role: 'student'
             });
@@ -45,6 +65,21 @@ class AuthController {
             delete userResponse.password;
             // Send welcome email
             await EmailService.sendWelcomeEmail(user);
+=======
+                // UPDATED: Added 'semester' here
+                semester,
+                phone,
+                role: 'student'
+            });
+
+            const token = this.generateToken(user);
+            const userResponse = { ...user.toJSON() };
+            delete userResponse.password;
+
+            // Send welcome email
+            await EmailService.sendWelcomeEmail(user);
+
+>>>>>>> Stashed changes
             res.status(201).json({
                 success: true,
                 message: 'User registered successfully',
@@ -71,27 +106,51 @@ class AuthController {
                     message: 'Validation failed'
                 });
             }
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
             const { email, password } = req.body;
             const user = await User.scope('withPassword').findOne({
                 where: { email: email.toLowerCase() }
             });
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
             if (!user) {
                 return res.status(401).json({
                     success: false,
                     message: 'Invalid email or password'
                 });
             }
+<<<<<<< Updated upstream
             const isPasswordValid = await bcrypt.compare(password, user.password);
+=======
+
+            const isPasswordValid = await bcrypt.compare(password, user.password);
+
+>>>>>>> Stashed changes
             if (!isPasswordValid) {
                 return res.status(401).json({
                     success: false,
                     message: 'Invalid email or password'
                 });
             }
+<<<<<<< Updated upstream
             const token = this.generateToken(user);
             await user.update({ lastLoginAt: new Date() });
             const userResponse = { ...user.toJSON() };
             delete userResponse.password;
+=======
+
+            const token = this.generateToken(user);
+            await user.update({ lastLoginAt: new Date() });
+
+            const userResponse = { ...user.toJSON() };
+            delete userResponse.password;
+
+>>>>>>> Stashed changes
             res.json({
                 success: true,
                 message: 'Login successful',
@@ -133,26 +192,49 @@ class AuthController {
 
     async updateProfile(req, res) {
         try {
+<<<<<<< Updated upstream
             const { firstName, lastName, major, phone, studentId } = req.body;
             const user = await User.findByPk(req.user.userId);
+=======
+            // UPDATED: You can technically allow updating semester here too if you want
+            const { firstName, lastName, major, phone, studentId, semester } = req.body;
+            const user = await User.findByPk(req.user.userId);
+
+>>>>>>> Stashed changes
             if (!user) {
                 return res.status(404).json({
                     success: false,
                     message: 'User not found'
                 });
             }
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
             let profilePhoto = user.profilePhoto;
             if (req.file) {
                 profilePhoto = req.file.secure_url;
             }
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
             await user.update({
                 firstName: firstName || user.firstName,
                 lastName: lastName || user.lastName,
                 major: major || user.major,
+<<<<<<< Updated upstream
+=======
+                semester: semester || user.semester, // Added semester update capability
+>>>>>>> Stashed changes
                 phone: phone || user.phone,
                 studentId: studentId || user.studentId,
                 profilePhoto: profilePhoto
             });
+<<<<<<< Updated upstream
+=======
+
+>>>>>>> Stashed changes
             res.json({
                 success: true,
                 message: 'Profile updated successfully',

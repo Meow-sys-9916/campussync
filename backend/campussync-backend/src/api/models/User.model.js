@@ -54,6 +54,17 @@ module.exports = (sequelize) => {
             type: DataTypes.STRING(100),
             allowNull: true
         },
+<<<<<<< Updated upstream
+=======
+        
+        // --- NEW SEMESTER FIELD ---
+        semester: {
+            type: DataTypes.STRING(10),
+            allowNull: true
+        },
+        // --------------------------
+
+>>>>>>> Stashed changes
         phone: {
             type: DataTypes.STRING(15),
             validate: {
