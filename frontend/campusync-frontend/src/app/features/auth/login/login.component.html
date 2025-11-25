@@ -32,17 +32,28 @@
           </div>
 
           <mat-form-field appearance="outline" class="full-width">
-            <mat-label>Student ID</mat-label>
-            <input matInput formControlName="studentId" type="text">
-            <mat-error *ngIf="getFieldError('studentId')">
-              {{ getFieldError('studentId') }}
+            <mat-label>USN</mat-label>
+            <input matInput formControlName="usn" type="text">
+            <mat-error *ngIf="getFieldError('usn')">
+              {{ getFieldError('usn') }}
             </mat-error>
           </mat-form-field>
 
-          <mat-form-field appearance="outline" class="full-width">
-            <mat-label>Major</mat-label>
-            <input matInput formControlName="major" type="text">
-          </mat-form-field>
+          <div class="form-row">
+            <mat-form-field appearance="outline" class="half-width">
+              <mat-label>Branch</mat-label>
+              <input matInput formControlName="branch" type="text">
+            </mat-form-field>
+
+            <mat-form-field appearance="outline" class="half-width">
+              <mat-label>Semester</mat-label>
+              <mat-select formControlName="semester">
+                <mat-option *ngFor="let sem of semesters" [value]="sem">
+                  {{ sem }}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
 
           <mat-form-field appearance="outline" class="full-width">
             <mat-label>Phone Number</mat-label>
