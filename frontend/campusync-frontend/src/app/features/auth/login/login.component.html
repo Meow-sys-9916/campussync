@@ -1,51 +1,43 @@
 <div class="login-container">
   <mat-card class="login-card">
     <mat-card-header>
-      <div class="logo-section">
-        <mat-icon class="logo-icon">school</mat-icon>
-        <mat-card-title class="main-title">CampusSync</mat-card-title>
-      </div>
-      <mat-card-subtitle>
+      <mat-card-title>
         {{ isRegistering ? 'Create Account' : 'Sign In' }}
-      </mat-card-subtitle>
+        <span class="brand">🎓 CampusSync</span>
+      </mat-card-title>
     </mat-card-header>
 
     <mat-card-content>
       <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
         
         <div *ngIf="isRegistering" class="registration-fields">
-          <div class="form-row">
-            <mat-form-field appearance="outline" class="half-width">
+          <div class="row">
+            <mat-form-field appearance="outline">
               <mat-label>First Name</mat-label>
-              <input matInput formControlName="firstName" type="text">
-              <mat-error *ngIf="getFieldError('firstName')">
-                {{ getFieldError('firstName') }}
-              </mat-error>
+              <input matInput formControlName="firstName" placeholder="John">
             </mat-form-field>
-            <mat-form-field appearance="outline" class="half-width">
+
+            <mat-form-field appearance="outline">
               <mat-label>Last Name</mat-label>
-              <input matInput formControlName="lastName" type="text">
-              <mat-error *ngIf="getFieldError('lastName')">
-                {{ getFieldError('lastName') }}
-              </mat-error>
+              <input matInput formControlName="lastName" placeholder="Doe">
             </mat-form-field>
           </div>
 
           <mat-form-field appearance="outline" class="full-width">
             <mat-label>USN</mat-label>
-            <input matInput formControlName="usn" type="text">
-            <mat-error *ngIf="getFieldError('usn')">
-              {{ getFieldError('usn') }}
+            <input matInput formControlName="studentId" placeholder="1BM23CS001">
+            <mat-error *ngIf="loginForm.get('studentId')?.hasError('required')">
+              USN is required
             </mat-error>
           </mat-form-field>
 
-          <div class="form-row">
-            <mat-form-field appearance="outline" class="half-width">
+          <div class="row">
+            <mat-form-field appearance="outline">
               <mat-label>Branch</mat-label>
-              <input matInput formControlName="branch" type="text">
+              <input matInput formControlName="branch" placeholder="CSE">
             </mat-form-field>
 
-            <mat-form-field appearance="outline" class="half-width">
+            <mat-form-field appearance="outline">
               <mat-label>Semester</mat-label>
               <mat-select formControlName="semester">
                 <mat-option *ngFor="let sem of semesters" [value]="sem">
@@ -57,48 +49,44 @@
 
           <mat-form-field appearance="outline" class="full-width">
             <mat-label>Phone Number</mat-label>
-            <input matInput formControlName="phone" type="tel">
+            <input matInput formControlName="phoneNumber" placeholder="9876543210">
           </mat-form-field>
         </div>
 
         <mat-form-field appearance="outline" class="full-width">
           <mat-label>Email Address</mat-label>
-          <input matInput formControlName="email" type="email">
-          <mat-error *ngIf="getFieldError('email')">
+          <input matInput formControlName="email" placeholder="student@bmsce.ac.in">
+          <mat-error *ngIf="loginForm.get('email')?.invalid">
             {{ getFieldError('email') }}
           </mat-error>
         </mat-form-field>
 
-        <mat-form-field appearance="outline" class="full-width password-field">
+        <mat-form-field appearance="outline" class="full-width">
           <mat-label>Password</mat-label>
           <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password">
-          <button mat-icon-button matSuffix type="button" (click)="togglePasswordVisibility()" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hidePassword">
-            <mat-icon>{{hidePassword ? 'visibility_off' : 'visibility'}}</mat-icon>
+          <button mat-icon-button matSuffix (click)="togglePasswordVisibility()" type="button">
+            <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
           </button>
-          <mat-error *ngIf="getFieldError('password')">
+          <mat-error *ngIf="loginForm.get('password')?.invalid">
             {{ getFieldError('password') }}
           </mat-error>
         </mat-form-field>
 
-        <div *ngIf="errorMessage" class="error-message">
-          <mat-icon class="error-icon">error</mat-icon>
+        <div *ngIf="errorMessage" class="error-alert">
+          <mat-icon>error</mat-icon>
           <span>{{ errorMessage }}</span>
         </div>
 
-        <button mat-raised-button color="primary" type="submit" [disabled]="isLoading" class="full-width submit-button">
+        <button mat-raised-button color="primary" type="submit" class="submit-btn" [disabled]="isLoading">
           <mat-spinner diameter="20" *ngIf="isLoading"></mat-spinner>
-          <span>
-            {{ isRegistering ? 'Create Account' : 'Sign In' }}
-          </span>
+          <span *ngIf="!isLoading">{{ isRegistering ? 'Create Account' : 'Sign In' }}</span>
         </button>
-      </form>
 
-      <p class="toggle-link">
-        {{ isRegistering ? 'Already have an account?' : 'Do not have an account?' }}
-        <a (click)="toggleRegistration()">
-          {{ isRegistering ? 'Sign In' : 'Create Account' }}
-        </a>
-      </p>
+        <div class="toggle-link">
+          <span *ngIf="!isRegistering">Do not have an account? <a (click)="toggleRegistration()">Create Account</a></span>
+          <span *ngIf="isRegistering">Already have an account? <a (click)="toggleRegistration()">Sign In</a></span>
+        </div>
+      </form>
     </mat-card-content>
   </mat-card>
 </div>

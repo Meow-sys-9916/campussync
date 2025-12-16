@@ -1,0 +1,224 @@
+/* 🌑 DARK THEME VARIABLES */
+$bg-dark: #0a0a0a;       
+$card-bg: #1e1e1e;       
+$primary-gradient: linear-gradient(135deg, #FF00CC, #333399); 
+$text-primary: #ffffff;
+$text-secondary: #b3b3b3;
+
+/* Page Layout */
+.dashboard-layout {
+  min-height: 100vh;
+  background-color: $bg-dark;
+  color: $text-primary;
+  display: flex;
+  flex-direction: column;
+  font-family: 'Inter', sans-serif;
+}
+
+/* Navbar */
+.navbar {
+  background-color: rgba(30, 30, 30, 0.8);
+  backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  /* ✅ Increased navbar height to fit the larger logo */
+  height: 90px; 
+  display: flex;
+  align-items: center;
+  padding: 0 2rem;
+
+  .logo-container {
+    display: flex;
+    align-items: center;
+    
+    img {
+      /* ✅ LOGO SIZE SET TO LARGE (80px) */
+      height: 80px; 
+      object-fit: contain;
+      display: block;
+    }
+    
+    /* Removed span/text styling here as requested */
+  }
+
+  /* Icons inside navbar */
+  mat-icon { 
+    color: $text-secondary; 
+  }
+}
+
+.spacer { flex: 1 1 auto; }
+
+/* Main Content Container */
+.content-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 3rem 2rem;
+  width: 100%;
+}
+
+/* Header / Hero Section */
+.dashboard-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 3rem;
+  
+  .welcome-text {
+    h1 {
+      font-size: 3rem;
+      font-weight: 800;
+      margin: 0 0 1rem 0;
+      
+      /* Gradient Text Effect */
+      background: linear-gradient(90deg, #fff, #bbb);
+      -webkit-background-clip: text;
+      background-clip: text;
+      -webkit-text-fill-color: transparent;
+      color: #fff; /* Fallback */
+    }
+    
+    p {
+      color: $text-secondary;
+      font-size: 1.2rem;
+      max-width: 600px;
+    }
+  }
+}
+
+/* Action Grid (Dark Cards) */
+.action-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  margin-bottom: 4rem;
+}
+
+.action-card {
+  background: $card-bg;
+  border-radius: 20px;
+  padding: 2.5rem;
+  cursor: pointer;
+  transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  position: relative;
+  overflow: hidden;
+
+  /* Hover Effects */
+  &:hover {
+    transform: translateY(-8px);
+    border-color: rgba(255, 255, 255, 0.2);
+    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.4);
+    
+    .icon-circle { transform: scale(1.1) rotate(5deg); }
+    .link-text { color: #fff; transform: translateX(5px); }
+  }
+
+  h3 { 
+    color: $text-primary; 
+    margin: 1.5rem 0 0.5rem; 
+    font-size: 1.5rem; 
+    font-weight: 600; 
+  }
+  
+  p { 
+    color: $text-secondary; 
+    font-size: 1rem; 
+    margin-bottom: 2rem; 
+    line-height: 1.6; 
+  }
+  
+  .link-text { 
+    color: #f06595; 
+    font-weight: 600; 
+    font-size: 0.95rem; 
+    transition: transform 0.2s;
+    display: inline-block;
+    text-decoration: none;
+  }
+}
+
+/* Icon Circles with Neon Gradients */
+.icon-circle {
+  width: 60px;
+  height: 60px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.4s ease;
+  
+  mat-icon { 
+    color: white; 
+    font-size: 28px; 
+    width: 28px; 
+    height: 28px; 
+  }
+  
+  /* Gradient Variants */
+  &.neon-pink { 
+    background: linear-gradient(135deg, #FF00CC, #333399); 
+    box-shadow: 0 10px 20px rgba(255, 0, 204, 0.3); 
+  }
+  &.neon-blue { 
+    background: linear-gradient(135deg, #00C6FF, #0072FF); 
+    box-shadow: 0 10px 20px rgba(0, 114, 255, 0.3); 
+  }
+  &.neon-orange { 
+    background: linear-gradient(135deg, #FF512F, #DD2476); 
+    box-shadow: 0 10px 20px rgba(221, 36, 118, 0.3); 
+  }
+}
+
+/* Stats Row Layout */
+.stats-row {
+  display: flex;
+  gap: 2rem;
+  
+  .stat-card {
+    /* Ensures cards stretch equally */
+    flex: 1; 
+    
+    /* Specific styling for stat cards if different from action cards */
+    .stat-number { 
+      font-size: 2.5rem; 
+      font-weight: 800; 
+      color: #fff; 
+    }
+    .stat-label { 
+      color: #666; 
+      font-size: 0.85rem; 
+      text-transform: uppercase; 
+      letter-spacing: 1.5px; 
+      font-weight: 600; 
+    }
+  }
+}
+
+/* Material Button Overrides for Dark Mode */
+button[mat-stroked-button] {
+  border-color: rgba(255,255,255,0.2) !important;
+  color: $text-secondary !important;
+  
+  mat-icon { margin-right: 5px; }
+  
+  &:hover {
+    background: rgba(255,255,255,0.05);
+    color: #fff !important;
+  }
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .dashboard-header {
+    flex-direction: column;
+    gap: 1rem;
+    
+    .welcome-text h1 { font-size: 2.2rem; }
+  }
+  
+  .action-grid { grid-template-columns: 1fr; }
+  .stats-row { flex-direction: column; }
+}

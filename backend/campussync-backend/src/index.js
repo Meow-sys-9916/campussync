@@ -11,12 +11,20 @@ const corsOptions = {
         'https://your-app.vercel.app'
     ],
     credentials: true,
-    methods: ['GET','POST','PUT','DELETE','OPTIONS'],
-    allowedHeaders: ['Content-Type','Authorization']
+    methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+    allowedHeaders: ['Content-Type', 'Authorization']
 };
 
 app.use(cors(corsOptions));
 app.use(express.json());
+
+// --- 1. IMPORT ROUTES ---
+const authRoutes = require('./api/routes/auth.routes');
+const eventRoutes = require('./api/routes/event.routes'); // New Event Routes
+
+// --- 2. USE ROUTES ---
+app.use('/api/auth', authRoutes);
+app.use('/api/events', eventRoutes); // New Event API endpoint
 
 app.get('/api/health', (req, res) => {
   res.status(200).json({
@@ -25,10 +33,9 @@ app.get('/api/health', (req, res) => {
   });
 });
 
-app.listen(PORT,() =>{
-    console.log('Server running on hhtp://localhost:${PORT}');
-    console.log('Health check: http://localhost:&{PORT}/api/health');
+app.listen(PORT, () => {
+    console.log(`Server running on http://localhost:${PORT}`);
+    console.log(`Health check: http://localhost:${PORT}/api/health`);
 });
 
 module.exports = app;
-

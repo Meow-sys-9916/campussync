@@ -1,0 +1,50 @@
+
+<div class="dashboard-layout">
+  
+<nav class="navbar">
+  <div class="logo-container">
+    <img src="assets/logo.png" alt="" height="80" style="display:block;">
+  </div>
+  <span class="spacer"></span>
+</nav>
+
+  <div class="content-container">
+    
+    <header class="dashboard-header hero-section">
+      <div class="welcome-text">
+        <h1>Hello, {{ currentUser?.firstName || 'Student' }}! 👋</h1>
+        <p>Welcome back to CampusSync.</p>
+      </div>
+      <div class="header-actions">
+        <button mat-stroked-button color="warn" (click)="logout()">
+          <mat-icon>logout</mat-icon> Logout
+        </button>
+      </div>
+    </header>
+
+    <div class="action-grid stats-row">
+      
+      <div class="action-card stat-card">
+        <div class="icon-circle neon-pink">
+          <mat-icon>person</mat-icon>
+        </div>
+        <h3>My Profile</h3>
+        <p>
+          <strong>ID:</strong> {{ currentUser?.studentId || 'No ID' }}<br>
+          <strong>Major:</strong> {{ currentUser?.major || 'General' }}
+        </p>
+        <span class="link-text">EDIT PROFILE &rarr;</span>
+      </div>
+
+      <div class="action-card stat-card highlight">
+        <div class="icon-circle neon-blue">
+          <mat-icon>event</mat-icon>
+        </div>
+        <h3>Upcoming Events</h3>
+        <p>Next 7 Days: No upcoming events registered.</p>
+        <a routerLink="/events" class="link-text">BROWSE EVENTS &rarr;</a>
+      </div>
+
+    </div>
+  </div>
+</div>

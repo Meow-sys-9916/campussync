@@ -1,0 +1,121 @@
+.events-container {
+  padding: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* ✅ HEADER LAYOUT FIX */
+.header {
+  display: flex;
+  justify-content: space-between; /* Pushes Title left, Actions right */
+  align-items: center; /* Vertically centers them */
+  margin-bottom: 2rem;
+  flex-wrap: wrap; /* Allows wrapping on mobile */
+  gap: 1rem;
+}
+
+.title-section {
+  h1 {
+    font-size: 2rem;
+    font-weight: 500;
+    margin: 0;
+    color: #333;
+  }
+  
+  p {
+    color: #666;
+    margin: 0.5rem 0 0;
+  }
+}
+
+/* ✅ ALIGNS BUTTONS TOGETHER */
+.actions {
+  display: flex;
+  gap: 1rem;
+}
+
+/* CARD STYLES */
+.events-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2rem;
+}
+
+.event-card {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  transition: transform 0.2s, box-shadow 0.2s;
+  
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+  }
+}
+
+.card-content {
+  padding: 1rem;
+  flex: 1;
+}
+
+.event-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  margin-bottom: 1rem;
+  
+  mat-card-title {
+    font-size: 1.25rem;
+    line-height: 1.4;
+  }
+}
+
+.status-upcoming { color: #1976d2; background: #e3f2fd; }
+.status-ongoing { color: #2e7d32; background: #e8f5e9; }
+.status-completed { color: #616161; background: #eeeeee; }
+.status-cancelled { color: #c62828; background: #ffebee; }
+
+mat-card-subtitle {
+  display: block;
+  margin-bottom: 1rem;
+  color: #666;
+  font-size: 0.9rem;
+}
+
+.description {
+  color: #444;
+  margin-bottom: 1.5rem;
+  line-height: 1.5;
+}
+
+.meta-info {
+  display: flex;
+  gap: 1.5rem;
+  color: #666;
+  font-size: 0.9rem;
+  
+  span {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    
+    mat-icon {
+      font-size: 18px;
+      width: 18px;
+      height: 18px;
+    }
+  }
+}
+
+/* Mobile Responsive */
+@media (max-width: 600px) {
+  .header {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .actions {
+    width: 100%;
+    justify-content: flex-start;
+  }
+}

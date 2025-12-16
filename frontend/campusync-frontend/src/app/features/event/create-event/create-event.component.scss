@@ -1,0 +1,58 @@
+.create-container {
+  padding: 2rem;
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+mat-card {
+  padding: 1rem;
+}
+
+mat-card-header {
+  margin-bottom: 1.5rem;
+  
+  mat-card-title {
+    font-size: 1.5rem;
+    font-weight: 500;
+  }
+}
+
+/* Makes fields take up full width */
+.full-width {
+  width: 100%;
+  margin-bottom: 0.5rem;
+}
+
+/* Creates a 2-column layout for Date/Venue/Category/Capacity */
+.form-row {
+  display: flex;
+  gap: 1rem;
+  
+  mat-form-field {
+    flex: 1; /* Both fields take equal space */
+  }
+}
+
+/* Align buttons to the right */
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 1rem;
+  
+  button {
+    text-transform: uppercase;
+  }
+}
+
+/* Responsive adjustment for mobile */
+@media (max-width: 600px) {
+  .form-row {
+    flex-direction: column; /* Stack fields vertically on small screens */
+    gap: 0;
+  }
+  
+  .create-container {
+    padding: 1rem;
+  }
+}

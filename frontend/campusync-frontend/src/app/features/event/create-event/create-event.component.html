@@ -1,0 +1,63 @@
+<div class="create-container">
+  <mat-card>
+    <mat-card-header>
+      <mat-card-title>Create New Event</mat-card-title>
+    </mat-card-header>
+    
+    <mat-card-content>
+      <form [formGroup]="eventForm" (ngSubmit)="onSubmit()">
+        
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Event Title</mat-label>
+          <input matInput formControlName="title" placeholder="Ex: Hackathon 2025">
+          <mat-error *ngIf="eventForm.get('title')?.hasError('required')">Title is required</mat-error>
+        </mat-form-field>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline">
+            <mat-label>Date</mat-label>
+            <input matInput [matDatepicker]="picker" formControlName="date">
+            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+            <mat-datepicker #picker></mat-datepicker>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Venue</mat-label>
+            <input matInput formControlName="venue" placeholder="Ex: Auditorium 1">
+          </mat-form-field>
+        </div>
+
+        <div class="form-row">
+          <mat-form-field appearance="outline">
+            <mat-label>Category</mat-label>
+            <mat-select formControlName="category">
+              <mat-option value="Academic">Academic</mat-option>
+              <mat-option value="Cultural">Cultural</mat-option>
+              <mat-option value="Sports">Sports</mat-option>
+              <mat-option value="Tech">Tech</mat-option>
+              <mat-option value="General">General</mat-option>
+            </mat-select>
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Capacity</mat-label>
+            <input matInput type="number" formControlName="capacity">
+          </mat-form-field>
+        </div>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Description</mat-label>
+          <textarea matInput formControlName="description" rows="4"></textarea>
+        </mat-form-field>
+
+        <div class="actions">
+          <button mat-button type="button" routerLink="/events">CANCEL</button>
+          <button mat-raised-button color="primary" type="submit" [disabled]="eventForm.invalid || isSubmitting">
+            {{ isSubmitting ? 'CREATING...' : 'PUBLISH EVENT' }}
+          </button>
+        </div>
+
+      </form>
+    </mat-card-content>
+  </mat-card>
+</div>

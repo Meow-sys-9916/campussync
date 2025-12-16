@@ -1,0 +1,20 @@
+<mat-toolbar color="primary" class="navbar" *ngIf="user$ | async as user">
+  <span class="logo" routerLink="/dashboard">
+    <mat-icon>school</mat-icon> CampusSync
+  </span>
+
+  <span class="spacer"></span>
+
+  <div class="nav-links">
+    <a mat-button routerLink="/dashboard" routerLinkActive="active-link">Dashboard</a>
+    <a mat-button routerLink="/events" routerLinkActive="active-link">Events</a>
+    <a mat-button routerLink="/profile" routerLinkActive="active-link">Profile</a>
+  </div>
+
+  <div class="user-actions">
+    <span class="user-name">Hi, {{ user.firstName }}</span>
+    <button mat-icon-button (click)="logout()">
+      <mat-icon>logout</mat-icon>
+    </button>
+  </div>
+</mat-toolbar>

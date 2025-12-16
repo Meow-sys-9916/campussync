@@ -1,0 +1,27 @@
+.navbar {
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-weight: 500;
+  cursor: pointer;
+}
+
+.spacer { flex: 1; }
+
+.nav-links {
+  display: flex;
+  gap: 1rem;
+  margin-right: 1rem;
+  
+  a { text-decoration: none; color: white; opacity: 0.8; }
+  a:hover, a.active-link { opacity: 1; }
+}
+
+.user-actions { display: flex; align-items: center; gap: 1rem; }
