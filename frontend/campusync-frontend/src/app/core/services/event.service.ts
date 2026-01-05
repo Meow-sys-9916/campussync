@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-// ✅ UPDATED INTERFACE: Added 'status', 'capacity', 'registeredCount'
+// ✅ FIXED INTERFACE
 export interface CampusEvent {
   id?: string;
   title: string;
@@ -14,7 +14,7 @@ export interface CampusEvent {
   organizer?: string;
   attendees?: string[];
   
-  // These were missing and causing errors:
+  // ✅ ADDED THESE TO FIX ERRORS
   status?: string; 
   capacity?: number;
   registeredCount?: number;
@@ -52,6 +52,7 @@ export class EventService {
     return this.http.delete(`${this.apiUrl}/${id}`, { headers: this.getHeaders() });
   }
 
+  // ✅ REGISTER FUNCTION
   registerEvent(id: string): Observable<any> {
     return this.http.post(`${this.apiUrl}/${id}/register`, {}, { headers: this.getHeaders() });
   }

@@ -8,11 +8,11 @@
 
     <mat-card-header>
       <mat-card-title>{{ event.title }}</mat-card-title>
-      <mat-card-subtitle>{{ event.date | date:'medium' }} • {{ event.venue }}</mat-card-subtitle>
+      <mat-card-subtitle>{{ event.date | date:'fullDate' }} • {{ event.venue }}</mat-card-subtitle>
     </mat-card-header>
 
     <mat-card-content>
-      <p class="desc">{{ event.description }}</p>
+      <p class="description">{{ event.description }}</p>
       <mat-chip-set>
         <mat-chip color="accent" highlighted>{{ event.category }}</mat-chip>
       </mat-chip-set>
@@ -23,3 +23,5 @@
     </mat-card-actions>
   </mat-card>
 </div>
+
+<div *ngIf="loading" style="color:white; text-align:center; margin-top:50px;">Loading...</div>
