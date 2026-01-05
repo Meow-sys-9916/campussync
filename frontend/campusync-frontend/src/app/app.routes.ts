@@ -1,31 +1,20 @@
 import { Routes } from '@angular/router';
 import { LoginComponent } from './features/auth/login/login.component';
 import { DashboardComponent } from './features/dashboard/dashboard.component';
-import { AuthGuard } from './core/guards/auth.guard';
-import { EventListComponent } from './features/event/event-list/event-list.component';
 import { CreateEventComponent } from './features/event/create-event/create-event.component';
+import { EventListComponent } from './features/event/event-list/event-list.component';
+import { EventDetailsComponent } from './features/event/event-details/event-details.component';
+
+// ✅ IMPORT THE CONSTANT (not a class)
+import { authGuard } from './core/guards/auth.guard';
 
 export const routes: Routes = [
-  // 1. Default route -> Go to Login
-  { path: '', redirectTo: '/auth/login', pathMatch: 'full' },
+  { path: '', redirectTo: 'login', pathMatch: 'full' },
+  { path: 'login', component: LoginComponent },
   
-  // 2. Public Route
-  { path: 'auth/login', component: LoginComponent },
-  
-  // 3. Protected Routes (Must have 'canActivate: [AuthGuard]')
-  { 
-    path: 'dashboard', 
-    component: DashboardComponent, 
-    canActivate: [AuthGuard] 
-  },
-  { 
-    path: 'events', 
-    component: EventListComponent, 
-    canActivate: [AuthGuard] 
-  },
-  { 
-    path: 'events/create', 
-    component: CreateEventComponent, 
-    canActivate: [AuthGuard] 
-  }
+  // ✅ Usage is the same: canActivate: [authGuard]
+  { path: 'dashboard', component: DashboardComponent, canActivate: [authGuard] },
+  { path: 'events', component: EventListComponent, canActivate: [authGuard] },
+  { path: 'events/create', component: CreateEventComponent, canActivate: [authGuard] },
+  { path: 'events/:id', component: EventDetailsComponent, canActivate: [authGuard] }
 ];

@@ -1,0 +1,12 @@
+.details-container {
+  padding: 20px;
+  max-width: 800px;
+  margin: 0 auto;
+  .back-btn { color: #ccc; margin-bottom: 10px; }
+  .event-card {
+    background: #1e1e1e; color: white;
+    .event-image { height: 250px; background-size: cover; background-position: center; }
+    mat-card-title { font-size: 2rem; margin-top: 15px; }
+    .desc { font-size: 1.1rem; margin: 20px 0; line-height: 1.5; color: #ddd; }
+  }
+}

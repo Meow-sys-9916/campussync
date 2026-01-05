@@ -1,0 +1,25 @@
+<div class="details-container" *ngIf="event">
+  <button mat-button routerLink="/events" class="back-btn">
+    <mat-icon>arrow_back</mat-icon> Back to Feed
+  </button>
+
+  <mat-card class="event-card">
+    <div class="event-image" [style.backgroundImage]="'url(' + (event.image || '/assets/images/logo.png') + ')'"></div>
+
+    <mat-card-header>
+      <mat-card-title>{{ event.title }}</mat-card-title>
+      <mat-card-subtitle>{{ event.date | date:'medium' }} • {{ event.venue }}</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <p class="desc">{{ event.description }}</p>
+      <mat-chip-set>
+        <mat-chip color="accent" highlighted>{{ event.category }}</mat-chip>
+      </mat-chip-set>
+    </mat-card-content>
+
+    <mat-card-actions align="end">
+      <button mat-raised-button color="primary" (click)="register()">REGISTER NOW</button>
+    </mat-card-actions>
+  </mat-card>
+</div>

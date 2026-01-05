@@ -1,10 +1,17 @@
 <div class="login-container">
   <mat-card class="login-card">
+    
+    <div class="logo-header">
+      <img src="/assets/images/logo.png" alt="CampusSync Logo" class="logo-img" height="100">
+    </div>
+
     <mat-card-header>
       <mat-card-title>
-        {{ isRegistering ? 'Create Account' : 'Sign In' }}
-        <span class="brand">🎓 CampusSync</span>
+        {{ isRegistering ? 'Create Account' : 'Welcome Back' }}
       </mat-card-title>
+      <mat-card-subtitle>
+        {{ isRegistering ? 'Join your campus community' : 'Enter your details to sign in' }}
+      </mat-card-subtitle>
     </mat-card-header>
 
     <mat-card-content>
@@ -14,18 +21,18 @@
           <div class="row">
             <mat-form-field appearance="outline">
               <mat-label>First Name</mat-label>
-              <input matInput formControlName="firstName" placeholder="John">
+              <input matInput formControlName="firstName">
             </mat-form-field>
 
             <mat-form-field appearance="outline">
               <mat-label>Last Name</mat-label>
-              <input matInput formControlName="lastName" placeholder="Doe">
+              <input matInput formControlName="lastName">
             </mat-form-field>
           </div>
 
           <mat-form-field appearance="outline" class="full-width">
-            <mat-label>USN</mat-label>
-            <input matInput formControlName="studentId" placeholder="1BM23CS001">
+            <mat-label>USN / Student ID</mat-label>
+            <input matInput formControlName="studentId">
             <mat-error *ngIf="loginForm.get('studentId')?.hasError('required')">
               USN is required
             </mat-error>
@@ -34,7 +41,7 @@
           <div class="row">
             <mat-form-field appearance="outline">
               <mat-label>Branch</mat-label>
-              <input matInput formControlName="branch" placeholder="CSE">
+              <input matInput formControlName="branch">
             </mat-form-field>
 
             <mat-form-field appearance="outline">
@@ -49,13 +56,13 @@
 
           <mat-form-field appearance="outline" class="full-width">
             <mat-label>Phone Number</mat-label>
-            <input matInput formControlName="phoneNumber" placeholder="9876543210">
+            <input matInput formControlName="phoneNumber">
           </mat-form-field>
         </div>
 
         <mat-form-field appearance="outline" class="full-width">
           <mat-label>Email Address</mat-label>
-          <input matInput formControlName="email" placeholder="student@bmsce.ac.in">
+          <input matInput formControlName="email" type="email">
           <mat-error *ngIf="loginForm.get('email')?.invalid">
             {{ getFieldError('email') }}
           </mat-error>
@@ -73,18 +80,20 @@
         </mat-form-field>
 
         <div *ngIf="errorMessage" class="error-alert">
-          <mat-icon>error</mat-icon>
+          <mat-icon>error_outline</mat-icon>
           <span>{{ errorMessage }}</span>
         </div>
 
-        <button mat-raised-button color="primary" type="submit" class="submit-btn" [disabled]="isLoading">
+        <button mat-flat-button type="submit" class="submit-btn" [disabled]="isLoading">
           <mat-spinner diameter="20" *ngIf="isLoading"></mat-spinner>
-          <span *ngIf="!isLoading">{{ isRegistering ? 'Create Account' : 'Sign In' }}</span>
+          <span *ngIf="!isLoading">
+            {{ isRegistering ? 'Create Account' : 'Sign In' }}
+          </span>
         </button>
 
         <div class="toggle-link">
-          <span *ngIf="!isRegistering">Do not have an account? <a (click)="toggleRegistration()">Create Account</a></span>
-          <span *ngIf="isRegistering">Already have an account? <a (click)="toggleRegistration()">Sign In</a></span>
+          <span *ngIf="!isRegistering">New here? <a (click)="toggleRegistration()">Create an account</a></span>
+          <span *ngIf="isRegistering">Already a member? <a (click)="toggleRegistration()">Sign In</a></span>
         </div>
       </form>
     </mat-card-content>

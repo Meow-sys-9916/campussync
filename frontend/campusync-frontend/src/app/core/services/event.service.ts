@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
-// ✅ Added 'export' so other files can see this
+// ✅ UPDATED INTERFACE: Added 'status', 'capacity', 'registeredCount'
 export interface CampusEvent {
   id?: string;
   title: string;
@@ -10,15 +10,19 @@ export interface CampusEvent {
   date: string;
   venue: string;
   category: string;
-  capacity: number;
+  image?: string;
+  organizer?: string;
+  attendees?: string[];
+  
+  // These were missing and causing errors:
+  status?: string; 
+  capacity?: number;
   registeredCount?: number;
-  status?: 'upcoming' | 'ongoing' | 'completed' | 'cancelled';
 }
 
 @Injectable({
   providedIn: 'root'
 })
-// ✅ Added 'export' so the Injector can find it
 export class EventService {
   private apiUrl = 'http://localhost:3000/api/events';
 
@@ -32,25 +36,23 @@ export class EventService {
     });
   }
 
-  getEvents(): Observable<{ success: boolean; data: CampusEvent[] }> {
-    return this.http.get<{ success: boolean; data: CampusEvent[] }>(
-      this.apiUrl, 
-      { headers: this.getHeaders() }
-    );
+  getEvents(): Observable<any> {
+    return this.http.get(this.apiUrl, { headers: this.getHeaders() });
   }
 
-  getEventById(id: string): Observable<{ success: boolean; data: CampusEvent }> {
-    return this.http.get<{ success: boolean; data: CampusEvent }>(
-      `${this.apiUrl}/${id}`, 
-      { headers: this.getHeaders() }
-    );
+  getEventById(id: string): Observable<any> {
+    return this.http.get(`${this.apiUrl}/${id}`, { headers: this.getHeaders() });
   }
 
-  createEvent(eventData: any): Observable<any> {
-    return this.http.post(
-      this.apiUrl, 
-      eventData, 
-      { headers: this.getHeaders() }
-    );
+  createEvent(data: any): Observable<any> {
+    return this.http.post(this.apiUrl, data, { headers: this.getHeaders() });
+  }
+
+  deleteEvent(id: string): Observable<any> {
+    return this.http.delete(`${this.apiUrl}/${id}`, { headers: this.getHeaders() });
+  }
+
+  registerEvent(id: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/${id}/register`, {}, { headers: this.getHeaders() });
   }
 }
