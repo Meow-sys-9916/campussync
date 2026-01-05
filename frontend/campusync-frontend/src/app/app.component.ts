@@ -1,12 +1,16 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
-// 👇 This path must match exactly where you created the header
+// ✅ 1. Import the Header Component
 import { HeaderComponent } from './core/layout/header/header.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [RouterOutlet, HeaderComponent],
+  // ✅ 2. Add 'HeaderComponent' to this list
+  imports: [
+    RouterOutlet, 
+    HeaderComponent 
+  ],
   templateUrl: './app.component.html',
   styleUrl: './app.component.scss'
 })

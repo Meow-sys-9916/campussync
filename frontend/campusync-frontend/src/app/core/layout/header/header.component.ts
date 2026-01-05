@@ -4,18 +4,19 @@ import { RouterModule } from '@angular/router';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-// 👇 This path goes up 2 levels to 'core', then into 'services'
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { AuthService } from '../../services/auth.service';
 
 @Component({
-  selector: 'app-header',
+  selector: 'app-header', // <--- This must match <app-header>
   standalone: true,
   imports: [
     CommonModule,
     RouterModule,
     MatToolbarModule,
     MatButtonModule,
-    MatIconModule
+    MatIconModule,
+    MatTooltipModule
   ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'

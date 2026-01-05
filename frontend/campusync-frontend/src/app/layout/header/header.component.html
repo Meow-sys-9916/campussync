@@ -1,28 +1,30 @@
-<mat-toolbar color="primary" class="navbar" *ngIf="user$ | async as user">
+<mat-toolbar class="navbar">
   
-  <span class="logo" routerLink="/dashboard" style="cursor: pointer; display: flex; align-items: center;">
-    <img src="/assets/images/logo.png" alt="Logo" height="70" style="object-fit: contain;">
-  </span>
+  <div class="logo-container" routerLink="/dashboard" matTooltip="Go to Dashboard">
+    <img src="/assets/images/logo.png" alt="CampusSync Logo" onerror="this.style.display='none'">
+    <span class="logo-text">CampusSync</span>
+  </div>
 
   <span class="spacer"></span>
 
   <div class="nav-links">
     <a mat-button routerLink="/dashboard" routerLinkActive="active-link">
-      Dashboard
+      <mat-icon>home</mat-icon> Home
     </a>
-    <a mat-button routerLink="/events" routerLinkActive="active-link">
-      Events
+    <a mat-button routerLink="/events" routerLinkActive="active-header.link" [routerLinkActiveOptions]="{exact: true}">
+      <mat-icon>event</mat-icon> Events
     </a>
-    <a mat-button routerLink="/profile" routerLinkActive="active-link">
-      Profile
+    <a mat-button routerLink="/events/create" routerLinkActive="active-link">
+      <mat-icon>add_circle_outline</mat-icon> Host Event
     </a>
   </div>
 
   <span class="spacer"></span>
 
-  <div class="user-actions">
-    <span class="user-name">Hi, {{ user.firstName }}</span>
-    <button mat-icon-button (click)="logout()" title="Logout">
+  <div class="user-actions" *ngIf="user$ | async as user">
+    <span class="user-name">Hi, {{ user.firstName || 'Student' }}</span>
+    
+    <button mat-icon-button (click)="logout()" matTooltip="Logout">
       <mat-icon>logout</mat-icon>
     </button>
   </div>

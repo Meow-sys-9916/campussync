@@ -1,41 +1,72 @@
+/* ✅ Main Navbar Container */
 .navbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  /* ✅ Reduced height from 64px to 50px to shrink the grey area */
+  height: 50px; 
+  background-color: #121212; /* Slightly darker to match dashboard */
+  color: white;
   position: sticky;
   top: 0;
   z-index: 1000;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
-  background: #3f51b5; /* Primary Color */
-  color: white;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
 }
 
-.logo {
+/* ✅ Logo Styling */
+.logo-container {
   display: flex;
   align-items: center;
-  gap: 10px;
-  font-weight: 700;
-  font-size: 1.2rem;
+  gap: 8px;
   cursor: pointer;
   user-select: none;
-  
-  mat-icon {
-    height: 28px;
-    width: 28px;
-    font-size: 28px;
+
+  img {
+    height: 35px; /* Smaller logo for better fit */
+    width: auto;
+    object-fit: contain;
   }
+
+  .logo-text {
+  /* ✅ New Modern Font */
+  font-family: 'Outfit', sans-serif; 
+  font-weight: 700;
+  font-size: 1.4rem;
+  letter-spacing: -0.5px;
+  background: linear-gradient(45deg, #ffffff, #a5a5a5);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+ }
 }
 
-.spacer {
-  flex: 1 1 auto;
-}
-
+/* ✅ Navigation Links */
 .nav-links {
   display: flex;
-  gap: 8px;
+  gap: 4px; /* Tighter gap */
+  align-items: center;
 
+  /* REMOVED 'display: none' so it shows on all screens */
+  
   a {
-    color: rgba(255, 255, 255, 0.9);
-    font-weight: 500;
+    color: rgba(255, 255, 255, 0.8);
     text-decoration: none;
-    transition: all 0.2s;
+    font-weight: 500;
+    font-size: 0.9rem;
+    padding: 0 10px;
+    height: 36px;
+    line-height: 36px;
+    border-radius: 20px;
+    transition: background 0.2s;
+    display: flex;
+    align-items: center;
+
+    mat-icon {
+      margin-right: 4px;
+      font-size: 20px;
+      height: 20px;
+      width: 20px;
+    }
 
     &:hover {
       background-color: rgba(255, 255, 255, 0.1);
@@ -46,21 +77,42 @@
       background-color: rgba(255, 255, 255, 0.2);
       color: white;
     }
+    
+    /* Optional: Hide the TEXT label on mobile, show only ICON */
+    @media (max-width: 600px) {
+      span { /* Assuming text is wrapped in span or just text node */
+         display: none;
+      }
+      mat-icon {
+        margin-right: 0;
+      }
+    }
   }
 }
 
+.spacer {
+  flex: 1 1 auto;
+}
+
+/* ✅ User Info & Logout */
 .user-actions {
   display: flex;
   align-items: center;
-  gap: 12px;
-  font-size: 0.95rem;
+  gap: 8px;
 
   .user-name {
+    font-size: 0.9rem;
     font-weight: 500;
-    opacity: 0.9;
-    display: none; // Hide name on very small screens
-    @media (min-width: 600px) {
+    margin-right: 8px;
+    
+    /* Hide name on small screens */
+    display: none; 
+    @media (min-width: 700px) {
       display: inline;
     }
+  }
+
+  button {
+    color: #ff5252;
   }
 }

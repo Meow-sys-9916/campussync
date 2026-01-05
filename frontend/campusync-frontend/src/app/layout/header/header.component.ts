@@ -4,7 +4,8 @@ import { RouterModule } from '@angular/router';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-
+// ✅ IMPORT MAT-TOOLTIP
+import { MatTooltipModule } from '@angular/material/tooltip'; 
 import { AuthService } from '../../core/services/auth.service';
 
 @Component({
@@ -15,17 +16,16 @@ import { AuthService } from '../../core/services/auth.service';
     RouterModule,
     MatToolbarModule,
     MatButtonModule,
-    MatIconModule
+    MatIconModule,
+    MatTooltipModule // ✅ ADD TO IMPORTS ARRAY
   ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'
 })
 export class HeaderComponent {
-  // Declare the variable, but assign it in the constructor
   user$;
 
   constructor(private authService: AuthService) {
- 
     this.user$ = this.authService.currentUser$;
   }
 
