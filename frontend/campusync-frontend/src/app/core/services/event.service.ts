@@ -5,16 +5,15 @@ import { Observable } from 'rxjs';
 // ✅ FIXED INTERFACE
 export interface CampusEvent {
   id?: string;
+  _id?: string; // ✅ Add this to handle MongoDB responses
   title: string;
   description: string;
   date: string;
   venue: string;
   category: string;
   image?: string;
-  organizer?: string;
+  organizer?: any; // ✅ Changed to any to handle populated objects
   attendees?: string[];
-  
-  // ✅ ADDED THESE TO FIX ERRORS
   status?: string; 
   capacity?: number;
   registeredCount?: number;

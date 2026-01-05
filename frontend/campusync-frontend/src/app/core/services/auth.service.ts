@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient } from '@angular/common/http';
-import { BehaviorSubject, Observable, tap } from 'rxjs';
+import { HttpClient, HttpHeaders } from '@angular/common/http'; // ✅ Added HttpHeaders
+import { BehaviorSubject, Observable, tap, catchError, of } from 'rxjs'; // ✅ Added catchError, of
 import { Router } from '@angular/router';
 
 @Injectable({
@@ -12,9 +12,42 @@ export class AuthService {
   public currentUser$ = this.currentUserSubject.asObservable();
 
   constructor(private http: HttpClient, private router: Router) {
+    // ✅ RESTORE SESSION: If token exists on startup, fetch user profile
     if (this.getToken()) {
-      console.log('✅ Auth Service: Token found on startup');
+      console.log('✅ Auth Service: Token found, restoring session...');
+      this.getProfile().subscribe({
+        next: (user) => {
+          console.log('👤 User session restored:', user);
+          this.currentUserSubject.next(user);
+        },
+        error: (err) => {
+          console.error('❌ Session expired or invalid token', err);
+          this.logout(); // Force logout if token is bad
+        }
+      });
     }
+  }
+
+  // ✅ NEW METHOD: Fetch Profile to restore user state
+  getProfile(): Observable<any> {
+    const token = this.getToken();
+    // Create headers with the token
+    const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
+    
+    // Call your backend profile endpoint
+    return this.http.get<{success: boolean, data: {user: any}}>(`${this.apiUrl}/profile`, { headers }).pipe(
+      tap(res => {
+        // Assume backend returns { success: true, data: { user: {...} } }
+        if (res.success && res.data && res.data.user) {
+          this.currentUserSubject.next(res.data.user);
+        }
+      }),
+      // Return the user object directly for the subscription in constructor
+      tap((res: any) => res.data?.user || res.user), 
+      catchError(err => {
+        return of(null);
+      })
+    );
   }
 
   login(credentials: any): Observable<any> {
@@ -23,18 +56,15 @@ export class AuthService {
         console.log('📥 RAW Backend Response:', response);
 
         // 🔍 UNIVERSAL TOKEN FINDER
-        // 1. Try finding token at the top level
         let token = response.token;
         let user = response.user;
 
-        // 2. If not there, try finding it inside 'data' (Fix for your latest screenshot)
         if (!token && response.data) {
           console.log('🕵️ Token not at root, checking inside response.data...');
           token = response.data.token;
           user = response.data.user;
         }
 
-        // 3. Save whatever we found
         if (token) {
           console.log('🔑 Token FOUND! Saving...');
           localStorage.setItem('token', token);

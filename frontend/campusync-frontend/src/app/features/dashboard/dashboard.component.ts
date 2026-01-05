@@ -7,7 +7,7 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatRippleModule } from '@angular/material/core';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatListModule } from '@angular/material/list';
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar'; // ✅ Import SnackBar
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { RouterModule } from '@angular/router';
 import { AuthService } from '../../core/services/auth.service';
 import { EventService, CampusEvent } from '../../core/services/event.service'; 
@@ -25,7 +25,7 @@ import { Subscription } from 'rxjs';
     MatRippleModule,
     MatTooltipModule,
     MatListModule,
-    MatSnackBarModule, // ✅ Add Module here
+    MatSnackBarModule,
     RouterModule
   ],
   templateUrl: './dashboard.component.html',
@@ -35,21 +35,29 @@ export class DashboardComponent implements OnInit, OnDestroy {
   currentUser: any = null;
   private userSub: Subscription = new Subscription();
   
-  hostedCount = 0;
-  totalEventsCount = 0;
+  // ✅ Counters
+  hostedCount: number = 0;
+  registeredCount: number = 0; // Events Joined
+  totalEventsCount: number = 0;
   hostedEvents: CampusEvent[] = [];
+  
+  // ✅ Next Event Tracker
+  nextEvent: CampusEvent | null = null;
 
   constructor(
     private authService: AuthService, 
     private eventService: EventService,
-    private snackBar: MatSnackBar // ✅ Inject SnackBar
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit() {
     this.userSub = this.authService.currentUser$.subscribe(user => {
       this.currentUser = user;
       if (user) {
-        this.fetchDashboardStats(user.id || user._id);
+        const userId = user.id || user._id; 
+        if (userId) {
+          this.fetchDashboardStats(userId);
+        }
       }
     });
   }
@@ -60,49 +68,57 @@ export class DashboardComponent implements OnInit, OnDestroy {
     }
   }
 
+  getEventId(event: any): string {
+    return event ? (event.id || event._id) : '';
+  }
+
   fetchDashboardStats(userId: string) {
     this.eventService.getEvents().subscribe({
       next: (res: any) => {
-        if (res.success) {
-          const events: CampusEvent[] = res.data;
-          this.totalEventsCount = events.length;
+        if (res.success && Array.isArray(res.data)) {
+          const allEvents: CampusEvent[] = res.data;
+          
+          // 1. Total Events
+          this.totalEventsCount = allEvents.length;
 
-          if (userId) {
-            this.hostedEvents = events.filter((e: CampusEvent) => e.organizer === userId);
-            this.hostedCount = this.hostedEvents.length;
-          }
+          // 2. Hosted Events (Middle Card)
+          this.hostedEvents = allEvents.filter((e: any) => {
+            const orgId = (e.organizer && typeof e.organizer === 'object') 
+                          ? e.organizer._id 
+                          : e.organizer;
+            return orgId === userId;
+          });
+          this.hostedCount = this.hostedEvents.length;
+
+          // 3. Registered Events (Bottom Right Counter & Next Event)
+          const registeredIds = this.currentUser?.registeredEvents || [];
+          
+          const registered = allEvents.filter((e: any) => {
+             const isRegistered = registeredIds.includes(e.id) || registeredIds.includes(e._id);
+             const isAttendee = e.attendees && e.attendees.includes(userId);
+             return isRegistered || isAttendee;
+          });
+
+          // ✅ Events Joined Count
+          this.registeredCount = registered.length;
+          
+          // Next Event Logic
+          this.nextEvent = registered
+            .filter((e: any) => new Date(e.date).getTime() > Date.now()) 
+            .sort((a: any, b: any) => new Date(a.date).getTime() - new Date(b.date).getTime())[0] || null;
         }
       },
-      error: (err) => console.error('Failed to load stats', err)
-    });
-  }
-
-  deleteEvent(eventId: string) {
-    // Keep confirm for safety (or remove if you want instant delete)
-    if(!confirm('Are you sure you want to delete this event?')) return;
-
-    this.eventService.deleteEvent(eventId).subscribe({
-      next: () => {
-        this.hostedEvents = this.hostedEvents.filter(e => e.id !== eventId);
-        this.hostedCount--;
-        this.totalEventsCount--; 
-        
-        // ✅ Modern Notification instead of alert
-        this.snackBar.open('🗑️ Event deleted successfully', 'Close', { 
-          duration: 3000,
-          horizontalPosition: 'center',
-          verticalPosition: 'bottom'
-        });
-      },
       error: (err) => {
-        this.snackBar.open('❌ Failed to delete event', 'Retry', { duration: 3000 });
+        console.error('Failed to load stats', err);
+        this.totalEventsCount = 0;
+        this.hostedCount = 0;
+        this.registeredCount = 0;
       }
     });
   }
 
   logout() {
     this.authService.logout();
-    // ✅ Optional: Show logout message
     this.snackBar.open('Logged out successfully', 'Bye!', { duration: 2000 });
   }
 }
