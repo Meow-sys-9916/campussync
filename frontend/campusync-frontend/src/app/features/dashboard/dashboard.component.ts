@@ -35,6 +35,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
   currentUser: any = null;
   private userSub: Subscription = new Subscription();
   
+  // ✅ Display normalization for USN and Branch
+  displayUsn: string = 'No USN';
+  displayBranch: string = 'General';
+  
   // ✅ Counters
   hostedCount: number = 0;
   registeredCount: number = 0; // Events Joined
@@ -53,11 +57,17 @@ export class DashboardComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.userSub = this.authService.currentUser$.subscribe(user => {
       this.currentUser = user;
+      // ✅ Normalize display fields from user data
       if (user) {
+        this.displayUsn = user.studentId || user.usn || 'No USN';
+        this.displayBranch = user.branch || user.major || 'General';
         const userId = user.id || user._id; 
         if (userId) {
           this.fetchDashboardStats(userId);
         }
+      } else {
+        this.displayUsn = 'No USN';
+        this.displayBranch = 'General';
       }
     });
   }

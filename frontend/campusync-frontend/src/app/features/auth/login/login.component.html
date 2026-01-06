@@ -1,82 +1,61 @@
 <div class="login-container">
   <mat-card class="login-card">
-    
+
+    <!-- LOGO -->
     <div class="logo-header">
-      <img src="/assets/images/logo.png" alt="CampusSync Logo" class="logo-img" height="100">
+      <img
+        src="/assets/images/logo.png"
+        alt="CampusSync Logo"
+        class="logo-img"
+        height="100"
+      />
     </div>
 
+    <!-- HEADER -->
     <mat-card-header>
       <mat-card-title>
         {{ isRegistering ? 'Create Account' : 'Welcome Back' }}
       </mat-card-title>
       <mat-card-subtitle>
-        {{ isRegistering ? 'Join your campus community' : 'Enter your details to sign in' }}
+        {{ isRegistering
+          ? 'Join your campus community'
+          : 'Enter your details to sign in'
+        }}
       </mat-card-subtitle>
     </mat-card-header>
 
     <mat-card-content>
-      <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
-        
-        <div *ngIf="isRegistering" class="registration-fields">
-          <div class="row">
-            <mat-form-field appearance="outline">
-              <mat-label>First Name</mat-label>
-              <input matInput formControlName="firstName">
-            </mat-form-field>
 
-            <mat-form-field appearance="outline">
-              <mat-label>Last Name</mat-label>
-              <input matInput formControlName="lastName">
-            </mat-form-field>
-          </div>
-
-          <mat-form-field appearance="outline" class="full-width">
-            <mat-label>USN / Student ID</mat-label>
-            <input matInput formControlName="studentId">
-            <mat-error *ngIf="loginForm.get('studentId')?.hasError('required')">
-              USN is required
-            </mat-error>
-          </mat-form-field>
-
-          <div class="row">
-            <mat-form-field appearance="outline">
-              <mat-label>Branch</mat-label>
-              <input matInput formControlName="branch">
-            </mat-form-field>
-
-            <mat-form-field appearance="outline">
-              <mat-label>Semester</mat-label>
-              <mat-select formControlName="semester">
-                <mat-option *ngFor="let sem of semesters" [value]="sem">
-                  {{ sem }}
-                </mat-option>
-              </mat-select>
-            </mat-form-field>
-          </div>
-
-          <mat-form-field appearance="outline" class="full-width">
-            <mat-label>Phone Number</mat-label>
-            <input matInput formControlName="phoneNumber">
-          </mat-form-field>
-        </div>
-
+      <!-- ================= LOGIN FORM ================= -->
+      <form
+        *ngIf="!isRegistering"
+        [formGroup]="loginForm"
+        (ngSubmit)="onSubmit()"
+      >
         <mat-form-field appearance="outline" class="full-width">
           <mat-label>Email Address</mat-label>
-          <input matInput formControlName="email" type="email">
-          <mat-error *ngIf="loginForm.get('email')?.invalid">
-            {{ getFieldError('email') }}
-          </mat-error>
+          <input matInput type="email" formControlName="email" />
+          <mat-error>{{ getFieldError('email') }}</mat-error>
         </mat-form-field>
 
         <mat-form-field appearance="outline" class="full-width">
           <mat-label>Password</mat-label>
-          <input matInput [type]="hidePassword ? 'password' : 'text'" formControlName="password">
-          <button mat-icon-button matSuffix (click)="togglePasswordVisibility()" type="button">
-            <mat-icon>{{ hidePassword ? 'visibility_off' : 'visibility' }}</mat-icon>
+          <input
+            matInput
+            [type]="hidePassword ? 'password' : 'text'"
+            formControlName="password"
+          />
+          <button
+            mat-icon-button
+            matSuffix
+            type="button"
+            (click)="togglePasswordVisibility()"
+          >
+            <mat-icon>
+              {{ hidePassword ? 'visibility_off' : 'visibility' }}
+            </mat-icon>
           </button>
-          <mat-error *ngIf="loginForm.get('password')?.invalid">
-            {{ getFieldError('password') }}
-          </mat-error>
+          <mat-error>{{ getFieldError('password') }}</mat-error>
         </mat-form-field>
 
         <div *ngIf="errorMessage" class="error-alert">
@@ -84,18 +63,103 @@
           <span>{{ errorMessage }}</span>
         </div>
 
-        <button mat-flat-button type="submit" class="submit-btn" [disabled]="isLoading">
+        <button
+          mat-flat-button
+          class="submit-btn"
+          type="submit"
+          [disabled]="isLoading"
+        >
           <mat-spinner diameter="20" *ngIf="isLoading"></mat-spinner>
-          <span *ngIf="!isLoading">
-            {{ isRegistering ? 'Create Account' : 'Sign In' }}
-          </span>
+          <span *ngIf="!isLoading">Sign In</span>
         </button>
-
-        <div class="toggle-link">
-          <span *ngIf="!isRegistering">New here? <a (click)="toggleRegistration()">Create an account</a></span>
-          <span *ngIf="isRegistering">Already a member? <a (click)="toggleRegistration()">Sign In</a></span>
-        </div>
       </form>
+
+      <!-- ================= REGISTER FORM ================= -->
+      <form
+        *ngIf="isRegistering"
+        [formGroup]="registerForm"
+        (ngSubmit)="onSubmit()"
+      >
+        <div class="row">
+          <mat-form-field appearance="outline">
+            <mat-label>First Name</mat-label>
+            <input matInput formControlName="firstName" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Last Name</mat-label>
+            <input matInput formControlName="lastName" />
+          </mat-form-field>
+        </div>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>USN / Student ID</mat-label>
+          <input matInput formControlName="studentId" />
+        </mat-form-field>
+
+        <div class="row">
+          <mat-form-field appearance="outline">
+            <mat-label>Branch</mat-label>
+            <input matInput formControlName="branch" />
+          </mat-form-field>
+
+          <mat-form-field appearance="outline">
+            <mat-label>Semester</mat-label>
+            <mat-select formControlName="semester">
+              <mat-option
+                *ngFor="let sem of semesters"
+                [value]="sem"
+              >
+                {{ sem }}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Phone Number</mat-label>
+          <input matInput formControlName="phoneNumber" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Email Address</mat-label>
+          <input matInput type="email" formControlName="email" />
+        </mat-form-field>
+
+        <mat-form-field appearance="outline" class="full-width">
+          <mat-label>Password</mat-label>
+          <input matInput type="password" formControlName="password" />
+        </mat-form-field>
+
+        <div *ngIf="errorMessage" class="error-alert">
+          <mat-icon>error_outline</mat-icon>
+          <span>{{ errorMessage }}</span>
+        </div>
+
+        <button
+          mat-flat-button
+          class="submit-btn"
+          type="submit"
+          [disabled]="isLoading"
+        >
+          <mat-spinner diameter="20" *ngIf="isLoading"></mat-spinner>
+          <span *ngIf="!isLoading">Create Account</span>
+        </button>
+      </form>
+
+      <!-- TOGGLE LINK -->
+      <div class="toggle-link">
+        <span *ngIf="!isRegistering">
+          New here?
+          <a (click)="toggleRegistration()">Create an account</a>
+        </span>
+
+        <span *ngIf="isRegistering">
+          Already a member?
+          <a (click)="toggleRegistration()">Sign In</a>
+        </span>
+      </div>
+
     </mat-card-content>
   </mat-card>
 </div>

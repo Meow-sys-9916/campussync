@@ -20,7 +20,7 @@ class AuthController {
 
             // Get all fields including the new 'semester'
             const { firstName, lastName, email, studentId,
-                password, major, phone, semester } = req.body;
+                password, major, branch, phone, semester } = req.body;
 
             const existingUser = await User.findOne({
                 where: { email: email.toLowerCase() }
@@ -42,7 +42,7 @@ class AuthController {
                 email: email.toLowerCase(),
                 studentId,
                 password: hashedPassword,
-                major,
+                major: branch || major,
                 semester, // Saving the semester
                 phone,
                 role: 'student'
@@ -51,6 +51,8 @@ class AuthController {
             const token = this.generateToken(user);
             const userResponse = { ...user.toJSON() };
             delete userResponse.password;
+            // Provide frontend-friendly alias
+            userResponse.branch = userResponse.branch || userResponse.major;
 
             // Send welcome email
             try {
@@ -112,6 +114,7 @@ class AuthController {
 
             const userResponse = { ...user.toJSON() };
             delete userResponse.password;
+            userResponse.branch = userResponse.branch || userResponse.major;
 
             res.json({
                 success: true,
@@ -139,9 +142,11 @@ class AuthController {
                     message: 'User not found'
                 });
             }
+            const userObj = user.toJSON();
+            userObj.branch = userObj.branch || userObj.major;
             res.json({
                 success: true,
-                data: { user: user.toJSON() }
+                data: { user: userObj }
             });
         } catch (error) {
             console.error('Get profile error:', error);
@@ -154,7 +159,7 @@ class AuthController {
 
     async updateProfile(req, res) {
         try {
-            const { firstName, lastName, major, phone, studentId, semester } = req.body;
+            const { firstName, lastName, major, branch, phone, studentId, semester } = req.body;
             const user = await User.findByPk(req.user.userId);
 
             if (!user) {
@@ -172,17 +177,19 @@ class AuthController {
             await user.update({
                 firstName: firstName || user.firstName,
                 lastName: lastName || user.lastName,
-                major: major || user.major,
+                major: branch || major || user.major,
                 semester: semester || user.semester,
                 phone: phone || user.phone,
                 studentId: studentId || user.studentId,
                 profilePhoto: profilePhoto
             });
 
+            const updated = user.toJSON();
+            updated.branch = updated.branch || updated.major;
             res.json({
                 success: true,
                 message: 'Profile updated successfully',
-                data: { user: user.toJSON() }
+                data: { user: updated }
             });
         } catch (error) {
             console.error('Update profile error:', error);

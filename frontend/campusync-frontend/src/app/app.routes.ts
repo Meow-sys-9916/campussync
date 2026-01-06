@@ -4,18 +4,22 @@ import { DashboardComponent } from './features/dashboard/dashboard.component';
 import { EventListComponent } from './features/event/event-list/event-list.component';
 import { CreateEventComponent } from './features/event/create-event/create-event.component';
 import { EventDetailsComponent } from './features/event/event-details/event-details.component';
-
-// ✅ IMPORT 'authGuard' (camelCase)
+import { EditProfileComponent } from './features/edit-profile/edit-profile.component'; // ✅ NEW IMPORT
 import { authGuard } from './core/guards/auth.guard';
 
 export const routes: Routes = [
   { path: '', redirectTo: '/auth/login', pathMatch: 'full' },
   { path: 'auth/login', component: LoginComponent },
   
-  // ✅ APPLY [authGuard]
   { 
     path: 'dashboard', 
     component: DashboardComponent, 
+    canActivate: [authGuard] 
+  },
+  // ✅ NEW ROUTE
+  { 
+    path: 'edit-profile', 
+    component: EditProfileComponent, 
     canActivate: [authGuard] 
   },
   { 
@@ -23,6 +27,7 @@ export const routes: Routes = [
     component: EventListComponent, 
     canActivate: [authGuard] 
   },
+  // ... other routes
   { 
     path: 'events/create', 
     component: CreateEventComponent, 

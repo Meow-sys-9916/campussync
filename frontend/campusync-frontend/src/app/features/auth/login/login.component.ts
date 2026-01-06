@@ -30,13 +30,16 @@ import { AuthService } from '../../../core/services/auth.service';
   styleUrl: './login.component.scss'
 })
 export class LoginComponent {
-  loginForm: FormGroup;
-  isLoading = false;
-  errorMessage = '';
-  
-  hidePassword = true;
   isRegistering = false;
-  semesters = ['1', '2', '3', '4', '5', '6', '7', '8'];
+  isLoading = false;
+  hidePassword = true;
+  errorMessage = '';
+
+  semesters = ['1','2','3','4','5','6','7','8'];
+
+  // 🔥 TWO FORMS (FINAL FIX)
+  loginForm: FormGroup;
+  registerForm: FormGroup;
 
   constructor(
     private fb: FormBuilder,
@@ -45,12 +48,18 @@ export class LoginComponent {
   ) {
     this.loginForm = this.fb.group({
       email: ['', [Validators.required, Validators.email]],
+      password: ['', [Validators.required, Validators.minLength(6)]]
+    });
+
+    this.registerForm = this.fb.group({
+      firstName: ['', Validators.required],
+      lastName: ['', Validators.required],
+      email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
-      firstName: [''], 
-      lastName: [''],
-      studentId: [''],
-      semester: [''],
-      branch: [''],
+
+      studentId: ['', Validators.required],
+      branch: ['', Validators.required],
+      semester: ['', Validators.required],
       phoneNumber: ['']
     });
   }
@@ -58,14 +67,6 @@ export class LoginComponent {
   toggleRegistration() {
     this.isRegistering = !this.isRegistering;
     this.errorMessage = '';
-    const fields = ['firstName', 'lastName', 'studentId', 'semester'];
-    
-    if (this.isRegistering) {
-      fields.forEach(f => this.loginForm.get(f)?.setValidators([Validators.required]));
-    } else {
-      fields.forEach(f => this.loginForm.get(f)?.clearValidators());
-    }
-    fields.forEach(f => this.loginForm.get(f)?.updateValueAndValidity());
   }
 
   togglePasswordVisibility() {
@@ -73,66 +74,62 @@ export class LoginComponent {
   }
 
   getFieldError(fieldName: string): string {
-    const control = this.loginForm.get(fieldName);
-    if (control?.hasError('required')) return 'This field is required';
-    if (control?.hasError('email')) return 'Not a valid email';
-    if (control?.hasError('minlength')) return 'Password must be at least 6 characters';
-    return '';
-  }
+  const form = this.isRegistering ? this.registerForm : this.loginForm;
+  const control = form.get(fieldName);
 
- onSubmit() {
-    // 🔍 DEBUG: Check if form is blocked
-    if (this.loginForm.invalid) {
-      console.log('❌ SUBMIT BLOCKED: Form is Invalid');
-      
-      // Print exactly which fields are failing
-      Object.keys(this.loginForm.controls).forEach(key => {
-        const control = this.loginForm.get(key);
-        if (control?.invalid) {
-          console.error(`⚠️ Invalid Field: '${key}'`, control.errors);
-          alert(`Please fix the '${key}' field!`); // Alert the user directly
-        }
-      });
+  if (!control || !control.touched) return '';
 
-      this.loginForm.markAllAsTouched(); // Force red error lines to appear
-      return;
-    }
+  if (control.hasError('required')) return 'This field is required';
+  if (control.hasError('email')) return 'Not a valid email';
+  if (control.hasError('minlength')) return 'Password must be at least 6 characters';
 
-    // --- Normal Logic Below ---
-    this.isLoading = true;
+  return '';
+}
+
+
+  onSubmit() {
     this.errorMessage = '';
-    const formData = this.loginForm.value;
-
-    console.log('📤 Sending Registration Data:', formData); // See what we are sending
-
-    let authObs;
+    this.isLoading = true;
 
     if (this.isRegistering) {
-      authObs = this.authService.register(formData);
+      if (this.registerForm.invalid) {
+        this.registerForm.markAllAsTouched();
+        this.isLoading = false;
+        return;
+      }
+
+      const v = this.registerForm.getRawValue();
+      console.log('✅ FINAL REGISTER DATA:', v);
+
+      this.authService.register(v).subscribe({
+        next: () => {
+          this.isLoading = false;
+          alert('Account created successfully! Please Sign In.');
+          this.toggleRegistration();
+        },
+        error: err => {
+          this.isLoading = false;
+          this.errorMessage = err.error?.message || 'Registration failed';
+        }
+      });
+
     } else {
-      authObs = this.authService.login({
-        email: formData.email,
-        password: formData.password
+      if (this.loginForm.invalid) {
+        this.loginForm.markAllAsTouched();
+        this.isLoading = false;
+        return;
+      }
+
+      this.authService.login(this.loginForm.value).subscribe({
+        next: () => {
+          this.isLoading = false;
+          this.router.navigate(['/dashboard']);
+        },
+        error: err => {
+          this.isLoading = false;
+          this.errorMessage = err.error?.message || 'Login failed';
+        }
       });
     }
-
-    authObs.subscribe({
-      next: (response) => {
-        console.log('✅ Success:', response);
-        this.isLoading = false;
-        
-        if (this.isRegistering) {
-          alert('Account created successfully! Please Sign In.');
-          this.toggleRegistration(); // Switch back to login view
-        } else {
-          this.router.navigate(['/dashboard']);
-        }
-      },
-      error: (error) => {
-        console.error('❌ Request Failed:', error);
-        this.isLoading = false;
-        this.errorMessage = error.error?.message || 'Request failed. Check console for details.';
-      }
-    });
   }
 }

@@ -1,0 +1,114 @@
+$bg-dark: #0a0a0a;
+$card-bg: #111111; 
+$input-bg: #1e1e1e;
+$text-white: #ffffff;
+$neon-gradient: linear-gradient(135deg, #FF00CC 0%, #333399 100%);
+
+.edit-layout {
+  min-height: 100vh;
+  background-color: rgba(0,0,0,0.85) !important;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+  top: 0; left: 0; right: 0; bottom: 0;
+  z-index: 1000;
+  backdrop-filter: blur(5px);
+}
+
+.edit-card {
+  background-color: $card-bg !important;
+  padding: 40px;
+  border-radius: 16px;
+  width: 90%;
+  max-width: 500px;
+  color: $text-white;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.9);
+  border: 1px solid rgba(255,255,255,0.08);
+
+  .header {
+    text-align: center;
+    margin-bottom: 30px;
+    h1 { margin: 0; font-size: 24px; font-weight: 700; color: white; }
+    p { color: #888; margin-top: 8px; font-size: 14px; }
+  }
+}
+
+.form-row {
+  margin-bottom: 15px;
+  width: 100%;
+  
+  &.split {
+    display: flex;
+    gap: 15px;
+    input, .select-wrapper { width: 50%; }
+  }
+}
+
+input, select {
+  width: 100%;
+  background-color: $input-bg !important;
+  color: #eee !important;
+  border: 1px solid #333 !important;
+  border-radius: 8px;
+  padding: 14px 16px;
+  font-size: 14px;
+  outline: none;
+  box-sizing: border-box; 
+  transition: 0.2s;
+
+  &::placeholder { color: #666 !important; }
+  
+  &:focus {
+    border-color: #555 !important;
+    background-color: #252525 !important;
+  }
+}
+
+.select-wrapper {
+  position: relative;
+  
+  select {
+    appearance: none;
+    cursor: pointer;
+    &.unselected { color: #666 !important; }
+  }
+  
+  .arrow {
+    position: absolute;
+    right: 15px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #888;
+    pointer-events: none;
+    font-size: 10px;
+  }
+}
+
+.actions {
+  display: flex;
+  gap: 15px;
+  margin-top: 25px;
+
+  button {
+    flex: 1;
+    padding: 14px;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 15px;
+  }
+
+  .btn-cancel {
+    background: #2a2a2a !important;
+    color: #ccc !important;
+    &:hover { background: #333 !important; }
+  }
+
+  .btn-save {
+    background: $neon-gradient !important;
+    color: white !important;
+    &:disabled { opacity: 0.5; cursor: not-allowed; }
+  }
+}

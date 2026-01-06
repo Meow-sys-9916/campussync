@@ -10,14 +10,14 @@
       </header>
 
     <div class="action-grid">
-      <div class="action-card" routerLink="/profile">
+      <div class="action-card" routerLink="/edit-profile">
         <div class="icon-circle neon-pink">
           <mat-icon>person</mat-icon>
         </div>
         <h3>My Profile</h3>
         <p>
-          <strong>ID:</strong> {{ currentUser?.studentId || 'No ID' }}<br>
-          <strong>Major:</strong> {{ currentUser?.major || 'General' }}
+          <strong>USN:</strong> {{ displayUsn }}<br>
+          <strong>Branch:</strong> {{ displayBranch }}
         </p>
         <span class="link-text">EDIT PROFILE &rarr;</span>
       </div>

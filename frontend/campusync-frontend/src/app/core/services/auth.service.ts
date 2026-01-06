@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
-import { HttpClient, HttpHeaders } from '@angular/common/http'; // ✅ Added HttpHeaders
-import { BehaviorSubject, Observable, tap, catchError, of } from 'rxjs'; // ✅ Added catchError, of
+import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { BehaviorSubject, Observable, tap, catchError, of } from 'rxjs';
 import { Router } from '@angular/router';
 
 @Injectable({
@@ -8,86 +8,141 @@ import { Router } from '@angular/router';
 })
 export class AuthService {
   private apiUrl = 'http://localhost:3000/api/auth';
-  private currentUserSubject = new BehaviorSubject<any>(null);
+
+  private currentUserSubject = new BehaviorSubject<any>(
+    JSON.parse(localStorage.getItem('currentUser') || 'null')
+  );
+
   public currentUser$ = this.currentUserSubject.asObservable();
 
   constructor(private http: HttpClient, private router: Router) {
-    // ✅ RESTORE SESSION: If token exists on startup, fetch user profile
     if (this.getToken()) {
-      console.log('✅ Auth Service: Token found, restoring session...');
-      this.getProfile().subscribe({
-        next: (user) => {
-          console.log('👤 User session restored:', user);
-          this.currentUserSubject.next(user);
-        },
-        error: (err) => {
-          console.error('❌ Session expired or invalid token', err);
-          this.logout(); // Force logout if token is bad
-        }
-      });
+      this.restoreSession();
     }
   }
 
-  // ✅ NEW METHOD: Fetch Profile to restore user state
+  // 🔁 Restore session safely
+  private restoreSession(): void {
+    this.getProfile().subscribe({
+      next: (res) => {
+        if (!res?.data?.user) return;
+
+        const backendUser = res.data.user;
+        const localUser = JSON.parse(localStorage.getItem('currentUser') || '{}');
+
+        const mergedUser = {
+          ...backendUser,
+
+          // 🔥 KEEP PROFILE DATA
+          studentId: backendUser.studentId ?? localUser.studentId,
+          branch: backendUser.branch ?? localUser.branch,
+          semester: backendUser.semester ?? localUser.semester,
+
+          // frontend alias
+          usn: backendUser.studentId ?? localUser.usn
+        };
+
+        this.setUser(mergedUser);
+      },
+      error: () => this.logout()
+    });
+  }
+
   getProfile(): Observable<any> {
     const token = this.getToken();
-    // Create headers with the token
     const headers = new HttpHeaders().set('Authorization', `Bearer ${token}`);
-    
-    // Call your backend profile endpoint
-    return this.http.get<{success: boolean, data: {user: any}}>(`${this.apiUrl}/profile`, { headers }).pipe(
-      tap(res => {
-        // Assume backend returns { success: true, data: { user: {...} } }
-        if (res.success && res.data && res.data.user) {
-          this.currentUserSubject.next(res.data.user);
-        }
-      }),
-      // Return the user object directly for the subscription in constructor
-      tap((res: any) => res.data?.user || res.user), 
-      catchError(err => {
-        return of(null);
-      })
+
+    return this.http.get<any>(`${this.apiUrl}/profile`, { headers }).pipe(
+      catchError(() => of(null))
     );
   }
 
   login(credentials: any): Observable<any> {
     return this.http.post(`${this.apiUrl}/login`, credentials).pipe(
-      tap((response: any) => {
-        console.log('📥 RAW Backend Response:', response);
+      tap((res: any) => {
+        const token = res.token || res.data?.token;
+        const user = res.user || res.data?.user;
 
-        // 🔍 UNIVERSAL TOKEN FINDER
-        let token = response.token;
-        let user = response.user;
+        if (!token || !user) return;
 
-        if (!token && response.data) {
-          console.log('🕵️ Token not at root, checking inside response.data...');
-          token = response.data.token;
-          user = response.data.user;
-        }
+        localStorage.setItem('token', token);
 
-        if (token) {
-          console.log('🔑 Token FOUND! Saving...');
-          localStorage.setItem('token', token);
-          this.currentUserSubject.next(user);
-        } else {
-          console.error('❌ CRITICAL: No token found in response!', response);
+        const finalUser = {
+          ...user,
+          usn: user.studentId
+        };
+
+        this.setUser(finalUser);
+      })
+    );
+  }
+
+  // ✅ FIXED REGISTER
+  register(formData: any): Observable<any> {
+    const payload = {
+      firstName: formData.firstName,
+      lastName: formData.lastName,
+      email: formData.email,
+      password: formData.password,
+
+      // 🔥 IMPORTANT
+      studentId: formData.studentId,
+      branch: formData.branch,
+      semester: formData.semester
+    };
+
+    console.log('🚀 REGISTER PAYLOAD:', payload);
+
+    return this.http.post<any>(`${this.apiUrl}/register`, payload).pipe(
+      tap(res => {
+        if (res?.data?.user) {
+          const user = {
+            ...res.data.user,
+            usn: payload.studentId
+          };
+
+          this.setUser(user);
         }
       })
     );
   }
 
-  register(userData: any): Observable<any> {
-    return this.http.post(`${this.apiUrl}/register`, userData);
+  setUser(user: any): void {
+    localStorage.setItem('currentUser', JSON.stringify(user));
+    sessionStorage.setItem('currentUser', JSON.stringify(user));
+    this.currentUserSubject.next(user);
+  }
+
+  updateLocalUser(updatedUser: any): void {
+    this.setUser(updatedUser);
+  }
+
+  updateProfile(payload: any) {
+    const token = this.getToken();
+    const headers = token ? new HttpHeaders().set('Authorization', `Bearer ${token}`) : undefined;
+
+    return this.http.put<any>(`${this.apiUrl}/profile`, payload, { headers }).pipe(
+      tap(res => {
+        const returned = res?.data?.user;
+        if (returned) {
+          // Ensure frontend aliases are present
+          const final = { ...returned, usn: returned.studentId ?? returned.usn };
+          this.setUser(final);
+        }
+      }),
+      catchError(err => of(err))
+    );
   }
 
   logout(): void {
-    localStorage.removeItem('token');
+    localStorage.clear();
+    sessionStorage.clear();
     this.currentUserSubject.next(null);
     this.router.navigate(['/auth/login']);
   }
 
   isAuthenticated(): boolean {
-    return !!localStorage.getItem('token');
+    return !!this.getToken();
   }
 
   getToken(): string | null {
