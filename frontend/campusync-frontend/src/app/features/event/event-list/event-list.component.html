@@ -22,39 +22,41 @@
     <p>Be the first to create one!</p>
   </div>
 
-  <div class="events-grid" *ngIf="!isLoading && events.length > 0">
-    <mat-card *ngFor="let event of events" class="event-card">
-      <div class="card-content">
-        <div class="event-header">
-          <mat-card-title>{{ event.title }}</mat-card-title>
-          <mat-chip-set>
-            <mat-chip [class]="'status-' + (event.status || 'upcoming')">
-              {{ (event.status || 'UPCOMING') | uppercase }}
-            </mat-chip>
-          </mat-chip-set>
+  <div class="carousel-wrapper" *ngIf="!isLoading && events.length > 0" #carouselContainer>
+    <div class="events-carousel" (scroll)="onScroll()">
+      <mat-card *ngFor="let event of events; let i = index" class="event-card" [id]="'card-' + i" [ngClass]="'glow-' + (i % 3)">
+        <div class="card-content">
+          <div class="event-header">
+            <mat-card-title>{{ event.title }}</mat-card-title>
+            <mat-chip-set>
+              <mat-chip [class]="'status-' + (event.status || 'upcoming')">
+                {{ (event.status || 'UPCOMING') | uppercase }}
+              </mat-chip>
+            </mat-chip-set>
+          </div>
+
+          <mat-card-subtitle>
+            {{ event.date | date:'mediumDate' }} • {{ event.venue }}
+          </mat-card-subtitle>
+
+          <p class="description">{{ event.description }}</p>
+
+          <div class="meta-info">
+            <span><mat-icon>group</mat-icon> {{ event.registeredCount || 0 }} / {{ event.capacity }}</span>
+            <span><mat-icon>category</mat-icon> {{ event.category }}</span>
+          </div>
         </div>
 
-        <mat-card-subtitle>
-          {{ event.date | date:'mediumDate' }} • {{ event.venue }}
-        </mat-card-subtitle>
-
-        <p class="description">{{ event.description }}</p>
-
-        <div class="meta-info">
-          <span><mat-icon>group</mat-icon> {{ event.registeredCount || 0 }} / {{ event.capacity }}</span>
-          <span><mat-icon>category</mat-icon> {{ event.category }}</span>
-        </div>
-      </div>
-
-      <mat-card-actions align="end">
-        <button mat-button color="primary" [routerLink]="['/events', event.id]">
-          VIEW DETAILS
-        </button>
-        
-        <button mat-flat-button color="primary" (click)="register(event.id!)">
-          REGISTER
-        </button>
-      </mat-card-actions>
-    </mat-card>
+        <mat-card-actions align="end">
+          <button mat-button color="primary" [routerLink]="['/events', event.id]">
+            VIEW DETAILS
+          </button>
+          
+          <button mat-flat-button color="primary" (click)="register(event.id!)">
+            REGISTER
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
   </div>
 </div>

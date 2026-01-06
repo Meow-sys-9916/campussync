@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild, ElementRef, AfterViewInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
@@ -25,9 +25,11 @@ import { AuthService } from '../../../core/services/auth.service';
   templateUrl: './event-list.component.html',
   styleUrl: './event-list.component.scss'
 })
-export class EventListComponent implements OnInit {
+export class EventListComponent implements OnInit, AfterViewInit {
   events: CampusEvent[] = [];
   isLoading = true;
+  
+  @ViewChild('carouselContainer') carouselContainer?: ElementRef;
 
   constructor(
     private eventService: EventService,
@@ -38,6 +40,37 @@ export class EventListComponent implements OnInit {
 
   ngOnInit(): void {
     this.loadEvents();
+  }
+
+  ngAfterViewInit(): void {
+    this.updateCenterCard();
+  }
+
+  onScroll(): void {
+    this.updateCenterCard();
+  }
+
+  private updateCenterCard(): void {
+    if (!this.carouselContainer) return;
+    
+    const carousel = this.carouselContainer.nativeElement;
+    const cards = carousel.querySelectorAll('.event-card');
+    
+    if (cards.length === 0) return;
+    
+    const carouselCenter = carousel.scrollLeft + carousel.clientWidth / 2;
+    
+    cards.forEach((card: HTMLElement) => {
+      const cardRect = card.getBoundingClientRect();
+      const carouselRect = carousel.getBoundingClientRect();
+      const cardCenter = card.offsetLeft + cardRect.width / 2 - carousel.scrollLeft;
+      const distance = Math.abs(cardCenter - (carouselRect.width / 2));
+      
+      card.classList.remove('center-card');
+      if (distance < cardRect.width / 2) {
+        card.classList.add('center-card');
+      }
+    });
   }
 
   loadEvents(): void {
