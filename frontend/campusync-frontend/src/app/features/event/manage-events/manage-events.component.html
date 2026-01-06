@@ -1,29 +1,30 @@
-<div class="events-container">
+<div class="manage-layout">
   <div class="header">
     <div class="title-section">
-      <h1>Upcoming Events</h1>
-      <p>Discover what's happening on campus</p>
+      <h1>Manage Your Events</h1>
+      <p>View and manage all events you're hosting</p>
     </div>
     
-    <div class="actions">
-      <button mat-flat-button color="primary" routerLink="/events/create">
-        <mat-icon>add</mat-icon> Create Event
-      </button>
-    </div>
+    <button mat-flat-button color="primary" (click)="createEvent()">
+      <mat-icon>add</mat-icon> Create New Event
+    </button>
   </div>
 
   <div *ngIf="isLoading" class="loading-state">
-    <p>Loading events...</p>
+    <p>Loading your events...</p>
   </div>
 
-  <div *ngIf="!isLoading && events.length === 0" class="empty-state">
-    <mat-icon>event_busy</mat-icon>
-    <h3>No events found</h3>
-    <p>Be the first to create one!</p>
+  <div *ngIf="!isLoading && hostedEvents.length === 0" class="empty-state">
+    <mat-icon>event_note</mat-icon>
+    <h3>No events hosted yet</h3>
+    <p>Create your first event and start hosting!</p>
+    <button mat-raised-button color="primary" (click)="createEvent()">
+      <mat-icon>add</mat-icon> Create Event
+    </button>
   </div>
 
-  <div class="events-grid" *ngIf="!isLoading && events.length > 0">
-    <mat-card *ngFor="let event of events" class="event-card">
+  <div class="events-grid" *ngIf="!isLoading && hostedEvents.length > 0">
+    <mat-card *ngFor="let event of hostedEvents" class="event-card">
       <div class="card-content">
         <div class="event-header">
           <mat-card-title>{{ event.title }}</mat-card-title>
@@ -47,12 +48,12 @@
       </div>
 
       <mat-card-actions align="end">
-        <button mat-button color="primary" [routerLink]="['/events', event.id]">
+        <button mat-button color="primary" [routerLink]="['/events', getEventId(event)]">
           VIEW DETAILS
         </button>
         
-        <button mat-flat-button color="primary" (click)="register(event.id!)">
-          REGISTER
+        <button mat-flat-button color="warn" (click)="deleteEvent(getEventId(event))">
+          DELETE
         </button>
       </mat-card-actions>
     </mat-card>

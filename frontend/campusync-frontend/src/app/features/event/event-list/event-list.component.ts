@@ -80,8 +80,4 @@ export class EventListComponent implements OnInit {
     });
   }
 
-  logout() {
-    this.authService.logout();
-    this.snackBar.open('Logged out successfully', 'Bye!', { duration: 2000 });
-  }
 }
