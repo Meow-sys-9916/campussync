@@ -1,12 +1,13 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ActivatedRoute, RouterModule } from '@angular/router';
 import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-import { MatChipsModule } from '@angular/material/chips';
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar'; // ✅ Import
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { EventService, CampusEvent } from '../../../core/services/event.service';
+import { Subject } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
 
 @Component({
   selector: 'app-event-details',
@@ -16,57 +17,96 @@ import { EventService, CampusEvent } from '../../../core/services/event.service'
     MatCardModule, 
     MatButtonModule, 
     MatIconModule, 
-    MatChipsModule, 
     RouterModule,
-    MatSnackBarModule // ✅ Add Module
+    MatSnackBarModule
   ],
   templateUrl: './event-details.component.html',
   styleUrls: ['./event-details.component.scss']
 })
-export class EventDetailsComponent implements OnInit {
+export class EventDetailsComponent implements OnInit, OnDestroy {
   event: CampusEvent | null = null;
   loading = true;
+  error: string | null = null;
+  private destroy$ = new Subject<void>();
 
   constructor(
     private route: ActivatedRoute,
     private eventService: EventService,
-    private snackBar: MatSnackBar // ✅ Inject
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit() {
     const id = this.route.snapshot.paramMap.get('id');
+    console.log('🔍 Event Details loaded with ID:', id);
+    
     if (id) {
       this.loadEvent(id);
+    } else {
+      this.error = 'No event ID provided';
+      this.loading = false;
     }
   }
 
+  ngOnDestroy() {
+    this.destroy$.next();
+    this.destroy$.complete();
+  }
+
   loadEvent(id: string) {
-    this.eventService.getEventById(id).subscribe({
-      next: (res: any) => {
-        this.event = res.data;
-        this.loading = false;
-      },
-      error: () => this.loading = false
-    });
+    console.log('📡 Fetching event details for ID:', id);
+    
+    this.eventService.getEventById(id)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: (response: any) => {
+          console.log('✅ Event data received:', response);
+          // Handle both { data: event } and { success, data: event } responses
+          this.event = response?.data || response;
+          this.loading = false;
+          
+          if (!this.event) {
+            console.error('❌ Event object is null/undefined in response');
+            this.error = 'Event data not found';
+          } else {
+            console.log('✅ Event object set:', this.event);
+          }
+        },
+        error: (err: any) => {
+          console.error('❌ Error loading event:', err);
+          this.error = err?.error?.message || 'Failed to load event details';
+          this.loading = false;
+        }
+      });
   }
 
   register() {
-    if (!this.event?.id) return;
+    if (!this.event?.id && !this.event?._id) {
+      console.error('No event ID available for registration');
+      return;
+    }
 
-    this.eventService.registerEvent(this.event.id).subscribe({
-      next: () => {
-        // ✅ Success Pop-up
-        this.snackBar.open('🎉 You are going!', 'Nice', {
-          duration: 3000,
-          verticalPosition: 'top'
-        });
-      },
-      error: (err) => {
-        // ❌ Error Pop-up
-        this.snackBar.open('⚠️ ' + (err.error?.message || 'Failed'), 'Close', {
-          duration: 3000
-        });
-      }
-    });
+    const eventId = (this.event.id || this.event._id) as string;
+    console.log('📝 Registering for event:', eventId);
+
+    this.eventService.registerEvent(eventId)
+      .pipe(takeUntil(this.destroy$))
+      .subscribe({
+        next: () => {
+          console.log('✅ Registration successful');
+          this.snackBar.open('🎉 You are registered!', 'Nice', {
+            duration: 3000,
+            verticalPosition: 'top',
+            horizontalPosition: 'center'
+          });
+        },
+        error: (err: any) => {
+          console.error('❌ Registration error:', err);
+          const msg = err?.error?.message || 'Registration failed';
+          this.snackBar.open('⚠️ ' + msg, 'Close', {
+            duration: 3000,
+            panelClass: ['error-snackbar']
+          });
+        }
+      });
   }
 }

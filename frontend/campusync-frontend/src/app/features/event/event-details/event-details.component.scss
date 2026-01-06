@@ -1,12 +1,253 @@
+// ✅ DARK THEME VARIABLES - Match CampusSync style
+$bg-dark: #0a0a0a;
+$card-bg: #1e1e1e;
+$text-primary: #ffffff;
+$text-secondary: #b3b3b3;
+$border-color: rgba(255, 255, 255, 0.08);
+$accent-color: rgba(255, 255, 255, 0.05);
+$primary-gradient: linear-gradient(135deg, #ff42b3, #333399);
+
+// ✅ FULL-HEIGHT WRAPPER WITH DARK BG - CENTERED
+.details-wrapper {
+  min-height: 100vh;
+  background-color: $bg-dark;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem 1rem;
+  font-family: 'Inter', sans-serif;
+  color: $text-primary;
+}
+
+// ✅ STATE CONTAINERS (Loading, Error, Empty)
+.state-container {
+  width: 100%;
+  max-width: 600px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 400px;
+}
+
+.loading-spinner,
+.error-message,
+.empty-message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  text-align: center;
+
+  mat-icon {
+    font-size: 3rem;
+    width: 3rem;
+    height: 3rem;
+    color: $text-secondary;
+  }
+
+  p {
+    font-size: 1.1rem;
+    color: $text-secondary;
+    margin: 0;
+  }
+
+  button {
+    margin-top: 1rem;
+  }
+}
+
+// ✅ MAIN CONTAINER
 .details-container {
-  padding: 20px;
-  max-width: 800px;
-  margin: 0 auto;
-  .back-btn { color: #ccc; margin-bottom: 10px; }
-  .event-card {
-    background: #1e1e1e; color: white;
-    .event-image { height: 250px; background-size: cover; background-position: center; }
-    mat-card-title { font-size: 2rem; margin-top: 15px; }
-    .desc { font-size: 1.1rem; margin: 20px 0; line-height: 1.5; color: #ddd; }
+  width: 100%;
+  max-width: 600px;
+
+  .back-btn {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    color: $text-secondary;
+    margin-bottom: 1.5rem;
+    padding: 0;
+    text-transform: none;
+    font-weight: 500;
+
+    &:hover {
+      color: $text-primary;
+      background-color: transparent;
+    }
+
+    mat-icon {
+      font-size: 1.2rem;
+      width: 1.2rem;
+      height: 1.2rem;
+    }
+  }
+}
+
+// ✅ CARD STYLING - Match dashboard theme
+mat-card {
+  background-color: $card-bg !important;
+  border: 1px solid $border-color !important;
+  border-radius: 12px !important;
+  color: $text-primary;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+
+  &.error-card,
+  &.empty-card {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 300px;
+  }
+
+  mat-card-header {
+    margin: 0 0 1.5rem 0;
+    padding: 1rem 1rem 1rem 1rem !important;
+    border-bottom: 1px solid $border-color;
+    display: flex;
+    flex-direction: column;
+
+    mat-card-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: $text-primary;
+      margin: 0;
+      padding: 0;
+    }
+  }
+
+  mat-card-content {
+    padding: 1rem !important;
+  }
+}
+
+// ✅ FORM ROW LAYOUT - Two columns
+.form-row {
+  display: flex;
+  gap: 1rem;
+  margin-bottom: 1.5rem;
+
+  &.full-width {
+    flex: 1 1 100%;
+  }
+}
+
+// ✅ FIELD STYLING - Read-only text display
+.field {
+  flex: 1;
+  margin: 0;
+
+  label {
+    display: block;
+    font-size: 0.75rem;
+    font-weight: 600;
+    color: $text-secondary;
+    text-transform: uppercase;
+    letter-spacing: 0.7px;
+    margin-bottom: 0.5rem;
+  }
+
+  .field-value {
+    font-size: 1rem;
+    color: $text-primary;
+    margin: 0;
+    padding: 0.875rem 1rem;
+    background-color: $accent-color;
+    border: 1px solid $border-color;
+    border-radius: 6px;
+    word-wrap: break-word;
+    white-space: pre-wrap;
+    line-height: 1.5;
+
+    &.description {
+      min-height: 100px;
+      font-size: 0.95rem;
+    }
+  }
+}
+
+// ✅ ACTION BUTTONS
+.actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 1rem;
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid $border-color;
+
+  button {
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    padding: 0.75rem 1.5rem !important;
+    min-width: 140px;
+
+    &.cancel-btn {
+      color: $text-secondary !important;
+      background-color: transparent !important;
+
+      &:hover {
+        color: $text-primary !important;
+        background-color: rgba(255, 255, 255, 0.05) !important;
+      }
+    }
+
+    &.register-btn {
+      background: $primary-gradient !important;
+      color: white !important;
+      border: none !important;
+
+      &:hover:not(:disabled) {
+        transform: translateY(-2px);
+        box-shadow: 0 8px 16px rgba(255, 0, 204, 0.3) !important;
+      }
+
+      &:active {
+        transform: translateY(0);
+      }
+
+      &:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+      }
+    }
+  }
+}
+
+// ✅ RESPONSIVE
+@media (max-width: 768px) {
+  .details-wrapper {
+    padding: 1rem 0.5rem;
+  }
+
+  .details-container {
+    max-width: 100%;
+  }
+
+  .form-row {
+    flex-direction: column;
+    gap: 0;
+
+    .field {
+      margin-bottom: 1.5rem;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+  }
+
+  .actions {
+    flex-direction: column-reverse;
+
+    button {
+      width: 100%;
+      min-width: unset;
+    }
+  }
+
+  mat-card {
+    border-radius: 8px !important;
   }
 }

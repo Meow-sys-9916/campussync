@@ -1,27 +1,102 @@
-<div class="details-container" *ngIf="event">
-  <button mat-button routerLink="/events" class="back-btn">
-    <mat-icon>arrow_back</mat-icon> Back to Feed
-  </button>
+<div class="details-wrapper">
+  <!-- LOADING STATE -->
+  <div *ngIf="loading" class="state-container">
+    <div class="loading-spinner">
+      <mat-icon>hourglass_empty</mat-icon>
+      <p>Loading event details...</p>
+    </div>
+  </div>
 
-  <mat-card class="event-card">
-    <div class="event-image" [style.backgroundImage]="'url(' + (event.image || '/assets/images/logo.png') + ')'"></div>
+  <!-- ERROR STATE -->
+  <div *ngIf="!loading && error" class="state-container">
+    <mat-card class="error-card">
+      <mat-card-content>
+        <div class="error-message">
+          <mat-icon>error_outline</mat-icon>
+          <p>{{ error }}</p>
+          <button mat-stroked-button routerLink="/events">
+            <mat-icon>arrow_back</mat-icon> Back to Events
+          </button>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
 
-    <mat-card-header>
-      <mat-card-title>{{ event.title }}</mat-card-title>
-      <mat-card-subtitle>{{ event.date | date:'fullDate' }} • {{ event.venue }}</mat-card-subtitle>
-    </mat-card-header>
+  <!-- SUCCESS STATE - EVENT LOADED -->
+  <div *ngIf="!loading && !error && event" class="details-container">
+    <button mat-button routerLink="/events" class="back-btn">
+      <mat-icon>arrow_back</mat-icon> Back to Feed
+    </button>
 
-    <mat-card-content>
-      <p class="description">{{ event.description }}</p>
-      <mat-chip-set>
-        <mat-chip color="accent" highlighted>{{ event.category }}</mat-chip>
-      </mat-chip-set>
-    </mat-card-content>
+    <mat-card class="event-card">
+      <mat-card-header>
+        <mat-card-title>Event Details</mat-card-title>
+      </mat-card-header>
+      
+      <mat-card-content>
+        <!-- Event Title -->
+        <div class="form-row full-width">
+          <div class="field">
+            <label>Event Title</label>
+            <p class="field-value">{{ event.title }}</p>
+          </div>
+        </div>
 
-    <mat-card-actions align="end">
-      <button mat-raised-button color="primary" (click)="register()">REGISTER NOW</button>
-    </mat-card-actions>
-  </mat-card>
+        <!-- Date & Venue -->
+        <div class="form-row">
+          <div class="field">
+            <label>Date</label>
+            <p class="field-value">{{ event.date | date:'mediumDate' }}</p>
+          </div>
+
+          <div class="field">
+            <label>Venue</label>
+            <p class="field-value">{{ event.venue }}</p>
+          </div>
+        </div>
+
+        <!-- Category & Capacity -->
+        <div class="form-row">
+          <div class="field">
+            <label>Category</label>
+            <p class="field-value">{{ event.category }}</p>
+          </div>
+
+          <div class="field">
+            <label>Capacity</label>
+            <p class="field-value">{{ event.capacity || event.attendees?.length || '0' }}</p>
+          </div>
+        </div>
+
+        <!-- Description -->
+        <div class="form-row full-width">
+          <div class="field">
+            <label>Description</label>
+            <p class="field-value description">{{ event.description }}</p>
+          </div>
+        </div>
+
+        <!-- Action Buttons -->
+        <div class="actions">
+          <button mat-button routerLink="/events" class="cancel-btn">CANCEL</button>
+          <button mat-raised-button color="primary" (click)="register()" class="register-btn">REGISTER FOR EVENT</button>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <!-- EMPTY STATE -->
+  <div *ngIf="!loading && !error && !event" class="state-container">
+    <mat-card class="empty-card">
+      <mat-card-content>
+        <div class="empty-message">
+          <mat-icon>event_busy</mat-icon>
+          <p>Event not found</p>
+          <button mat-stroked-button routerLink="/events">
+            <mat-icon>arrow_back</mat-icon> Back to Events
+          </button>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
 </div>
-
-<div *ngIf="loading" style="color:white; text-align:center; margin-top:50px;">Loading...</div>
