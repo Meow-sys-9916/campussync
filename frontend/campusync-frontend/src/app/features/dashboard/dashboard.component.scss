@@ -74,6 +74,22 @@ $neon-red: #ff3b3b;
 
   strong { color: #00C6FF; font-size: 1.1rem; }
   
+  .event-title-link {
+    color: #ffffff;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 1.1rem;
+    transition: all 0.3s ease;
+    border-bottom: 2px solid rgba(0, 198, 255, 0.5);
+    display: inline-block;
+    
+    &:hover {
+      color: #00c6ff;
+      border-bottom-color: #00c6ff;
+      text-shadow: 0 0 10px rgba(0, 198, 255, 0.3);
+    }
+  }
+  
   .link-text { 
     color: #f06595; 
     font-weight: 600; 

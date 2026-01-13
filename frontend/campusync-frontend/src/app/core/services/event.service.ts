@@ -55,4 +55,9 @@ export class EventService {
   registerEvent(id: string): Observable<any> {
     return this.http.post(`${this.apiUrl}/${id}/register`, {}, { headers: this.getHeaders() });
   }
+
+  // ✅ UNREGISTER FUNCTION
+  unregisterEvent(id: string): Observable<any> {
+    return this.http.post(`${this.apiUrl}/${id}/unregister`, {}, { headers: this.getHeaders() });
+  }
 }

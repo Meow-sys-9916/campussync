@@ -1,0 +1,62 @@
+<div class="registered-layout">
+  <div class="header">
+    <div class="title-section">
+      <h1>My Registered Events</h1>
+      <p>Events you've joined and are attending</p>
+    </div>
+  </div>
+
+  <div *ngIf="isLoading" class="loading-state">
+    <p>Loading your registered events...</p>
+  </div>
+
+  <div *ngIf="!isLoading && registeredEvents.length === 0" class="empty-state">
+    <mat-icon>event_note</mat-icon>
+    <h3>No registered events yet</h3>
+    <p>Browse and register for upcoming events on the Events page</p>
+    <button mat-raised-button color="primary" routerLink="/events">
+      <mat-icon>explore</mat-icon> Browse Events
+    </button>
+  </div>
+
+  <div class="events-grid" *ngIf="!isLoading && registeredEvents.length > 0">
+    <mat-card *ngFor="let event of registeredEvents" class="event-card">
+      <div class="card-content">
+        <div class="event-header">
+          <mat-card-title>{{ event.title }}</mat-card-title>
+          <mat-chip-set>
+            <mat-chip [class]="'status-' + (event.status || 'upcoming')">
+              {{ (event.status || 'UPCOMING') | uppercase }}
+            </mat-chip>
+          </mat-chip-set>
+        </div>
+
+        <mat-card-subtitle>
+          {{ event.date | date:'mediumDate' }} • {{ event.venue }}
+        </mat-card-subtitle>
+
+        <p class="description">{{ event.description }}</p>
+
+        <div class="meta-info">
+          <span><mat-icon>group</mat-icon> {{ event.registeredCount || 0 }} / {{ event.capacity }}</span>
+          <span><mat-icon>category</mat-icon> {{ event.category }}</span>
+        </div>
+      </div>
+
+      <mat-card-actions align="end">
+        <button 
+          mat-button 
+          color="primary" 
+          [routerLink]="['/events', getEventId(event)]">
+          VIEW DETAILS
+        </button>
+        <button 
+          mat-button 
+          color="warn"
+          (click)="unregisterEvent(getEventId(event))">
+          UNREGISTER
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+</div>

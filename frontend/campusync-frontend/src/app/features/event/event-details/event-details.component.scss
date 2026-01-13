@@ -169,11 +169,33 @@ mat-card {
 // ✅ ACTION BUTTONS
 .actions {
   display: flex;
-  justify-content: flex-end;
+  justify-content: space-between;
+  align-items: center;
   gap: 1rem;
   margin-top: 2rem;
   padding-top: 1.5rem;
   border-top: 1px solid $border-color;
+
+  .cancel-btn {
+    text-transform: uppercase;
+    font-size: 0.85rem;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    padding: 0.75rem 1.5rem !important;
+    min-width: 140px;
+    color: $text-secondary !important;
+    background-color: transparent !important;
+
+    &:hover {
+      color: $text-primary !important;
+      background-color: rgba(255, 255, 255, 0.05) !important;
+    }
+  }
+
+  .action-buttons {
+    display: flex;
+    gap: 1rem;
+  }
 
   button {
     text-transform: uppercase;
@@ -182,16 +204,6 @@ mat-card {
     letter-spacing: 0.5px;
     padding: 0.75rem 1.5rem !important;
     min-width: 140px;
-
-    &.cancel-btn {
-      color: $text-secondary !important;
-      background-color: transparent !important;
-
-      &:hover {
-        color: $text-primary !important;
-        background-color: rgba(255, 255, 255, 0.05) !important;
-      }
-    }
 
     &.register-btn {
       background: $primary-gradient !important;
@@ -210,6 +222,24 @@ mat-card {
       &:disabled {
         opacity: 0.6;
         cursor: not-allowed;
+      }
+    }
+
+    &.unregister-btn {
+      background: linear-gradient(135deg, rgba(239, 68, 68, 0.2), rgba(220, 38, 38, 0.2)) !important;
+      color: #ef4444 !important;
+      border: 1.5px solid rgba(239, 68, 68, 0.5) !important;
+      cursor: pointer !important;
+
+      &:hover:not(:disabled) {
+        background: linear-gradient(135deg, rgba(239, 68, 68, 0.3), rgba(220, 38, 38, 0.3)) !important;
+        border-color: rgba(239, 68, 68, 0.8) !important;
+        color: #fca5a5 !important;
+        transform: translateY(-2px);
+      }
+
+      &:active {
+        transform: translateY(0);
       }
     }
   }
@@ -241,9 +271,19 @@ mat-card {
   .actions {
     flex-direction: column-reverse;
 
-    button {
+    .cancel-btn {
       width: 100%;
       min-width: unset;
+    }
+
+    .action-buttons {
+      width: 100%;
+      flex-direction: column;
+
+      button {
+        width: 100%;
+        min-width: unset;
+      }
     }
   }
 

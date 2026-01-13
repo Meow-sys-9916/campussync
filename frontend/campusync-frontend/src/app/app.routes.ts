@@ -5,6 +5,7 @@ import { EventListComponent } from './features/event/event-list/event-list.compo
 import { CreateEventComponent } from './features/event/create-event/create-event.component';
 import { EventDetailsComponent } from './features/event/event-details/event-details.component';
 import { ManageEventsComponent } from './features/event/manage-events/manage-events.component';
+import { MyRegisteredEventsComponent } from './features/event/my-registered-events/my-registered-events.component';
 import { EditProfileComponent } from './features/edit-profile/edit-profile.component';
 import { authGuard } from './core/guards/auth.guard';
 
@@ -40,6 +41,11 @@ export const routes: Routes = [
   { 
     path: 'my-events', 
     component: ManageEventsComponent, 
+    canActivate: [authGuard] 
+  },
+  { 
+    path: 'my-registered-events', 
+    component: MyRegisteredEventsComponent, 
     canActivate: [authGuard] 
   }
 ];

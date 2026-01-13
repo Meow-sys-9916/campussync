@@ -22,13 +22,13 @@
         <span class="link-text">EDIT PROFILE &rarr;</span>
       </div>
 
-      <div class="action-card highlight" [routerLink]="nextEvent ? ['/events', getEventId(nextEvent)] : '/events'">
+      <div class="action-card highlight" routerLink="/my-registered-events">
         <div class="icon-circle neon-blue">
           <mat-icon>event_available</mat-icon>
         </div>
         <h3>Next Registered Event</h3>
         <div *ngIf="nextEvent; else noEvent">
-          <p><strong>{{ nextEvent.title }}</strong></p>
+          <p><strong><a [routerLink]="['/events', getEventId(nextEvent)]" class="event-title-link">{{ nextEvent.title }}</a></strong></p>
           <p>{{ nextEvent.date | date:'mediumDate' }}</p>
         </div>
         <ng-template #noEvent>

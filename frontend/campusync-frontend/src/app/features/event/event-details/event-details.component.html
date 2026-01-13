@@ -79,7 +79,23 @@
         <!-- Action Buttons -->
         <div class="actions">
           <button mat-button routerLink="/events" class="cancel-btn">CANCEL</button>
-          <button mat-raised-button color="primary" (click)="register()" class="register-btn">REGISTER FOR EVENT</button>
+          <div class="action-buttons">
+            <button 
+              *ngIf="!isUserRegistered()" 
+              mat-raised-button 
+              color="primary" 
+              (click)="register()" 
+              class="register-btn">
+              REGISTER FOR EVENT
+            </button>
+            <button 
+              *ngIf="isUserRegistered()" 
+              mat-raised-button 
+              (click)="unregister()" 
+              class="unregister-btn">
+              UNREGISTER
+            </button>
+          </div>
         </div>
       </mat-card-content>
     </mat-card>

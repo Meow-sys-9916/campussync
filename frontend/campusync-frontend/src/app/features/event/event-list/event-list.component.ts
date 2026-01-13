@@ -43,7 +43,10 @@ export class EventListComponent implements OnInit, AfterViewInit {
   }
 
   ngAfterViewInit(): void {
-    this.updateCenterCard();
+    // Defer layout measurement to ensure DOM is fully rendered
+    requestAnimationFrame(() => {
+      this.updateCenterCard();
+    });
   }
 
   onScroll(): void {

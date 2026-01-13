@@ -11,7 +11,9 @@ import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { RouterModule } from '@angular/router';
 import { AuthService } from '../../core/services/auth.service';
 import { EventService, CampusEvent } from '../../core/services/event.service'; 
-import { Subscription } from 'rxjs';
+import { Subscription, interval } from 'rxjs';
+import { takeUntil } from 'rxjs/operators';
+import { Subject } from 'rxjs';
 
 @Component({
   selector: 'app-dashboard',
@@ -34,6 +36,7 @@ import { Subscription } from 'rxjs';
 export class DashboardComponent implements OnInit, OnDestroy {
   currentUser: any = null;
   private userSub: Subscription = new Subscription();
+  private destroy$ = new Subject<void>();
   
   // ✅ Display normalization for USN and Branch
   displayUsn: string = 'No USN';
@@ -64,6 +67,10 @@ export class DashboardComponent implements OnInit, OnDestroy {
         const userId = user.id || user._id; 
         if (userId) {
           this.fetchDashboardStats(userId);
+          // Auto-refresh stats every 30 seconds to sync with other tabs/windows
+          interval(30000)
+            .pipe(takeUntil(this.destroy$))
+            .subscribe(() => this.fetchDashboardStats(userId));
         }
       } else {
         this.displayUsn = 'No USN';
@@ -76,6 +83,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
     if (this.userSub) {
       this.userSub.unsubscribe();
     }
+    this.destroy$.next();
+    this.destroy$.complete();
   }
 
   getEventId(event: any): string {
