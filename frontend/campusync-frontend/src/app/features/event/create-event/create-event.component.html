@@ -1,63 +1,112 @@
 <div class="create-container">
-  <mat-card>
-    <mat-card-header>
-      <mat-card-title>Create New Event</mat-card-title>
-    </mat-card-header>
-    
-    <mat-card-content>
-      <form [formGroup]="eventForm" (ngSubmit)="onSubmit()">
-        
-        <mat-form-field appearance="outline" class="full-width">
-          <mat-label>Event Title</mat-label>
-          <input matInput formControlName="title" placeholder="Ex: Hackathon 2025">
-          <mat-error *ngIf="eventForm.get('title')?.hasError('required')">Title is required</mat-error>
-        </mat-form-field>
+  <div class="form-wrapper">
+    <div class="header-section">
+      <h1 class="page-title">Create New Event</h1>
+      <p class="page-subtitle">Share an event with the campus community</p>
+    </div>
 
-        <div class="form-row">
-          <mat-form-field appearance="outline">
-            <mat-label>Date</mat-label>
-            <input matInput [matDatepicker]="picker" formControlName="date">
-            <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
-            <mat-datepicker #picker></mat-datepicker>
-          </mat-form-field>
+    <mat-card class="event-form-card">
+      <mat-card-content>
+        <form [formGroup]="eventForm" (ngSubmit)="onSubmit()" class="event-form">
+          
+          <!-- Event Title - Full Width -->
+          <div class="form-section">
+            <label class="section-label">Event Details</label>
+            
+            <div class="form-field-wrapper">
+              <label for="title" class="form-field-label">Event Title</label>
+              <mat-form-field appearance="outline" class="full-width">
+                <input matInput id="title" formControlName="title" placeholder="Ex: Hackathon 2025">
+                <mat-error *ngIf="eventForm.get('title')?.hasError('required')">Title is required</mat-error>
+                <mat-error *ngIf="eventForm.get('title')?.hasError('minlength')">Title must be at least 5 characters</mat-error>
+              </mat-form-field>
+            </div>
+          </div>
 
-          <mat-form-field appearance="outline">
-            <mat-label>Venue</mat-label>
-            <input matInput formControlName="venue" placeholder="Ex: Auditorium 1">
-          </mat-form-field>
-        </div>
+          <!-- Event Description -->
+          <div class="form-field-wrapper">
+            <label for="description" class="form-field-label">Description</label>
+            <mat-form-field appearance="outline" class="full-width">
+              <textarea matInput id="description" formControlName="description" rows="5" placeholder="Describe your event, agenda, and expectations..."></textarea>
+              <mat-error *ngIf="eventForm.get('description')?.hasError('required')">Description is required</mat-error>
+              <mat-error *ngIf="eventForm.get('description')?.hasError('minlength')">Description must be at least 10 characters</mat-error>
+            </mat-form-field>
+          </div>
 
-        <div class="form-row">
-          <mat-form-field appearance="outline">
-            <mat-label>Category</mat-label>
-            <mat-select formControlName="category">
-              <mat-option value="Academic">Academic</mat-option>
-              <mat-option value="Cultural">Cultural</mat-option>
-              <mat-option value="Sports">Sports</mat-option>
-              <mat-option value="Tech">Tech</mat-option>
-              <mat-option value="General">General</mat-option>
-            </mat-select>
-          </mat-form-field>
+          <!-- Metadata Section -->
+          <div class="form-section">
+            <label class="section-label">Event Information</label>
 
-          <mat-form-field appearance="outline">
-            <mat-label>Capacity</mat-label>
-            <input matInput type="number" formControlName="capacity">
-          </mat-form-field>
-        </div>
+            <!-- Date & Venue Row -->
+            <div class="form-row">
+              <div class="form-field-wrapper">
+                <label for="date" class="form-field-label">Date</label>
+                <mat-form-field appearance="outline">
+                  <input matInput id="date" [matDatepicker]="picker" formControlName="date" [min]="minDate">
+                  <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+                  <mat-datepicker #picker></mat-datepicker>
+                  <mat-error *ngIf="eventForm.get('date')?.hasError('required')">Date is required</mat-error>
+                  <mat-error *ngIf="eventForm.get('date')?.hasError('pastDate')">Event date cannot be in the past</mat-error>
+                </mat-form-field>
+              </div>
 
-        <mat-form-field appearance="outline" class="full-width">
-          <mat-label>Description</mat-label>
-          <textarea matInput formControlName="description" rows="4"></textarea>
-        </mat-form-field>
+              <div class="form-field-wrapper">
+                <label for="venue" class="form-field-label">Venue</label>
+                <mat-form-field appearance="outline">
+                  <input matInput id="venue" formControlName="venue" placeholder="Ex: Auditorium 1">
+                  <mat-error *ngIf="eventForm.get('venue')?.hasError('required')">Venue is required</mat-error>
+                </mat-form-field>
+              </div>
+            </div>
 
-        <div class="actions">
-          <button mat-button type="button" routerLink="/events">CANCEL</button>
-          <button mat-raised-button color="primary" type="submit" [disabled]="eventForm.invalid || isSubmitting">
-            {{ isSubmitting ? 'CREATING...' : 'PUBLISH EVENT' }}
-          </button>
-        </div>
+            <!-- Category, Hosting Club & Capacity Row -->
+            <div class="form-row three-column">
+              <div class="form-field-wrapper">
+                <label for="category" class="form-field-label">Category</label>
+                <mat-form-field appearance="outline">
+                  <mat-select id="category" formControlName="category">
+                    <mat-option value="Academic">Academic</mat-option>
+                    <mat-option value="Cultural">Cultural</mat-option>
+                    <mat-option value="Sports">Sports</mat-option>
+                    <mat-option value="Tech">Tech</mat-option>
+                    <mat-option value="General">General</mat-option>
+                  </mat-select>
+                  <mat-error *ngIf="eventForm.get('category')?.hasError('required')">Category is required</mat-error>
+                </mat-form-field>
+              </div>
 
-      </form>
-    </mat-card-content>
-  </mat-card>
+              <div class="form-field-wrapper">
+                <label for="hosting-club" class="form-field-label">Hosting Club</label>
+                <mat-form-field appearance="outline">
+                  <mat-select id="hosting-club" formControlName="hostingClub">
+                    <mat-option *ngFor="let club of hostingClubs" [value]="club">{{ club }}</mat-option>
+                  </mat-select>
+                  <mat-error *ngIf="eventForm.get('hostingClub')?.hasError('required')">Hosting Club is required</mat-error>
+                </mat-form-field>
+              </div>
+
+              <div class="form-field-wrapper">
+                <label for="capacity" class="form-field-label">Capacity</label>
+                <mat-form-field appearance="outline">
+                  <input matInput id="capacity" type="number" formControlName="capacity" placeholder="Ex: 100">
+                  <mat-error *ngIf="eventForm.get('capacity')?.hasError('required')">Capacity is required</mat-error>
+                  <mat-error *ngIf="eventForm.get('capacity')?.hasError('min')">Capacity must be at least 1</mat-error>
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+
+          <!-- Action Buttons -->
+          <div class="actions-section">
+            <button mat-stroked-button type="button" routerLink="/events" class="cancel-btn">CANCEL</button>
+            <button mat-raised-button color="primary" type="submit" class="publish-btn" [disabled]="eventForm.invalid || isSubmitting">
+              <span *ngIf="!isSubmitting">PUBLISH EVENT</span>
+              <span *ngIf="isSubmitting">CREATING...</span>
+            </button>
+          </div>
+
+        </form>
+      </mat-card-content>
+    </mat-card>
+  </div>
 </div>

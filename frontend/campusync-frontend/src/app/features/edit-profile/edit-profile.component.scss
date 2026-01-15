@@ -35,53 +35,141 @@ $neon-gradient: linear-gradient(135deg, #FF00CC 0%, #333399 100%);
 }
 
 .form-row {
-  margin-bottom: 15px;
+  margin-bottom: 18px;
   width: 100%;
   
   &.split {
     display: flex;
     gap: 15px;
-    input, .select-wrapper { width: 50%; }
+    .input-group { width: 50%; }
   }
 }
 
-input, select {
+/* ============================================================
+   ✅ INPUT GROUP WRAPPER (Label + Input)
+   ============================================================
+   Container for label and input field with proper spacing.
+   ============================================================ */
+.input-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
   width: 100%;
-  background-color: $input-bg !important;
-  color: #eee !important;
-  border: 1px solid #333 !important;
-  border-radius: 8px;
-  padding: 14px 16px;
-  font-size: 14px;
-  outline: none;
-  box-sizing: border-box; 
-  transition: 0.2s;
+  
+  &.full {
+    width: 100%;
+  }
 
-  &::placeholder { color: #666 !important; }
+  label {
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: #60a5fa;
+    display: block;
+    letter-spacing: 0.3px;
+  }
+}
+
+/* ============================================================
+   ✅ INPUT FIELD STYLING
+   ============================================================
+   Solid dark background, visible borders, proper padding,
+   and clear focus states.
+   ============================================================ */
+
+input {
+  width: 100%;
+  background-color: #1a1a1a !important;
+  color: #f3f4f6 !important;
+  border: 1.5px solid rgba(255, 255, 255, 0.15) !important;
+  border-radius: 8px;
+  padding: 12px 14px;
+  font-size: 0.95rem;
+  font-weight: 400;
+  outline: none;
+  box-sizing: border-box;
+  transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
+
+  &::placeholder {
+    color: #6b7280 !important;
+    opacity: 1 !important;
+  }
   
   &:focus {
-    border-color: #555 !important;
+    border-color: #FF00CC !important;
     background-color: #252525 !important;
+    box-shadow: 0 0 0 3px rgba(255, 0, 204, 0.1);
   }
 }
+
+/* ============================================================
+   ✅ SELECT DROPDOWN STYLING
+   ============================================================
+   Custom-styled select with dark theme, matching input fields,
+   proper icon alignment, and intentional appearance.
+   ============================================================ */
 
 .select-wrapper {
   position: relative;
+  display: block;
   
   select {
+    width: 100%;
     appearance: none;
     cursor: pointer;
-    &.unselected { color: #666 !important; }
+    background-color: #1a1a1a !important;
+    color: #f3f4f6 !important;
+    border: 1.5px solid rgba(255, 255, 255, 0.15) !important;
+    border-radius: 8px;
+    padding: 12px 40px 12px 14px;
+    font-size: 0.95rem;
+    font-weight: 400;
+    outline: none;
+    box-sizing: border-box;
+    transition: all 200ms cubic-bezier(0.4, 0, 0.2, 1);
+
+    /* Placeholder/unselected state */
+    &.unselected {
+      color: #6b7280 !important;
+    }
+
+    /* Focused state */
+    &:focus {
+      border-color: #FF00CC !important;
+      background-color: #252525 !important;
+      box-shadow: 0 0 0 3px rgba(255, 0, 204, 0.1);
+    }
+
+    /* Option styling (dropdown menu) */
+    option {
+      background-color: #1a1a1a;
+      color: #f3f4f6;
+      padding: 10px;
+      border: none;
+
+      &:checked {
+        background: linear-gradient(#FF00CC, #FF00CC);
+        background-color: #FF00CC !important;
+        color: white;
+      }
+    }
   }
   
+  /* Custom dropdown arrow */
   .arrow {
     position: absolute;
-    right: 15px;
+    right: 12px;
     top: 50%;
     transform: translateY(-50%);
-    color: #888;
+    color: #9ca3af;
     pointer-events: none;
-    font-size: 10px;
+    font-size: 11px;
+    font-weight: 600;
+    transition: color 150ms;
+  }
+
+  /* Arrow color on focus */
+  select:focus ~ .arrow {
+    color: #FF00CC;
   }
 }
 

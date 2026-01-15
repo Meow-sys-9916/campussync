@@ -2,3 +2,97 @@
 
 html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+/* ============================================================
+   ✅ FLOATING LABEL & FORM FIELD FIX
+   ============================================================
+   Ensures labels are always visible and positioned above inputs,
+   preventing overlap with input text on initial render.
+   ============================================================ */
+
+/* Input padding to reserve space for floating label */
+.mat-mdc-input-element {
+  padding-top: 1.25rem !important;
+  padding-bottom: 0.75rem !important;
+}
+
+/* Ensure labels are always visible and readable */
+.mat-mdc-form-field-label {
+  color: #d1d5db !important;
+  opacity: 1 !important;
+  font-weight: 500;
+  transition: all 150ms cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Float label above input on initial load (when input has value or placeholder) */
+.mat-mdc-input-element:not(:placeholder-shown) ~ .mat-mdc-floating-label,
+textarea.mat-mdc-input-element:not(:placeholder-shown) ~ .mat-mdc-floating-label {
+  transform: translateY(-1.5em) scale(0.75) !important;
+  visibility: visible !important;
+}
+
+/* Handle autofill state */
+.mat-mdc-input-element:-webkit-autofill ~ .mat-mdc-floating-label,
+.mat-mdc-input-element:-webkit-autofill:hover ~ .mat-mdc-floating-label,
+.mat-mdc-input-element:-webkit-autofill:focus ~ .mat-mdc-floating-label {
+  transform: translateY(-1.5em) scale(0.75) !important;
+  visibility: visible !important;
+}
+
+/* ============================================================
+   ✅ DROPDOWN (SELECT) STYLING FIX
+   ============================================================
+   Unified dark theme styling for Material select dropdowns,
+   matching the text input appearance and improving readability.
+   ============================================================ */
+
+/* Select closed state - match text inputs */
+.mat-mdc-form-field .mat-mdc-select {
+  padding-top: 1.25rem !important;
+  padding-bottom: 0.75rem !important;
+}
+
+/* Select panel - dark background with proper z-index */
+.mat-mdc-select-panel {
+  background-color: #1a1a1a !important;
+  border: 1px solid rgba(59, 130, 246, 0.3) !important;
+  border-radius: 8px !important;
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6) !important;
+  z-index: 1050 !important;
+  margin-top: 4px;
+}
+
+/* Select options styling */
+.mat-mdc-option {
+  color: #f3f4f6 !important;
+  font-size: 0.95rem !important;
+  padding: 10px 16px !important;
+}
+
+.mat-mdc-option:hover:not(.mat-mdc-option-disabled) {
+  background-color: #2a2a2a !important;
+}
+
+.mat-mdc-option.mat-selected {
+  background-color: rgba(59, 130, 246, 0.25) !important;
+  color: #60a5fa !important;
+  font-weight: 500;
+}
+
+.mat-mdc-optgroup-label {
+  color: #9ca3af !important;
+  font-size: 0.85rem !important;
+  font-weight: 600;
+  padding: 8px 16px !important;
+}
+
+/* Select arrow icon */
+.mat-mdc-select-arrow {
+  color: #60a5fa !important;
+}
+
+/* Disabled state */
+.mat-mdc-option.mat-mdc-option-disabled {
+  color: #4b5563 !important;
+  cursor: not-allowed !important;
+}

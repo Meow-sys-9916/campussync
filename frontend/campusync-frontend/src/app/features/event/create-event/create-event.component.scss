@@ -1,193 +1,449 @@
 .create-container {
-  padding: 3rem 2rem;
-  max-width: 700px;
-  margin: 0 auto;
-  background: linear-gradient(180deg, #0a0a0a 0%, #121212 50%, #0f0f0f 100%);
   min-height: 100vh;
+  padding: 2rem;
+  background: linear-gradient(180deg, #0a0a0a 0%, #121212 50%, #0f0f0f 100%);
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 3rem;
 }
 
-mat-card {
-  padding: 2rem;
-  background: linear-gradient(135deg, #1a1a1a 0%, #161616 100%);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 12px;
-  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5),
-              0 0 0 1px rgba(255, 255, 255, 0.04);
-  
+.form-wrapper {
+  width: 100%;
+  max-width: 780px;
+}
+
+.header-section {
+  margin-bottom: 3rem;
+  text-align: center;
+  animation: fadeInDown 0.6s ease-out;
+
+  .page-title {
+    font-size: 2.75rem;
+    font-weight: 700;
+    color: #ffffff;
+    margin: 0 0 0.75rem 0;
+    letter-spacing: -0.5px;
+    background: linear-gradient(135deg, #ffffff 0%, #e5e7eb 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  .page-subtitle {
+    font-size: 1.05rem;
+    color: #9ca3af;
+    margin: 0;
+    font-weight: 400;
+    letter-spacing: 0.2px;
+  }
+}
+
+.event-form-card {
+  padding: 2.5rem;
+  background: #0f0f0f;
+  border: 1px solid rgba(59, 130, 246, 0.3);
+  border-radius: 16px;
+  box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5),
+              0 0 40px rgba(59, 130, 246, 0.08);
+  position: relative;
+  overflow: hidden;
+  animation: fadeInUp 0.6s ease-out;
+
   &::before {
     content: '';
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
-    border-radius: 12px 12px 0 0;
+    height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.5), transparent);
   }
 }
 
-mat-card-header {
-  margin-bottom: 2rem;
-  
-  mat-card-title {
-    font-size: 2rem;
-    font-weight: 600;
-    color: #ffffff;
-    letter-spacing: -0.3px;
-    margin: 0;
+mat-card-content {
+  padding: 0 !important;
+}
+
+.event-form {
+  display: flex;
+  flex-direction: column;
+  gap: 2rem;
+}
+
+.form-section {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+
+  .section-label {
+    font-size: 0.85rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    letter-spacing: 1.3px;
+    color: #60a5fa;
+    margin-bottom: 1rem;
+    display: block;
   }
 }
 
 /* Form field styling */
 mat-form-field {
   width: 100%;
-  
+
   ::ng-deep {
+    /* Show floating labels with blue accent color - ALWAYS VISIBLE */
     .mat-mdc-form-field-label {
-      color: #9ca3af !important;
+      display: block !important;
+      color: #93c5fd !important;           /* Idle: muted blue */
+      opacity: 1 !important;
+      font-weight: 500 !important;
+      font-size: 0.9rem !important;
+      transition: color 200ms cubic-bezier(0.4, 0, 0.2, 1) !important;
+      visibility: visible !important;
+      background-color: transparent !important;
+      z-index: 1 !important;
     }
-    
-    .mdc-text-field--filled {
-      background-color: rgba(255, 255, 255, 0.05) !important;
+
+    /* Label when focused or field has value - bright border color */
+    &.mat-focused .mat-mdc-form-field-label,
+    &.mat-form-field-should-float .mat-mdc-form-field-label {
+      color: #60a5fa !important;           /* Active: bright blue (matches border) */
+      visibility: visible !important;
     }
-    
-    .mat-mdc-text-field-wrapper {
-      padding-bottom: 0.5rem !important;
+
+    /* ========== CRITICAL FIX: REMOVE NOTCH VISUAL ARTIFACT ========== */
+    /* Hide the notched outline's notch that creates the vertical line */
+    .mdc-notched-outline__notch {
+      border: none !important;
+      width: auto !important;
     }
-    
-    .mdc-text-field__input {
-      color: #ffffff !important;
-      font-size: 0.95rem;
-      
-      &::placeholder {
-        color: rgba(255, 255, 255, 0.3) !important;
+
+    /* Border styling - CLEAN, uniform borders without notch */
+    .mdc-notched-outline__leading,
+    .mdc-notched-outline__trailing {
+      border-color: rgba(59, 130, 246, 0.5) !important;
+      border-width: 1.5px !important;
+    }
+
+    /* Focused state - bright border (no label color change needed) */
+    &.mat-focused {
+      .mdc-notched-outline__leading,
+      .mdc-notched-outline__trailing {
+        border-color: #60a5fa !important;
+        border-width: 2px !important;
       }
     }
-    
-    .mdc-line-ripple::after {
-      border-bottom-color: rgba(59, 130, 246, 0.5) !important;
+
+    /* Text field background - solid, not transparent */
+    .mat-mdc-text-field-wrapper {
+      padding-bottom: 0.75rem !important;
+      background-color: #1a1a1a !important;
     }
-    
-    &.mat-focused .mdc-line-ripple::after {
-      border-bottom-color: rgba(59, 130, 246, 1) !important;
+
+    /* Input text styling - WHITE TEXT */
+    .mdc-text-field__input {
+      color: #ffffff !important;
+      font-size: 0.95rem !important;
+      caret-color: #60a5fa !important;
+      padding-top: 0.75rem !important;
+      padding-bottom: 0.75rem !important;
+      font-weight: 400;
+
+      &::placeholder {
+        color: #9ca3af !important;
+        opacity: 1 !important;
+      }
     }
-    
+
+    /* Textarea styling - WHITE TEXT */
+    textarea.mat-mdc-input-element {
+      font-family: inherit;
+      resize: vertical;
+      color: #ffffff !important;
+      font-size: 0.95rem !important;
+      background-color: #1a1a1a !important;
+      padding-top: 0.75rem !important;
+
+      &::placeholder {
+        color: #9ca3af !important;
+        opacity: 1 !important;
+      }
+    }
+
+    /* Error messages */
     .mat-mdc-form-field-error {
-      color: #ef4444 !important;
-      font-size: 0.75rem;
+      color: #fca5a5 !important;
+      font-size: 0.8rem !important;
+      margin-top: 0.5rem !important;
+    }
+
+    /* ========== SELECT / DROPDOWN STYLING ========== */
+
+    /* Select arrow icon */
+    .mat-mdc-select-arrow {
+      color: #60a5fa !important;
+    }
+
+    /* Select anchor (closed state) */
+    .mdc-select__anchor {
+      background-color: #1a1a1a !important;
+    }
+
+    /* Selected text in dropdown - FORCE WHITE */
+    .mdc-select__selected-text {
+      color: #ffffff !important;
+      font-size: 0.95rem !important;
+      padding-top: 0.75rem !important;
+      padding-bottom: 0.75rem !important;
+      font-weight: 400 !important;
+    }
+
+    /* Force select control itself to render white text */
+    mat-select,
+    .mat-mdc-select-trigger {
+      color: #ffffff !important;
+    }
+
+    /* Dropdown panel (menu) - appears above other elements */
+    .mat-mdc-select-panel {
+      background-color: #1a1a1a !important;
+      border: 1px solid rgba(59, 130, 246, 0.4) !important;
+      border-radius: 8px !important;
+      box-shadow: 0 12px 32px rgba(0, 0, 0, 0.7) !important;
+      z-index: 1050 !important;
+      margin-top: 4px;
+
+      /* Scrollable list with max-height */
+      .mat-mdc-select-content {
+        max-height: 300px;
+      }
+    }
+
+    /* Individual option styling */
+    .mat-mdc-option {
+      background-color: transparent !important;
+      color: #f0f9ff !important;
+      font-size: 0.95rem !important;
+      padding: 10px 16px !important;
+      min-height: 40px;
+      display: flex;
+      align-items: center;
+
+      /* Hover state */
+      &:hover:not(.mat-mdc-option-disabled) {
+        background-color: #2a2a2a !important;
+      }
+
+      /* Selected state */
+      &.mat-selected {
+        background-color: rgba(59, 130, 246, 0.25) !important;
+        color: #60a5fa !important;
+        font-weight: 500;
+      }
+
+      /* Disabled state */
+      &.mat-mdc-option-disabled {
+        color: #4b5563 !important;
+        cursor: not-allowed !important;
+        opacity: 0.5;
+      }
+    }
+
+    /* Option group label */
+    .mat-mdc-optgroup-label {
+      color: #9ca3af !important;
+      font-size: 0.85rem !important;
+      font-weight: 600;
+      padding: 8px 16px !important;
+      min-height: 32px;
+      display: flex;
+      align-items: center;
     }
   }
 }
 
-/* Makes fields take up full width */
+/* ========== EXTERNAL LABEL STYLING (HIDDEN) ========== */
+.form-field-wrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+.form-field-label {
+  display: block;
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: #60a5fa;
+  margin-bottom: 0.5rem;
+  letter-spacing: 0.3px;
+}
+
 .full-width {
   width: 100%;
   margin-bottom: 1.5rem;
 }
 
-/* Creates a 2-column layout for Date/Venue/Category/Capacity */
 .form-row {
   display: flex;
-  gap: 1rem;
+  gap: 1.25rem;
   margin-bottom: 1.5rem;
-  
+
   mat-form-field {
     flex: 1;
     margin-bottom: 0;
   }
-}
 
-/* Textarea styling */
-::ng-deep textarea.mat-mdc-input-element {
-  color: #ffffff !important;
-  font-family: inherit;
-  resize: vertical;
-  
-  &::placeholder {
-    color: rgba(255, 255, 255, 0.3) !important;
+  &.three-column {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 1.25rem;
   }
 }
 
-/* Align buttons to the right */
-.actions {
+.actions-section {
   display: flex;
   justify-content: flex-end;
   gap: 1rem;
-  margin-top: 2rem;
+  margin-top: 2.5rem;
   padding-top: 2rem;
-  border-top: 1px solid rgba(255, 255, 255, 0.05);
-  
+  border-top: 1px solid rgba(59, 130, 246, 0.2);
+
   button {
     text-transform: uppercase;
-    letter-spacing: 0.5px;
+    letter-spacing: 0.6px;
     font-weight: 600;
     border-radius: 8px;
-    
-    &[color="primary"] {
+    transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+    padding: 0.75rem 1.5rem;
+
+    &.publish-btn[color="primary"] {
       background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%) !important;
       color: white !important;
-      transition: all 0.3s cubic-bezier(0.23, 1, 0.320, 1) !important;
-      
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3) !important;
+
       &:hover:not(:disabled) {
         transform: translateY(-2px);
-        box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4) !important;
+        box-shadow: 0 8px 24px rgba(59, 130, 246, 0.4) !important;
       }
-      
+
       &:active {
         transform: translateY(0);
       }
-      
+
       &:disabled {
         opacity: 0.5;
         cursor: not-allowed;
       }
     }
-    
-    &[mat-button] {
-      color: #9ca3af;
-      transition: all 0.3s ease;
-      
+
+    &.cancel-btn {
+      color: #d1d5db;
+      border: 1.5px solid rgba(59, 130, 246, 0.4);
+      background: transparent;
+
       &:hover {
-        background: rgba(255, 255, 255, 0.08) !important;
-        color: #d1d5db;
+        background: rgba(59, 130, 246, 0.1) !important;
+        color: #f3f4f6;
+        border-color: rgba(59, 130, 246, 0.6);
       }
     }
   }
 }
 
-/* Responsive adjustment for mobile */
-@media (max-width: 600px) {
-  .create-container {
-    padding: 1.5rem 1rem;
-    min-height: auto;
+/* Animations */
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-20px);
   }
-  
-  mat-card {
-    padding: 1.5rem;
+  to {
+    opacity: 1;
+    transform: translateY(0);
   }
-  
-  mat-card-header {
-    margin-bottom: 1.5rem;
-    
-    mat-card-title {
-      font-size: 1.5rem;
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Responsive adjustment for tablet */
+@media (max-width: 900px) {
+  .form-row.three-column {
+    grid-template-columns: repeat(2, 1fr) !important;
+
+    &:last-child mat-form-field {
+      grid-column: span 1;
     }
   }
-  
+}
+
+/* Responsive adjustment for mobile */
+@media (max-width: 650px) {
+  .create-container {
+    padding: 1.5rem 1rem;
+    padding-top: 2rem;
+    min-height: auto;
+  }
+
+  .form-wrapper {
+    max-width: 100%;
+  }
+
+  .header-section {
+    margin-bottom: 2rem;
+
+    .page-title {
+      font-size: 2rem;
+    }
+
+    .page-subtitle {
+      font-size: 0.95rem;
+    }
+  }
+
+  .event-form-card {
+    padding: 1.5rem;
+    border-radius: 12px;
+  }
+
   .form-row {
     flex-direction: column;
     gap: 0;
-    margin-bottom: 1.5rem;
-    
+
     mat-form-field {
       margin-bottom: 1.5rem;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
+
+    &.three-column {
+      grid-template-columns: 1fr;
+      gap: 0;
+
+      mat-form-field {
+        margin-bottom: 1.5rem;
+
+        &:last-child {
+          margin-bottom: 0;
+        }
+      }
     }
   }
-  
-  .actions {
+
+  .actions-section {
     flex-direction: column-reverse;
     gap: 0.75rem;
-    
+
     button {
       width: 100%;
     }

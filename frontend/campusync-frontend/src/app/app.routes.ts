@@ -6,6 +6,7 @@ import { CreateEventComponent } from './features/event/create-event/create-event
 import { EventDetailsComponent } from './features/event/event-details/event-details.component';
 import { ManageEventsComponent } from './features/event/manage-events/manage-events.component';
 import { MyRegisteredEventsComponent } from './features/event/my-registered-events/my-registered-events.component';
+import { ArchiveComponent } from './features/event/archive/archive.component';
 import { EditProfileComponent } from './features/edit-profile/edit-profile.component';
 import { authGuard } from './core/guards/auth.guard';
 
@@ -26,6 +27,11 @@ export const routes: Routes = [
   { 
     path: 'events', 
     component: EventListComponent, 
+    canActivate: [authGuard] 
+  },
+  { 
+    path: 'archive', 
+    component: ArchiveComponent, 
     canActivate: [authGuard] 
   },
   { 

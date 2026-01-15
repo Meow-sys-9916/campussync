@@ -6,7 +6,10 @@
     </div>
     
     <div class="actions">
-      <!-- Create Event button removed - only available on Host page -->
+      <!-- Archive button - link to past events -->
+      <button mat-raised-button routerLink="/archive" class="archive-btn">
+        ARCHIVE
+      </button>
     </div>
   </div>
 
@@ -14,15 +17,15 @@
     <p>Loading events...</p>
   </div>
 
-  <div *ngIf="!isLoading && events.length === 0" class="empty-state">
+  <div *ngIf="!isLoading && upcomingEvents.length === 0" class="empty-state">
     <mat-icon>event_busy</mat-icon>
-    <h3>No events found</h3>
-    <p>Be the first to create one!</p>
+    <h3>No upcoming events</h3>
+    <p>Check the archive for past events!</p>
   </div>
 
-  <div class="carousel-wrapper" *ngIf="!isLoading && events.length > 0" #carouselContainer>
+  <div class="carousel-wrapper" *ngIf="!isLoading && upcomingEvents.length > 0" #carouselContainer>
     <div class="events-carousel" (scroll)="onScroll()">
-      <mat-card *ngFor="let event of events; let i = index" class="event-card" [id]="'card-' + i" [ngClass]="'glow-' + (i % 3)">
+      <mat-card *ngFor="let event of upcomingEvents; let i = index" class="event-card" [id]="'card-' + i" [ngClass]="'glow-' + (i % 3)">
         <div class="card-content">
           <div class="event-header">
             <mat-card-title>{{ event.title }}</mat-card-title>
@@ -46,11 +49,23 @@
         </div>
 
         <mat-card-actions align="end">
-          <button mat-button color="primary" [routerLink]="['/events', event.id]">
+          <button mat-button color="primary" [routerLink]="['/events', event._id || event.id]">
             VIEW DETAILS
           </button>
           
-          <button mat-flat-button color="primary" (click)="register(event.id!)">
+          <!-- Show "REGISTERED" if user already registered, otherwise show "REGISTER" -->
+          <button 
+            *ngIf="hasRegistered(event._id || event.id || '')"
+            mat-flat-button 
+            disabled 
+            class="registered-btn">
+            ✓ REGISTERED
+          </button>
+          <button 
+            *ngIf="!hasRegistered(event._id || event.id || '')"
+            mat-flat-button 
+            color="primary" 
+            (click)="register(event._id || event.id || '')">
             REGISTER
           </button>
         </mat-card-actions>

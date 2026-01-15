@@ -27,7 +27,10 @@ import { AuthService } from '../../../core/services/auth.service';
 })
 export class EventListComponent implements OnInit, AfterViewInit {
   events: CampusEvent[] = [];
+  upcomingEvents: CampusEvent[] = [];
   isLoading = true;
+  currentUserId: string | null = null;
+  registeredEventIds: Set<string> = new Set();
   
   @ViewChild('carouselContainer') carouselContainer?: ElementRef;
 
@@ -39,6 +42,13 @@ export class EventListComponent implements OnInit, AfterViewInit {
   ) {}
 
   ngOnInit(): void {
+    // Get current user ID from auth service
+    this.authService.currentUser$.subscribe(user => {
+      if (user && user._id) {
+        this.currentUserId = user._id;
+      }
+    });
+    
     this.loadEvents();
   }
 
@@ -79,7 +89,15 @@ export class EventListComponent implements OnInit, AfterViewInit {
   loadEvents(): void {
     this.eventService.getEvents().subscribe({
       next: (response: any) => {
-        this.events = response.data || response; 
+        // Get all events from backend
+        this.events = response.data || response;
+        
+        // Filter to show only upcoming events
+        this.upcomingEvents = this.eventService.filterUpcomingEvents(this.events);
+        
+        // Build set of registered event IDs for quick lookup
+        this.buildRegisteredSet();
+        
         this.isLoading = false;
       },
       error: (error: any) => {
@@ -87,6 +105,27 @@ export class EventListComponent implements OnInit, AfterViewInit {
         this.isLoading = false;
       }
     });
+  }
+
+  /**
+   * Build a set of event IDs the current user has registered for
+   */
+  private buildRegisteredSet(): void {
+    this.registeredEventIds.clear();
+    if (!this.currentUserId) return;
+    
+    this.events.forEach(event => {
+      if (this.eventService.hasUserRegistered(event, this.currentUserId!)) {
+        this.registeredEventIds.add(event._id || event.id || '');
+      }
+    });
+  }
+
+  /**
+   * Check if user has already registered for this event
+   */
+  hasRegistered(eventId: string): boolean {
+    return this.registeredEventIds.has(eventId);
   }
 
   register(eventId: string) {
@@ -103,7 +142,8 @@ export class EventListComponent implements OnInit, AfterViewInit {
           panelClass: ['success-snackbar'] // You can style this in global css
         });
         
-        this.loadEvents(); 
+        // Update registration status without reloading all events
+        this.registeredEventIds.add(eventId);
       },
       error: (err) => {
         const msg = err.error?.message || 'Registration failed';

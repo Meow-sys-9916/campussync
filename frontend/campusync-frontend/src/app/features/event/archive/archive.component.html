@@ -1,0 +1,59 @@
+<div class="events-container">
+  <div class="header">
+    <div class="title-section">
+      <h1>Archive</h1>
+      <p>Past events from your campus</p>
+    </div>
+    
+    <div class="actions">
+      <!-- Back to Upcoming button -->
+      <button mat-raised-button routerLink="/events" class="back-btn">
+        BACK TO UPCOMING
+      </button>
+    </div>
+  </div>
+
+  <div *ngIf="isLoading" class="loading-state">
+    <p>Loading archived events...</p>
+  </div>
+
+  <div *ngIf="!isLoading && pastEvents.length === 0" class="empty-state">
+    <mat-icon>history</mat-icon>
+    <h3>No archived events</h3>
+    <p>All events are upcoming!</p>
+  </div>
+
+  <div class="carousel-wrapper" *ngIf="!isLoading && pastEvents.length > 0" #carouselContainer>
+    <div class="events-carousel" (scroll)="onScroll()">
+      <mat-card *ngFor="let event of pastEvents; let i = index" class="event-card" [id]="'card-' + i" [ngClass]="'glow-' + (i % 3)">
+        <div class="card-content">
+          <div class="event-header">
+            <mat-card-title>{{ event.title }}</mat-card-title>
+            <mat-chip-set>
+              <mat-chip class="status-archived">
+                ARCHIVED
+              </mat-chip>
+            </mat-chip-set>
+          </div>
+
+          <mat-card-subtitle>
+            {{ event.date | date:'mediumDate' }} • {{ event.venue }}
+          </mat-card-subtitle>
+
+          <p class="description">{{ event.description }}</p>
+
+          <div class="meta-info">
+            <span><mat-icon>group</mat-icon> {{ event.registeredCount || 0 }} / {{ event.capacity }}</span>
+            <span><mat-icon>category</mat-icon> {{ event.category }}</span>
+          </div>
+        </div>
+
+        <mat-card-actions align="end">
+          <button mat-button color="primary" [routerLink]="['/events', event._id || event.id]">
+            VIEW DETAILS
+          </button>
+        </mat-card-actions>
+      </mat-card>
+    </div>
+  </div>
+</div>

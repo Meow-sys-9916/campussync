@@ -9,30 +9,45 @@
       <form [formGroup]="profileForm" (ngSubmit)="saveProfile()">
         
         <div class="form-row split">
-          <input type="text" formControlName="firstName" placeholder="First Name*">
-          <input type="text" formControlName="lastName" placeholder="Last Name*">
+          <div class="input-group">
+            <label for="firstName">First Name</label>
+            <input type="text" id="firstName" formControlName="firstName" placeholder="First Name*">
+          </div>
+          <div class="input-group">
+            <label for="lastName">Last Name</label>
+            <input type="text" id="lastName" formControlName="lastName" placeholder="Last Name*">
+          </div>
         </div>
 
         <div class="form-row">
-          <input type="text" formControlName="usn" placeholder="USN / Student ID*">
+          <div class="input-group full">
+            <label for="usn">USN / Student ID</label>
+            <input type="text" id="usn" formControlName="usn" placeholder="USN / Student ID*">
+          </div>
         </div>
 
         <div class="form-row split">
-          <input type="text" formControlName="branch" placeholder="Branch">
+          <div class="input-group">
+            <label for="branch">Branch</label>
+            <input type="text" id="branch" formControlName="branch" placeholder="Branch">
+          </div>
           
-          <div class="select-wrapper">
-            <select formControlName="semester" [class.unselected]="profileForm.get('semester')?.value === ''">
-              <option value="" disabled selected hidden>Semester*</option>
-              <option value="1">1st Semester</option>
-              <option value="2">2nd Semester</option>
-              <option value="3">3rd Semester</option>
-              <option value="4">4th Semester</option>
-              <option value="5">5th Semester</option>
-              <option value="6">6th Semester</option>
-              <option value="7">7th Semester</option>
-              <option value="8">8th Semester</option>
-            </select>
-            <span class="arrow">▼</span>
+          <div class="input-group">
+            <label for="semester">Semester</label>
+            <div class="select-wrapper">
+              <select id="semester" formControlName="semester" [class.unselected]="profileForm.get('semester')?.value === ''">
+                <option value="" disabled selected hidden>Semester*</option>
+                <option value="1">1st Semester</option>
+                <option value="2">2nd Semester</option>
+                <option value="3">3rd Semester</option>
+                <option value="4">4th Semester</option>
+                <option value="5">5th Semester</option>
+                <option value="6">6th Semester</option>
+                <option value="7">7th Semester</option>
+                <option value="8">8th Semester</option>
+              </select>
+              <span class="arrow">▼</span>
+            </div>
           </div>
         </div>
 

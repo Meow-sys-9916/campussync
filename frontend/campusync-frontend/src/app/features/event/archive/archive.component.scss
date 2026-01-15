@@ -1,3 +1,9 @@
+/* ============================================================
+   ✅ ARCHIVE PAGE STYLING
+   ============================================================
+   Reuses Event List styles with archived event indicators.
+   ============================================================ */
+
 .events-container {
   padding: 3rem 2rem;
   max-width: 1400px;
@@ -22,9 +28,6 @@
 
 /* ============================================================
    ✅ HEADER SECTION - CLEANER, MORE SPACIOUS
-   ============================================================
-   Matches Create Event page styling with clear separation
-   and improved visual hierarchy.
    ============================================================ */
 
 .header {
@@ -64,7 +67,6 @@
   }
 }
 
-/* ✅ ALIGNS BUTTONS TOGETHER */
 .actions {
   display: flex;
   gap: 1rem;
@@ -72,11 +74,7 @@
   z-index: 1;
 }
 
-/* ============================================================
-   ✅ ARCHIVE BUTTON - MATCHES EXISTING STYLE
-   ============================================================ */
-
-.archive-btn {
+.back-btn {
   background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%) !important;
   color: white !important;
   text-transform: uppercase !important;
@@ -99,9 +97,6 @@
 
 /* ============================================================
    ✅ CAROUSEL SECTION - PREMIUM SCROLLING
-   ============================================================
-   Smooth scrolling, better spacing, enhanced visual feedback,
-   and professional scrollbar styling.
    ============================================================ */
 
 .carousel-wrapper {
@@ -155,9 +150,6 @@
 
 /* ============================================================
    ✅ EVENT CARD STYLING - ENHANCED VISUAL HIERARCHY
-   ============================================================
-   Better spacing, improved shadows, cleaner borders,
-   and subtle entrance animations.
    ============================================================ */
 
 .event-card {
@@ -253,13 +245,6 @@
   gap: 0.75rem;
 }
 
-/* ============================================================
-   ✅ EVENT HEADER - STRONGER HIERARCHY
-   ============================================================
-   Title is the clear focal point with proper spacing
-   and subtle status badge styling.
-   ============================================================ */
-
 .event-header {
   display: flex;
   justify-content: space-between;
@@ -278,43 +263,11 @@
 }
 
 /* ============================================================
-   ✅ STATUS BADGES - CLEANER, MORE READABLE
-   ============================================================
-   Improved contrast, softer gradients, better visual weight.
+   ✅ ARCHIVED STATUS BADGE
    ============================================================ */
 
-.status-upcoming { 
-  color: #ffffff; 
-  background: linear-gradient(135deg, rgba(59, 130, 246, 0.4) 0%, rgba(59, 130, 246, 0.3) 100%);
-  border: 1px solid rgba(59, 130, 246, 0.5);
-  border-radius: 20px;
-  padding: 6px 14px !important;
-  font-size: 0.7rem !important;
-  font-weight: 700 !important;
-  letter-spacing: 0.7px;
-  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.15);
-  text-transform: uppercase !important;
-  white-space: nowrap;
-  flex-shrink: 0;
-}
-
-.status-ongoing { 
-  color: #ffffff; 
-  background: linear-gradient(135deg, rgba(16, 185, 129, 0.4) 0%, rgba(16, 185, 129, 0.3) 100%);
-  border: 1px solid rgba(16, 185, 129, 0.5);
-  border-radius: 20px;
-  padding: 6px 14px !important;
-  font-size: 0.7rem !important;
-  font-weight: 700 !important;
-  letter-spacing: 0.7px;
-  box-shadow: 0 2px 8px rgba(16, 185, 129, 0.15);
-  text-transform: uppercase !important;
-  white-space: nowrap;
-  flex-shrink: 0;
-}
-
-.status-completed { 
-  color: #ffffff; 
+.status-archived {
+  color: #ffffff;
   background: linear-gradient(135deg, rgba(107, 114, 128, 0.4) 0%, rgba(107, 114, 128, 0.3) 100%);
   border: 1px solid rgba(107, 114, 128, 0.5);
   border-radius: 20px;
@@ -328,27 +281,6 @@
   flex-shrink: 0;
 }
 
-.status-cancelled { 
-  color: #ffffff; 
-  background: linear-gradient(135deg, rgba(239, 68, 68, 0.4) 0%, rgba(239, 68, 68, 0.3) 100%);
-  border: 1px solid rgba(239, 68, 68, 0.5);
-  border-radius: 20px;
-  padding: 6px 14px !important;
-  font-size: 0.7rem !important;
-  font-weight: 700 !important;
-  letter-spacing: 0.7px;
-  box-shadow: 0 2px 8px rgba(239, 68, 68, 0.15);
-  text-transform: uppercase !important;
-  white-space: nowrap;
-  flex-shrink: 0;
-}
-
-/* ============================================================
-   ✅ DATE & VENUE - SECONDARY INFORMATION
-   ============================================================
-   Clear visual separation from title with proper contrast.
-   ============================================================ */
-
 mat-card-subtitle {
   display: block;
   margin-bottom: 0.75rem;
@@ -358,12 +290,6 @@ mat-card-subtitle {
   line-height: 1.4;
   letter-spacing: 0.2px;
 }
-
-/* ============================================================
-   ✅ DESCRIPTION - READABLE, NOT DOMINANT
-   ============================================================
-   Proper contrast and line-height for scanning.
-   ============================================================ */
 
 .description {
   color: #d1d5db;
@@ -377,12 +303,6 @@ mat-card-subtitle {
   line-clamp: 3;
   -webkit-box-orient: vertical;
 }
-
-/* ============================================================
-   ✅ META INFO - SUBTLE, GROUPED
-   ============================================================
-   Icons and text properly aligned with visual consistency.
-   ============================================================ */
 
 .meta-info {
   display: flex;
@@ -407,9 +327,9 @@ mat-card-subtitle {
 }
 
 /* ============================================================
-   ✅ ACTION BUTTONS - PREMIUM, RESPONSIVE
+   ✅ ACTION BUTTONS - READ-ONLY MODE
    ============================================================
-   Clear visual hierarchy, smooth interactions, proper spacing.
+   Archive events are read-only (no registration buttons)
    ============================================================ */
 
 mat-card-actions {
@@ -428,25 +348,9 @@ mat-card-actions {
     letter-spacing: 0.6px !important;
     transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1) !important;
     padding: 0.6rem 1.2rem !important;
-    
-    /* Primary action button (Register/Action) */
-    &[color="primary"] {
-      background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%) !important;
-      color: white !important;
-      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2) !important;
-      
-      &:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4) !important;
-      }
-      
-      &:active {
-        transform: translateY(0);
-      }
-    }
   }
   
-  /* Secondary action button (View Details) */
+  /* View Details button */
   button[mat-button] {
     &[color="primary"] {
       background: transparent !important;
@@ -458,31 +362,10 @@ mat-card-actions {
       }
     }
   }
-
-  /* Registered button - disabled state with checkmark */
-  .registered-btn {
-    background: linear-gradient(135deg, rgba(16, 185, 129, 0.4) 0%, rgba(16, 185, 129, 0.3) 100%) !important;
-    color: #10b981 !important;
-    border: 1px solid rgba(16, 185, 129, 0.5) !important;
-    cursor: default !important;
-    box-shadow: 0 2px 8px rgba(16, 185, 129, 0.15) !important;
-    
-    &:hover {
-      transform: none !important;
-      box-shadow: 0 2px 8px rgba(16, 185, 129, 0.15) !important;
-    }
-
-    &:disabled {
-      opacity: 1 !important;
-      cursor: default !important;
-    }
-  }
 }
 
 /* ============================================================
    ✅ LOADING & EMPTY STATES - PROFESSIONAL FEEDBACK
-   ============================================================
-   Clear, minimal, and consistent with overall design language.
    ============================================================ */
 
 .loading-state {
@@ -538,8 +421,6 @@ mat-card-actions {
 
 /* ============================================================
    ✅ ANIMATIONS - SMOOTH, PROFESSIONAL
-   ============================================================
-   Entrance effects for cards and smooth transitions throughout.
    ============================================================ */
 
 @keyframes slideInLeft {
@@ -575,8 +456,6 @@ mat-card-actions {
 
 /* ============================================================
    ✅ RESPONSIVE DESIGN - MOBILE & TABLET
-   ============================================================
-   Maintains design integrity and functionality across devices.
    ============================================================ */
 
 @media (max-width: 900px) {

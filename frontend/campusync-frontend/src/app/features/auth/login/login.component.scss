@@ -3,6 +3,7 @@ $bg-dark: #0a0a0a;
 $card-bg: #1e1e1e;
 $text-primary: #ffffff;
 $text-secondary: #b3b3b3;
+$label-color: #d1d5db;
 $primary-gradient: linear-gradient(135deg, #ff42b3, #333399);
 
 /* Container Layout */
@@ -69,15 +70,25 @@ $primary-gradient: linear-gradient(135deg, #ff42b3, #333399);
 /* Form Layouts */
 .full-width {
   width: 100%;
-  margin-bottom: 12px;
+  margin-bottom: 20px;
+  
+  &:last-of-type {
+    margin-bottom: 16px;
+  }
 }
 
 .row {
   display: flex;
   gap: 16px;
+  margin-bottom: 20px;
   
   mat-form-field {
     flex: 1;
+    margin-bottom: 0;
+  }
+  
+  &:last-of-type {
+    margin-bottom: 16px;
   }
 }
 
@@ -96,24 +107,113 @@ $primary-gradient: linear-gradient(135deg, #ff42b3, #333399);
   }
 }
 
-/* Material Input Overrides for Dark Mode */
+/* ============================================================
+   ✅ Material Form Field Overrides
+   ============================================================
+   Ensures consistent dark mode styling, proper label visibility,
+   and unified input/select appearance.
+   ============================================================ */
+
 ::ng-deep .mat-mdc-form-field {
-  .mat-mdc-text-field-wrapper {
-    background-color: rgba(255, 255, 255, 0.05) !important;
-  }
-  
-  .mdc-text-field--outlined {
-    --mdc-outlined-text-field-outline-color: rgba(255, 255, 255, 0.2);
-    --mdc-outlined-text-field-focus-outline-color: #FF00CC; 
-    --mdc-outlined-text-field-caret-color: #FF00CC;
+  /* Label styling - always visible and readable */
+  .mat-mdc-form-field-label {
+    color: #60a5fa !important;
+    opacity: 1 !important;
+    font-weight: 600 !important;
+    font-size: 0.875rem !important;
   }
 
+  /* Focused label */
+  &.mat-focused .mat-mdc-form-field-label {
+    color: #60a5fa !important;
+  }
+
+  /* Text field wrapper background */
+  .mat-mdc-text-field-wrapper {
+    background-color: rgba(255, 255, 255, 0.05) !important;
+    padding-bottom: 0.5rem !important;
+  }
+
+  /* Input field border styling */
+  .mdc-text-field--outlined {
+    --mdc-outlined-text-field-outline-color: rgba(255, 255, 255, 0.2) !important;
+    --mdc-outlined-text-field-focus-outline-color: #FF00CC !important;
+    --mdc-outlined-text-field-caret-color: #FF00CC !important;
+  }
+
+  /* Input text styling */
   input.mat-mdc-input-element {
     color: white !important;
+    font-size: 0.95rem;
   }
-  
-  .mat-mdc-form-field-icon-prefix, .mat-mdc-form-field-icon-suffix {
+
+  /* Placeholder styling */
+  input.mat-mdc-input-element::placeholder {
+    color: #6b7280 !important;
+    opacity: 1 !important;
+  }
+
+  /* Icons (prefix/suffix) */
+  .mat-mdc-form-field-icon-prefix,
+  .mat-mdc-form-field-icon-suffix {
     color: $text-secondary;
+  }
+
+  /* Error message styling */
+  .mat-mdc-form-field-error {
+    color: #fca5a5 !important;
+    font-size: 0.75rem !important;
+  }
+
+  /* Focused outline */
+  &.mat-focused {
+    .mdc-notched-outline__leading,
+    .mdc-notched-outline__notch,
+    .mdc-notched-outline__trailing {
+      border-color: #FF00CC !important;
+      border-width: 2px !important;
+    }
+  }
+
+  /* Select dropdown styling */
+  .mat-mdc-select {
+    color: white !important;
+  }
+
+  .mdc-select__anchor {
+    background-color: rgba(255, 255, 255, 0.05) !important;
+  }
+
+  .mat-mdc-select-arrow {
+    color: #FF00CC !important;
+  }
+
+  /* Select panel (dropdown menu) */
+  .mat-mdc-select-panel {
+    background-color: #1a1a1a !important;
+    border: 1px solid rgba(255, 255, 255, 0.2) !important;
+    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.6) !important;
+    z-index: 1050 !important;
+  }
+
+  /* Select option styling */
+  .mat-mdc-option {
+    color: #f3f4f6 !important;
+    font-size: 0.95rem !important;
+
+    &:hover:not(.mat-mdc-option-disabled) {
+      background-color: #2a2a2a !important;
+    }
+
+    &.mat-selected {
+      background-color: rgba(255, 0, 204, 0.15) !important;
+      color: #ff42b3 !important;
+      font-weight: 500;
+    }
+  }
+
+  .mat-mdc-optgroup-label {
+    color: #9ca3af !important;
   }
 }
 
@@ -121,7 +221,7 @@ $primary-gradient: linear-gradient(135deg, #ff42b3, #333399);
 .submit-btn {
   width: 100%;
   height: 50px;
-  margin-top: 16px;
+  margin-top: 24px;
   font-size: 16px;
   font-weight: 600;
   letter-spacing: 0.5px;
@@ -190,5 +290,14 @@ $primary-gradient: linear-gradient(135deg, #ff42b3, #333399);
   .row {
     flex-direction: column;
     gap: 0;
+    margin-bottom: 20px;
+
+    mat-form-field {
+      margin-bottom: 20px;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
   }
 }
