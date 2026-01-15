@@ -1,0 +1,56 @@
+<div class="hosted-archive-layout">
+  <div class="header">
+    <div class="title-section">
+      <button mat-icon-button (click)="goBackToManageEvents()" class="back-button">
+        <mat-icon>arrow_back</mat-icon>
+      </button>
+      <h1>Hosted Events Archive</h1>
+      <p>View all past events you've hosted</p>
+    </div>
+  </div>
+
+  <div *ngIf="isLoading" class="loading-state">
+    <p>Loading archived events...</p>
+  </div>
+
+  <div *ngIf="!isLoading && archivedHostedEvents.length === 0" class="empty-state">
+    <mat-icon>event_note</mat-icon>
+    <h3>No archived events yet</h3>
+    <p>Past events you've hosted will appear here</p>
+    <button mat-raised-button color="primary" (click)="goBackToManageEvents()">
+      <mat-icon>arrow_back</mat-icon> Back to Manage Events
+    </button>
+  </div>
+
+  <div class="events-grid" *ngIf="!isLoading && archivedHostedEvents.length > 0">
+    <mat-card *ngFor="let event of archivedHostedEvents" class="event-card">
+      <div class="card-content">
+        <div class="event-header">
+          <mat-card-title>{{ event.title }}</mat-card-title>
+          <mat-chip-set>
+            <mat-chip class="status-past">
+              PAST
+            </mat-chip>
+          </mat-chip-set>
+        </div>
+
+        <mat-card-subtitle>
+          {{ event.date | date:'mediumDate' }} • {{ event.venue }}
+        </mat-card-subtitle>
+
+        <p class="description">{{ event.description }}</p>
+
+        <div class="meta-info">
+          <span><mat-icon>group</mat-icon> {{ event.registeredCount || 0 }} / {{ event.capacity }}</span>
+          <span><mat-icon>category</mat-icon> {{ event.category }}</span>
+        </div>
+      </div>
+
+      <mat-card-actions align="end">
+        <button mat-button color="primary" [routerLink]="['/events', getEventId(event)]">
+          VIEW DETAILS
+        </button>
+      </mat-card-actions>
+    </mat-card>
+  </div>
+</div>

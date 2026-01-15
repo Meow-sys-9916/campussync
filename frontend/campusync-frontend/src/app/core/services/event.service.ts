@@ -102,4 +102,11 @@ export class EventService {
     if (!event.attendees || !userId) return false;
     return event.attendees.includes(userId);
   }
+
+  /**
+   * Filter events: return only upcoming/active events (exclude past/archived)
+   */
+  filterActiveEvents(events: CampusEvent[]): CampusEvent[] {
+    return this.filterUpcomingEvents(events);
+  }
 }

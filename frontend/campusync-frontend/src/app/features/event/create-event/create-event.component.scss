@@ -42,10 +42,10 @@
 .event-form-card {
   padding: 2.5rem;
   background: #0f0f0f;
-  border: 1px solid rgba(59, 130, 246, 0.3);
+  border: 1px solid rgba(122, 184, 255, 0.25);
   border-radius: 16px;
   box-shadow: 0 25px 60px rgba(0, 0, 0, 0.5),
-              0 0 40px rgba(59, 130, 246, 0.08);
+              0 0 40px rgba(122, 184, 255, 0.06);
   position: relative;
   overflow: hidden;
   animation: fadeInUp 0.6s ease-out;
@@ -57,7 +57,7 @@
     left: 0;
     right: 0;
     height: 2px;
-    background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.5), transparent);
+    background: linear-gradient(90deg, transparent, rgba(122, 184, 255, 0.4), transparent);
   }
 }
 
@@ -75,14 +75,19 @@ mat-card-content {
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
+  margin-top: 1.5rem;
+
+  &:first-of-type {
+    margin-top: 0;
+  }
 
   .section-label {
-    font-size: 0.85rem;
+    font-size: 0.95rem;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 1.3px;
-    color: #60a5fa;
-    margin-bottom: 1rem;
+    color: #93c5fd;
+    margin-bottom: 1.5rem;
     display: block;
   }
 }
@@ -90,12 +95,12 @@ mat-card-content {
 /* Form field styling */
 mat-form-field {
   width: 100%;
+  box-sizing: border-box !important;
 
   ::ng-deep {
-    /* Show floating labels with blue accent color - ALWAYS VISIBLE */
+    /* Show floating labels with blue accent color */
     .mat-mdc-form-field-label {
-      display: block !important;
-      color: #93c5fd !important;           /* Idle: muted blue */
+      color: #a0c4ff !important;
       opacity: 1 !important;
       font-weight: 500 !important;
       font-size: 0.9rem !important;
@@ -103,52 +108,173 @@ mat-form-field {
       visibility: visible !important;
       background-color: transparent !important;
       z-index: 1 !important;
+      top: 1.5rem !important;
+      transform: translateY(0) !important;
     }
 
-    /* Label when focused or field has value - bright border color */
+    /* Label when focused or field has value */
     &.mat-focused .mat-mdc-form-field-label,
     &.mat-form-field-should-float .mat-mdc-form-field-label {
-      color: #60a5fa !important;           /* Active: bright blue (matches border) */
+      color: #7ab8ff !important;
       visibility: visible !important;
+      top: -0.75rem !important;
+      transform: translateY(0) !important;
     }
 
-    /* ========== CRITICAL FIX: REMOVE NOTCH VISUAL ARTIFACT ========== */
-    /* Hide the notched outline's notch that creates the vertical line */
+    /* CRITICAL FIX: Ensure complete outline box rendering */
+    .mdc-notched-outline {
+      border: 1.5px solid rgba(122, 184, 255, 0.4) !important;
+      border-radius: 4px !important;
+      box-sizing: border-box !important;
+    }
+
+    /* Remove notch visual gap */
     .mdc-notched-outline__notch {
       border: none !important;
       width: auto !important;
+      display: none !important;
     }
 
-    /* Border styling - CLEAN, uniform borders without notch */
-    .mdc-notched-outline__leading,
+    /* Leading border */
+    .mdc-notched-outline__leading {
+      border-color: rgba(122, 184, 255, 0.4) !important;
+      border-width: 1.5px 0 1.5px 1.5px !important;
+      top: 0 !important;
+      height: 100% !important;
+      box-sizing: border-box !important;
+    }
+
+    /* Trailing border */
     .mdc-notched-outline__trailing {
-      border-color: rgba(59, 130, 246, 0.5) !important;
-      border-width: 1.5px !important;
+      border-color: rgba(122, 184, 255, 0.4) !important;
+      border-width: 1.5px 1.5px 1.5px 0 !important;
+      top: 0 !important;
+      height: 100% !important;
+      box-sizing: border-box !important;
     }
 
-    /* Focused state - bright border (no label color change needed) */
+    /* Complete bottom border */
+    .mdc-notched-outline::after {
+      border-color: rgba(122, 184, 255, 0.4) !important;
+      border-width: 0 0 1.5px 0 !important;
+      box-sizing: border-box !important;
+    }
+
+    /* Focused state */
     &.mat-focused {
-      .mdc-notched-outline__leading,
-      .mdc-notched-outline__trailing {
-        border-color: #60a5fa !important;
+      .mdc-notched-outline {
+        border-color: #7ab8ff !important;
         border-width: 2px !important;
+      }
+
+      .mdc-notched-outline__leading {
+        border-color: #7ab8ff !important;
+        border-width: 2px 0 2px 2px !important;
+      }
+
+      .mdc-notched-outline__trailing {
+        border-color: #7ab8ff !important;
+        border-width: 2px 2px 2px 0 !important;
+      }
+
+      .mdc-notched-outline::after {
+        border-color: #7ab8ff !important;
+        border-width: 0 0 2px 0 !important;
       }
     }
 
-    /* Text field background - solid, not transparent */
+    /* Text field sizing and background */
     .mat-mdc-text-field-wrapper {
-      padding-bottom: 0.75rem !important;
+      padding: 0 !important;
       background-color: #1a1a1a !important;
+      box-sizing: border-box !important;
+      overflow: visible !important;
+      display: block !important;
+      height: 56px !important;
+      min-height: 56px !important;
+      position: relative !important;
     }
 
-    /* Input text styling - WHITE TEXT */
+    /* Textarea text field wrapper - top alignment */
+    mat-form-field:has(textarea) .mat-mdc-text-field-wrapper {
+      height: 140px !important;
+      min-height: 140px !important;
+      overflow: hidden !important;
+    }
+
+    /* CRITICAL: Text alignment fix for infix container */
+    .mat-mdc-form-field-infix {
+      min-height: 48px !important;
+      display: flex !important;
+      align-items: center !important;
+      padding: 0 12px !important;
+      height: auto !important;
+      box-sizing: border-box !important;
+      position: relative !important;
+      width: 100% !important;
+    }
+
+    /* Select infix alignment - match input baseline */
+    mat-select .mat-mdc-form-field-infix {
+      padding: 0 12px !important;
+    }
+
+    /* Text field container */
+    .mdc-text-field {
+      height: 56px !important;
+      min-height: 56px !important;
+      box-sizing: border-box !important;
+      display: flex !important;
+      align-items: stretch !important;
+    }
+
+    .mdc-text-field--outlined {
+      height: 56px !important;
+      min-height: 56px !important;
+      box-sizing: border-box !important;
+      display: flex !important;
+      align-items: stretch !important;
+    }
+
+    /* Textarea container - special handling */
+    mat-form-field:has(textarea) .mdc-text-field--outlined {
+      height: 140px !important;
+      min-height: 140px !important;
+    }
+
+    mat-form-field:has(textarea) .mat-mdc-text-field-wrapper {
+      height: 140px !important;
+      min-height: 140px !important;
+    }
+
+    /* Textarea special infix alignment - top aligned */
+    mat-form-field:has(textarea) .mat-mdc-form-field-infix {
+      padding: 12px 12px 0 12px !important;
+      height: auto !important;
+      display: block !important;
+    }
+
+    /* Text field with textarea - ensure proper sizing */
+    .mdc-text-field--outlined:has(textarea) {
+      height: 140px !important;
+      min-height: 140px !important;
+    }
+
+    /* Input text styling */
     .mdc-text-field__input {
       color: #ffffff !important;
       font-size: 0.95rem !important;
-      caret-color: #60a5fa !important;
-      padding-top: 0.75rem !important;
-      padding-bottom: 0.75rem !important;
-      font-weight: 400;
+      padding: 0 !important;
+      height: auto !important;
+      line-height: 1.5 !important;
+      box-sizing: border-box !important;
+      caret-color: #7ab8ff !important;
+      overflow: visible !important;
+      vertical-align: middle !important;
+      width: 100% !important;
+      border: none !important;
+      background: transparent !important;
+      margin: 0 !important;
 
       &::placeholder {
         color: #9ca3af !important;
@@ -156,14 +282,30 @@ mat-form-field {
       }
     }
 
-    /* Textarea styling - WHITE TEXT */
+    /* Adjust Capacity input vertical alignment */
+    input.mat-mdc-input-element {
+      padding-top: 6px !important;
+      padding-bottom: 0 !important;
+      line-height: 1.4 !important;
+    }
+
+    /* Textarea styling */
     textarea.mat-mdc-input-element {
-      font-family: inherit;
-      resize: vertical;
+      font-family: inherit !important;
+      resize: vertical !important;
       color: #ffffff !important;
       font-size: 0.95rem !important;
-      background-color: #1a1a1a !important;
-      padding-top: 0.75rem !important;
+      background-color: transparent !important;
+      padding: 0 !important;
+      height: 128px !important;
+      min-height: 128px !important;
+      box-sizing: border-box !important;
+      line-height: 1.6 !important;
+      overflow: auto !important;
+      border: none !important;
+      width: 100% !important;
+      margin: 0 !important;
+      display: block !important;
 
       &::placeholder {
         color: #9ca3af !important;
@@ -178,37 +320,53 @@ mat-form-field {
       margin-top: 0.5rem !important;
     }
 
-    /* ========== SELECT / DROPDOWN STYLING ========== */
+    /* SELECT / DROPDOWN STYLING */
 
     /* Select arrow icon */
     .mat-mdc-select-arrow {
-      color: #60a5fa !important;
+      color: #7ab8ff !important;
     }
 
     /* Select anchor (closed state) */
     .mdc-select__anchor {
+      height: 56px !important;
+      min-height: 56px !important;
       background-color: #1a1a1a !important;
+      box-sizing: border-box !important;
+      display: flex !important;
+      align-items: center !important;
+      padding: 0 !important;
     }
 
     /* Selected text in dropdown - FORCE WHITE */
     .mdc-select__selected-text {
       color: #ffffff !important;
       font-size: 0.95rem !important;
-      padding-top: 0.75rem !important;
-      padding-bottom: 0.75rem !important;
+      padding: 0 !important;
+      height: auto !important;
+      line-height: 1.5 !important;
+      display: inline !important;
       font-weight: 400 !important;
+      vertical-align: middle !important;
     }
 
     /* Force select control itself to render white text */
     mat-select,
     .mat-mdc-select-trigger {
       color: #ffffff !important;
+      width: 100% !important;
+    }
+
+    /* Date picker trigger alignment */
+    input[matInput] {
+      line-height: 1.5 !important;
+      height: auto !important;
     }
 
     /* Dropdown panel (menu) - appears above other elements */
     .mat-mdc-select-panel {
       background-color: #1a1a1a !important;
-      border: 1px solid rgba(59, 130, 246, 0.4) !important;
+      border: 1px solid rgba(122, 184, 255, 0.3) !important;
       border-radius: 8px !important;
       box-shadow: 0 12px 32px rgba(0, 0, 0, 0.7) !important;
       z-index: 1050 !important;
@@ -268,36 +426,49 @@ mat-form-field {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
+  width: 100%;
 }
 
 .form-field-label {
   display: block;
-  font-size: 0.875rem;
-  font-weight: 600;
-  color: #60a5fa;
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: #a0c4ff;
   margin-bottom: 0.5rem;
-  letter-spacing: 0.3px;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
 }
 
 .full-width {
   width: 100%;
-  margin-bottom: 1.5rem;
+  margin-bottom: 0;
 }
 
 .form-row {
   display: flex;
   gap: 1.25rem;
-  margin-bottom: 1.5rem;
+  width: 100%;
+
+  .form-field-wrapper {
+    flex: 1;
+    width: 100%;
+  }
 
   mat-form-field {
-    flex: 1;
+    width: 100%;
     margin-bottom: 0;
+    display: block;
   }
 
   &.three-column {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 1.25rem;
+
+    .form-field-wrapper {
+      flex: none;
+      width: 100%;
+    }
   }
 }
 
@@ -307,7 +478,7 @@ mat-form-field {
   gap: 1rem;
   margin-top: 2.5rem;
   padding-top: 2rem;
-  border-top: 1px solid rgba(59, 130, 246, 0.2);
+  border-top: 1px solid rgba(122, 184, 255, 0.15);
 
   button {
     text-transform: uppercase;
@@ -318,13 +489,13 @@ mat-form-field {
     padding: 0.75rem 1.5rem;
 
     &.publish-btn[color="primary"] {
-      background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%) !important;
-      color: white !important;
-      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3) !important;
+      background: linear-gradient(135deg, #7ab8ff 0%, #4a90ff 100%) !important;
+      color: #0f172a !important;
+      box-shadow: 0 4px 12px rgba(122, 184, 255, 0.3) !important;
 
       &:hover:not(:disabled) {
         transform: translateY(-2px);
-        box-shadow: 0 8px 24px rgba(59, 130, 246, 0.4) !important;
+        box-shadow: 0 8px 24px rgba(122, 184, 255, 0.4) !important;
       }
 
       &:active {
@@ -339,13 +510,13 @@ mat-form-field {
 
     &.cancel-btn {
       color: #d1d5db;
-      border: 1.5px solid rgba(59, 130, 246, 0.4);
+      border: 1.5px solid rgba(122, 184, 255, 0.3);
       background: transparent;
 
       &:hover {
-        background: rgba(59, 130, 246, 0.1) !important;
+        background: rgba(122, 184, 255, 0.08) !important;
         color: #f3f4f6;
-        border-color: rgba(59, 130, 246, 0.6);
+        border-color: rgba(122, 184, 255, 0.5);
       }
     }
   }

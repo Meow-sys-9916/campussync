@@ -79,10 +79,12 @@ export class MyRegisteredEventsComponent implements OnInit, OnDestroy {
     this.registeredEvents = this.allEvents.filter(event => {
       // Check if user is in the attendees list
       if (event.attendees && Array.isArray(event.attendees)) {
-        return event.attendees.some(attendee => {
+        const isRegistered = event.attendees.some(attendee => {
           const attendeeId = typeof attendee === 'object' ? ((attendee as any).id || (attendee as any)._id) : attendee;
           return attendeeId === this.currentUserId;
         });
+        // Only show if registered AND event is upcoming (not archived)
+        return isRegistered && this.eventService.isEventUpcoming(event.date);
       }
       return false;
     });

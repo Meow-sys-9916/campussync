@@ -8,7 +8,8 @@ router.get('/', authenticateToken, eventController.getAllEvents);
 router.get('/:id', authenticateToken, eventController.getEventById);
 router.delete('/:id', authenticateToken, eventController.deleteEvent);
 
-// ✅ NEW ROUTE
+// ✅ REGISTER AND UNREGISTER ROUTES
 router.post('/:id/register', authenticateToken, eventController.registerForEvent);
+router.post('/:id/unregister', authenticateToken, eventController.unregisterForEvent);
 
 module.exports = router;

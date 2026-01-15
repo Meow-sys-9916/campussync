@@ -50,12 +50,19 @@ export class ManageEventsComponent implements OnInit {
     this.eventService.getEvents().subscribe({
       next: (response: any) => {
         const allEvents = response.data || response;
-        // Filter events where the current user is the organizer
+        // Filter events where:
+        // 1. The current user is the organizer
+        // 2. The event is upcoming (not past/archived)
         this.hostedEvents = allEvents.filter((event: any) => {
           const orgId = (event.organizer && typeof event.organizer === 'object')
             ? event.organizer._id || event.organizer.id
             : event.organizer;
-          return orgId === this.currentUserId;
+          // Only show active/upcoming events
+          return orgId === this.currentUserId && this.eventService.isEventUpcoming(event.date);
+        });
+        // Sort by date (upcoming first)
+        this.hostedEvents.sort((a: any, b: any) => {
+          return new Date(a.date).getTime() - new Date(b.date).getTime();
         });
         this.isLoading = false;
       },

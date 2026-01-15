@@ -75,6 +75,25 @@
     font-size: 0.95rem;
     margin-bottom: 2rem;
   }
+
+  button {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 10px !important;
+    padding: 10px 20px !important;
+    overflow: visible !important;
+    position: relative !important;
+
+    mat-icon {
+      font-size: 20px !important;
+      width: 20px !important;
+      height: 20px !important;
+      margin-bottom: 0 !important;
+      opacity: 1 !important;
+      flex-shrink: 0 !important;
+    }
+  }
 }
 
 .events-grid {

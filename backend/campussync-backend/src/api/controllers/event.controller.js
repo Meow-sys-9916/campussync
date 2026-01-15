@@ -112,6 +112,40 @@ class EventController {
             res.status(500).json({ success: false, message: 'Server error' });
         }
     }
+
+    // 6. Unregister for Event
+    async unregisterForEvent(req, res) {
+        try {
+            const event = await Event.findByPk(req.params.id);
+            if (!event) {
+                return res.status(404).json({ success: false, message: 'Event not found' });
+            }
+
+            const userId = req.user.userId;
+            
+            // Ensure attendees is an array
+            let attendees = event.attendees || [];
+
+            // Check if user is registered
+            if (!attendees.includes(userId)) {
+                return res.status(400).json({ success: false, message: 'You are not registered for this event' });
+            }
+
+            // Remove user from the attendees list
+            attendees = attendees.filter(id => id !== userId);
+            
+            // Update the database
+            await Event.update(
+                { attendees: attendees },
+                { where: { id: event.id } }
+            );
+
+            res.json({ success: true, message: 'Unregistration successful!' });
+        } catch (error) {
+            console.error('Unregistration error:', error);
+            res.status(500).json({ success: false, message: 'Server error' });
+        }
+    }
 }
 
 module.exports = new EventController();

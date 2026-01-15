@@ -97,10 +97,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
         if (res.success && Array.isArray(res.data)) {
           const allEvents: CampusEvent[] = res.data;
           
-          // 1. Total Events
-          this.totalEventsCount = allEvents.length;
+          // 1. Total Events (upcoming/active only - exclude archived/past)
+          const upcomingEvents = allEvents.filter(e => this.eventService.isEventUpcoming(e.date));
+          this.totalEventsCount = upcomingEvents.length;
 
-          // 2. Hosted Events (Middle Card)
+          // 2. Hosted Events (all user's hosted events)
           this.hostedEvents = allEvents.filter((e: any) => {
             const orgId = (e.organizer && typeof e.organizer === 'object') 
                           ? e.organizer._id 
@@ -112,16 +113,16 @@ export class DashboardComponent implements OnInit, OnDestroy {
           // 3. Registered Events (Bottom Right Counter & Next Event)
           const registeredIds = this.currentUser?.registeredEvents || [];
           
-          const registered = allEvents.filter((e: any) => {
+          const registered = upcomingEvents.filter((e: any) => {
              const isRegistered = registeredIds.includes(e.id) || registeredIds.includes(e._id);
              const isAttendee = e.attendees && e.attendees.includes(userId);
              return isRegistered || isAttendee;
           });
 
-          // ✅ Events Joined Count
+          // ✅ Events Joined Count (only upcoming/active)
           this.registeredCount = registered.length;
           
-          // Next Event Logic
+          // Next Event Logic (from upcoming registered events only)
           this.nextEvent = registered
             .filter((e: any) => new Date(e.date).getTime() > Date.now()) 
             .sort((a: any, b: any) => new Date(a.date).getTime() - new Date(b.date).getTime())[0] || null;
