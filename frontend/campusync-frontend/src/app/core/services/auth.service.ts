@@ -21,7 +21,6 @@ export class AuthService {
     }
   }
 
-  // 🔁 Restore session safely
   private restoreSession(): void {
     this.getProfile().subscribe({
       next: (res) => {
@@ -32,13 +31,9 @@ export class AuthService {
 
         const mergedUser = {
           ...backendUser,
-
-          // 🔥 KEEP PROFILE DATA
           studentId: backendUser.studentId ?? localUser.studentId,
           branch: backendUser.branch ?? localUser.branch,
           semester: backendUser.semester ?? localUser.semester,
-
-          // frontend alias
           usn: backendUser.studentId ?? localUser.usn
         };
 
@@ -77,21 +72,16 @@ export class AuthService {
     );
   }
 
-  // ✅ FIXED REGISTER
   register(formData: any): Observable<any> {
     const payload = {
       firstName: formData.firstName,
       lastName: formData.lastName,
       email: formData.email,
       password: formData.password,
-
-      // 🔥 IMPORTANT
       studentId: formData.studentId,
       branch: formData.branch,
       semester: formData.semester
     };
-
-    console.log('🚀 REGISTER PAYLOAD:', payload);
 
     return this.http.post<any>(`${this.apiUrl}/register`, payload).pipe(
       tap(res => {

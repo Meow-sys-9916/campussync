@@ -1,4 +1,4 @@
-// ✅ DARK THEME VARIABLES
+// DARK THEME VARIABLES
 $bg-dark: #0a0a0a;
 $card-bg: #0f0f0f;
 $text-primary: #ffffff;
@@ -7,7 +7,7 @@ $label-color: #93c5fd;
 $border-color: rgba(122, 184, 255, 0.25);
 $primary-gradient: linear-gradient(135deg, #ff42b3, #333399);
 
-// ✅ CONTAINER & WRAPPER
+// CONTAINER & WRAPPER
 .auth-container {
   min-height: 100vh;
   padding: 2rem;
@@ -24,7 +24,7 @@ $primary-gradient: linear-gradient(135deg, #ff42b3, #333399);
   max-width: 600px;
 }
 
-// ✅ HEADER SECTION - CLEAN & PROFESSIONAL
+// HEADER SECTION - CLEAN & PROFESSIONAL
 .header-section {
   margin-bottom: 3rem;
   text-align: center;
@@ -51,7 +51,7 @@ $primary-gradient: linear-gradient(135deg, #ff42b3, #333399);
   }
 }
 
-// ✅ FORM CARD - DARK GLASS EFFECT
+// FORM CARD - DARK GLASS EFFECT
 .auth-form-card {
   padding: 2.5rem;
   background: $card-bg;
@@ -78,14 +78,14 @@ $primary-gradient: linear-gradient(135deg, #ff42b3, #333399);
   }
 }
 
-// ✅ FORM STRUCTURE
+// FORM STRUCTURE
 .auth-form {
   display: flex;
   flex-direction: column;
   gap: 1.5rem;
 }
 
-// ✅ FORM SECTIONS - VISUAL GROUPING
+// FORM SECTIONS - VISUAL GROUPING
 .form-section {
   display: flex;
   flex-direction: column;
@@ -107,7 +107,7 @@ $primary-gradient: linear-gradient(135deg, #ff42b3, #333399);
   }
 }
 
-// ✅ FORM FIELD WRAPPER - LABEL + INPUT
+// FORM FIELD WRAPPER - LABEL + INPUT
 .form-field-wrapper {
   display: flex;
   flex-direction: column;
@@ -123,7 +123,7 @@ $primary-gradient: linear-gradient(135deg, #ff42b3, #333399);
   }
 }
 
-// ✅ FORM ROWS - TWO COLUMN LAYOUT
+// FORM ROWS - TWO COLUMN LAYOUT
 .form-row {
   display: grid;
   grid-template-columns: 1fr 1fr;
@@ -134,13 +134,13 @@ $primary-gradient: linear-gradient(135deg, #ff42b3, #333399);
   }
 }
 
-// ✅ FULL WIDTH
+// FULL WIDTH
 .full-width {
   width: 100%;
   box-sizing: border-box !important;
 }
 
-// ✅ MAT-FORM-FIELD CUSTOMIZATION
+// MAT-FORM-FIELD CUSTOMIZATION
 mat-form-field {
   width: 100%;
 
@@ -195,7 +195,7 @@ mat-form-field {
   }
 }
 
-// ✅ PASSWORD TOGGLE BUTTON
+// PASSWORD TOGGLE BUTTON
 .password-toggle {
   color: #60a5fa !important;
   transition: background-color 150ms ease;
@@ -205,7 +205,7 @@ mat-form-field {
   }
 }
 
-// ✅ ERROR ALERT
+// ERROR ALERT
 .error-alert {
   display: flex;
   align-items: center;
@@ -225,7 +225,7 @@ mat-form-field {
   }
 }
 
-// ✅ ACTIONS SECTION
+// ACTIONS SECTION
 .actions-section {
   display: flex;
   gap: 1rem;
@@ -234,7 +234,7 @@ mat-form-field {
   border-top: 1px solid rgba(255, 255, 255, 0.08);
 }
 
-// ✅ SUBMIT BUTTON
+// SUBMIT BUTTON
 .submit-btn {
   flex: 1;
   text-transform: uppercase;
@@ -259,7 +259,7 @@ mat-form-field {
   }
 }
 
-// ✅ TOGGLE SECTION - SWITCH BETWEEN LOGIN/SIGNUP
+// TOGGLE SECTION - SWITCH BETWEEN LOGIN/SIGNUP
 .toggle-section {
   text-align: center;
   margin-top: 1.5rem;
@@ -286,7 +286,7 @@ mat-form-field {
   }
 }
 
-// ✅ ANIMATIONS
+// ANIMATIONS
 @keyframes fadeInDown {
   from {
     opacity: 0;
@@ -309,7 +309,7 @@ mat-form-field {
   }
 }
 
-// ✅ RESPONSIVE DESIGN
+// RESPONSIVE DESIGN
 @media (max-width: 600px) {
   .auth-container {
     padding: 1rem;

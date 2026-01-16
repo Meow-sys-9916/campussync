@@ -30,7 +30,7 @@ export class EditProfileComponent implements OnInit {
       semester: ['', Validators.required]
     });
 
-    // ✅ SINGLE SOURCE: AuthService only
+    // SINGLE SOURCE: AuthService only
     this.authService.currentUser$.subscribe(user => {
       if (!user) return;
 
@@ -57,7 +57,7 @@ export class EditProfileComponent implements OnInit {
     const updatedUser = {
       ...this.currentUser,
 
-      // ✅ CANONICAL FIELDS
+      // CANONICAL FIELDS
       firstName: formValue.firstName,
       lastName: formValue.lastName,
       usn: formValue.usn,

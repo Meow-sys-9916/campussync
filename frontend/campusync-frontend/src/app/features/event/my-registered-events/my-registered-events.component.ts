@@ -31,17 +31,17 @@ export class MyRegisteredEventsComponent implements OnInit, OnDestroy {
   registeredEvents: CampusEvent[] = [];
   isLoading = true;
   currentUserId: string = '';
+  viewMode: 'upcoming' | 'archived' = 'upcoming';
   private destroy$ = new Subject<void>();
 
   constructor(
-    private eventService: EventService,
+    public eventService: EventService,
     private authService: AuthService,
     private router: Router,
     private snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
-    // Get current user ID
     this.authService.currentUser$
       .pipe(takeUntil(this.destroy$))
       .subscribe(user => {
@@ -75,25 +75,33 @@ export class MyRegisteredEventsComponent implements OnInit, OnDestroy {
   }
 
   private filterRegisteredEvents(): void {
-    // Filter events where the current user is registered
-    this.registeredEvents = this.allEvents.filter(event => {
-      // Check if user is in the attendees list
+    let allRegisteredEvents = this.allEvents.filter(event => {
       if (event.attendees && Array.isArray(event.attendees)) {
         const isRegistered = event.attendees.some(attendee => {
           const attendeeId = typeof attendee === 'object' ? ((attendee as any).id || (attendee as any)._id) : attendee;
           return attendeeId === this.currentUserId;
         });
-        // Only show if registered AND event is upcoming (not archived)
-        return isRegistered && this.eventService.isEventUpcoming(event.date);
+        return isRegistered;
       }
       return false;
     });
 
-    // Sort by date (upcoming first)
+    if (this.viewMode === 'upcoming') {
+      this.registeredEvents = allRegisteredEvents.filter(event => 
+        this.eventService.isEventUpcoming(event.date)
+      );
+    } else {
+      this.registeredEvents = allRegisteredEvents.filter(event => 
+        !this.eventService.isEventUpcoming(event.date)
+      );
+    }
+
     this.registeredEvents.sort((a, b) => {
       const dateA = new Date(a.date).getTime();
       const dateB = new Date(b.date).getTime();
-      return dateA - dateB;
+      return this.viewMode === 'upcoming' 
+        ? dateA - dateB
+        : dateB - dateA;
     });
   }
 
@@ -101,14 +109,19 @@ export class MyRegisteredEventsComponent implements OnInit, OnDestroy {
     return event.id || event._id || '';
   }
 
+  toggleViewMode(): void {
+    this.viewMode = this.viewMode === 'upcoming' ? 'archived' : 'upcoming';
+    this.filterRegisteredEvents();
+  }
+
   unregisterEvent(eventId: string): void {
-    console.log('📝 Unregistering from event:', eventId);
+    console.log('Unregistering from event:', eventId);
 
     this.eventService.unregisterEvent(eventId)
       .pipe(takeUntil(this.destroy$))
       .subscribe({
         next: () => {
-          console.log('✅ Unregistration successful');
+          console.log('Unregistration successful');
           this.snackBar.open('✓ You have unregistered', 'Got it', {
             duration: 3000,
             verticalPosition: 'top',
@@ -120,9 +133,9 @@ export class MyRegisteredEventsComponent implements OnInit, OnDestroy {
           );
         },
         error: (err: any) => {
-          console.error('❌ Unregistration error:', err);
+          console.error('Unregistration error:', err);
           const msg = err?.error?.message || 'Unregistration failed';
-          this.snackBar.open('⚠️ ' + msg, 'Close', {
+          this.snackBar.open(msg, 'Close', {
             duration: 3000,
             panelClass: ['error-snackbar']
           });

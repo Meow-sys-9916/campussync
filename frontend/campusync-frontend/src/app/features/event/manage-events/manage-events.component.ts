@@ -28,6 +28,7 @@ export class ManageEventsComponent implements OnInit {
   hostedEvents: CampusEvent[] = [];
   isLoading = true;
   currentUserId: string | null = null;
+  private accentColors = ['cyan', 'purple', 'pink', 'teal', 'amber'];
 
   constructor(
     private eventService: EventService,
@@ -80,14 +81,14 @@ export class ManageEventsComponent implements OnInit {
 
     this.eventService.deleteEvent(eventId).subscribe({
       next: () => {
-        this.snackBar.open('✅ Event deleted successfully', 'Close', {
+        this.snackBar.open('Event deleted successfully', 'Close', {
           duration: 3000
         });
         this.loadHostedEvents();
       },
       error: (err) => {
         const msg = err?.error?.message || 'Failed to delete event';
-        this.snackBar.open('❌ ' + msg, 'Close', {
+        this.snackBar.open(msg, 'Close', {
           duration: 3000
         });
       }
@@ -100,5 +101,19 @@ export class ManageEventsComponent implements OnInit {
 
   getEventId(event: any): string {
     return event.id || event._id || '';
+  }
+
+  getAccentColor(event: any, index: number): string {
+    const eventId = this.getEventId(event);
+    if (!eventId) {
+      return this.accentColors[index % this.accentColors.length];
+    }
+    // Deterministic color assignment based on event ID
+    let hash = 0;
+    for (let i = 0; i < eventId.length; i++) {
+      hash = ((hash << 5) - hash) + eventId.charCodeAt(i);
+      hash = hash & hash;
+    }
+    return this.accentColors[Math.abs(hash) % this.accentColors.length];
   }
 }

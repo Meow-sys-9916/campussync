@@ -4,8 +4,7 @@ import { MatCardModule } from '@angular/material/card';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
 import { MatChipsModule } from '@angular/material/chips';
-// ✅ IMPORT SNACKBAR MODULE
-import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar'; 
+import { MatSnackBar, MatSnackBarModule } from '@angular/material/snack-bar';
 import { Router, RouterModule } from '@angular/router';
 import { EventService, CampusEvent } from '../../../core/services/event.service';
 import { AuthService } from '../../../core/services/auth.service';
@@ -20,7 +19,7 @@ import { AuthService } from '../../../core/services/auth.service';
     MatIconModule,
     MatChipsModule,
     RouterModule,
-    MatSnackBarModule // ✅ Add this
+    MatSnackBarModule
   ],
   templateUrl: './event-list.component.html',
   styleUrl: './event-list.component.scss'
@@ -38,7 +37,7 @@ export class EventListComponent implements OnInit, AfterViewInit {
     private eventService: EventService,
     private authService: AuthService,
     private router: Router,
-    private snackBar: MatSnackBar // ✅ Inject SnackBar
+    private snackBar: MatSnackBar
   ) {}
 
   ngOnInit(): void {
@@ -89,13 +88,8 @@ export class EventListComponent implements OnInit, AfterViewInit {
   loadEvents(): void {
     this.eventService.getEvents().subscribe({
       next: (response: any) => {
-        // Get all events from backend
         this.events = response.data || response;
-        
-        // Filter to show only upcoming events
         this.upcomingEvents = this.eventService.filterUpcomingEvents(this.events);
-        
-        // Build set of registered event IDs for quick lookup
         this.buildRegisteredSet();
         
         this.isLoading = false;
@@ -128,29 +122,20 @@ export class EventListComponent implements OnInit, AfterViewInit {
     return this.registeredEventIds.has(eventId);
   }
 
-  register(eventId: string) {
-    // We removed 'confirm()' for a faster UI. 
-    // If you misclick, you can just unregister later (if we built that feature).
-    
+  register(eventId: string): void {
     this.eventService.registerEvent(eventId).subscribe({
       next: () => {
-        // ✅ PROFESSIONAL NOTIFICATION
-        this.snackBar.open('🎉 Successfully Registered!', 'Close', {
+        this.snackBar.open('Successfully Registered!', 'Close', {
           duration: 3000,
           horizontalPosition: 'center',
-          verticalPosition: 'bottom',
-          panelClass: ['success-snackbar'] // You can style this in global css
+          verticalPosition: 'bottom'
         });
-        
-        // Update registration status without reloading all events
         this.registeredEventIds.add(eventId);
       },
       error: (err) => {
         const msg = err.error?.message || 'Registration failed';
-        // ❌ ERROR NOTIFICATION
-        this.snackBar.open(`⚠️ ${msg}`, 'Close', {
-          duration: 3000,
-          panelClass: ['error-snackbar']
+        this.snackBar.open(`${msg}`, 'Close', {
+          duration: 3000
         });
       }
     });

@@ -1,7 +1,5 @@
 .events-container {
-  padding: 3rem 2rem;
-  max-width: 1400px;
-  margin: 0 auto;
+  padding: 0;
   background: linear-gradient(180deg, #0a0a0a 0%, #121212 50%, #0f0f0f 100%);
   min-height: 100vh;
   position: relative;
@@ -20,72 +18,78 @@
   }
 }
 
-/* ============================================================
-   ✅ HEADER SECTION - CLEANER, MORE SPACIOUS
-   ============================================================
-   Matches Create Event page styling with clear separation
-   and improved visual hierarchy.
-   ============================================================ */
+// PAGE HEADER - CLEAN & PROFESSIONAL
+// Premium presentation with improved spacing and visual balance
 
-.header {
+.page-header {
+  background: transparent;
+  border-bottom: 1px solid rgba(59, 130, 246, 0.08);
+  padding: 3.5rem 2rem;
+  position: relative;
+  z-index: 2;
+}
+
+.header-content {
+  max-width: 1400px;
+  margin: 0 auto;
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 3.5rem;
+  gap: 3rem;
   flex-wrap: wrap;
-  gap: 2rem;
-  position: relative;
-  z-index: 1;
-  padding-bottom: 2rem;
-  border-bottom: 1px solid rgba(59, 130, 246, 0.15);
-  animation: fadeInDown 0.6s ease-out;
 }
 
 .title-section {
+  flex: 1;
+  min-width: 250px;
+  
   h1 {
     font-size: 2.75rem;
     font-weight: 700;
-    margin: 0;
+    margin: 0 0 0.75rem 0;
     color: #ffffff;
     letter-spacing: -0.5px;
-    line-height: 1.2;
-    background: linear-gradient(135deg, #ffffff 0%, #e5e7eb 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+    line-height: 1.1;
   }
   
   p {
     color: #9ca3af;
-    margin: 0.75rem 0 0;
+    margin: 0;
     font-size: 1.05rem;
     letter-spacing: 0.2px;
     font-weight: 400;
+    opacity: 0.85;
   }
 }
 
-/* ✅ ALIGNS BUTTONS TOGETHER */
+// ACTIONS AREA
 .actions {
   display: flex;
   gap: 1rem;
-  position: relative;
-  z-index: 1;
+  align-items: center;
+  flex-shrink: 0;
 }
 
-/* ============================================================
-   ✅ ARCHIVE BUTTON - MATCHES EXISTING STYLE
-   ============================================================ */
-
 .archive-btn {
-  background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%) !important;
-  color: white !important;
+  background: rgba(59, 130, 246, 0.12) !important;
+  color: #60a5fa !important;
+  border: 1px solid rgba(59, 130, 246, 0.25) !important;
   text-transform: uppercase !important;
-  letter-spacing: 0.6px !important;
+  letter-spacing: 0.5px !important;
   font-weight: 600 !important;
   border-radius: 8px !important;
-  padding: 0.75rem 1.5rem !important;
-  transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1) !important;
-  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2) !important;
+  padding: 0.7rem 1.4rem !important;
+  font-size: 0.85rem !important;
+  transition: all 0.2s ease-out !important;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  &:hover {
+    background: rgba(59, 130, 246, 0.18) !important;
+    border-color: rgba(59, 130, 246, 0.4) !important;
+    color: #93c5fd !important;
+  }
 
   &:hover {
     transform: translateY(-2px);
@@ -97,21 +101,20 @@
   }
 }
 
-/* ============================================================
-   ✅ CAROUSEL SECTION - PREMIUM SCROLLING
-   ============================================================
-   Smooth scrolling, better spacing, enhanced visual feedback,
-   and professional scrollbar styling.
-   ============================================================ */
+// CAROUSEL SECTION - BETTER VISUAL HIERARCHY
+// Premium presentation with improved spacing and context
+
+.carousel-section {
+  padding: 2rem 0;
+  position: relative;
+  z-index: 1;
+}
 
 .carousel-wrapper {
   position: relative;
   width: 100%;
   overflow: hidden;
-  margin-top: 2rem;
-  padding: 1.5rem 1rem;
-  margin-left: -1rem;
-  margin-right: -1rem;
+  padding: 1.5rem 0;
 }
 
 .events-carousel {
@@ -120,8 +123,8 @@
   overflow-x: auto;
   overflow-y: hidden;
   scroll-behavior: smooth;
-  padding: 1rem;
-  scroll-padding: 1rem;
+  padding: 1rem 2rem;
+  scroll-padding: 2rem;
   
   /* Smooth momentum scrolling on trackpad */
   -webkit-overflow-scrolling: touch;
@@ -154,10 +157,8 @@
 }
 
 /* ============================================================
-   ✅ EVENT CARD STYLING - ENHANCED VISUAL HIERARCHY
-   ============================================================
-   Better spacing, improved shadows, cleaner borders,
-   and subtle entrance animations.
+/* ============================================================
+   EVENT CARD STYLING - PREMIUM ELEVATION
    ============================================================ */
 
 .event-card {
@@ -165,123 +166,139 @@
   height: 480px;
   display: flex;
   flex-direction: column;
-  transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-  transform: scale(0.92) translateY(8px);
-  opacity: 0.7;
+  transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
+  transform: translateY(0);
+  opacity: 0.95;
   position: relative;
   z-index: 1;
   
+  /* Create new stacking context for glow to render properly without clipping */
+  isolation: isolate;
+  
   /* Prevent layout thrashing and ensure stable dimensions */
-  will-change: transform, opacity;
+  will-change: transform, opacity, box-shadow, filter;
   flex-shrink: 0;
   
-  background: linear-gradient(135deg, #1a1a1a 0%, #161616 100%);
-  border: 1px solid rgba(59, 130, 246, 0.2);
-  border-radius: 16px;
+  /* Premium glass/frosted effect */
+  background: linear-gradient(135deg, rgba(26, 26, 26, 0.8) 0%, rgba(22, 22, 22, 0.8) 100%);
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(59, 130, 246, 0.15);
+  border-radius: 20px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.4),
-              0 0 0 1px rgba(59, 130, 246, 0.1);
-  overflow: hidden;
+              inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  overflow: visible;
   
-  /* Subtle top highlight */
+  /* Subtle top light edge */
   &::before {
     content: '';
     position: absolute;
     top: 0;
     left: 0;
     right: 0;
-    height: 1px;
-    background: linear-gradient(90deg, transparent, rgba(59, 130, 246, 0.15), transparent);
+    height: 2px;
+    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.1), transparent);
+    border-radius: 20px 20px 0 0;
+    pointer-events: none;
   }
   
   /* Smooth entrance animation */
   &:nth-child(1) {
-    animation: slideInLeft 0.5s ease-out;
+    animation: slideInLeft 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
   }
   &:nth-child(2) {
-    animation: slideInLeft 0.5s ease-out 0.1s backwards;
+    animation: slideInLeft 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.1s backwards;
   }
   &:nth-child(3) {
-    animation: slideInLeft 0.5s ease-out 0.2s backwards;
+    animation: slideInLeft 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s backwards;
   }
   &:nth-child(n+4) {
-    animation: slideInLeft 0.5s ease-out 0.3s backwards;
+    animation: slideInLeft 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.3s backwards;
   }
   
-  /* Hover state - smooth lift + glow */
+  /* Hover state - smooth lift + premium glow */
   &:hover {
-    transform: scale(1.02) translateY(-12px);
+    transform: translateY(-16px);
     opacity: 1;
     z-index: 10;
+    box-shadow: 0 24px 48px rgba(0, 0, 0, 0.5),
+                inset 0 1px 0 rgba(255, 255, 255, 0.08);
   }
   
-  /* Blue Glow - Premium effect */
+  /* Blue Glow - Professional, confident */
   &.glow-0:hover {
     border-color: rgba(59, 130, 246, 0.6);
-    box-shadow: 0 20px 50px rgba(59, 130, 246, 0.25),
-                0 0 40px rgba(59, 130, 246, 0.15),
-                0 0 0 1px rgba(59, 130, 246, 0.3);
+    background: linear-gradient(135deg, rgba(26, 26, 26, 0.9) 0%, rgba(22, 22, 22, 0.9) 100%);
+    box-shadow: 0 24px 48px rgba(0, 0, 0, 0.5),
+                0 0 40px rgba(59, 130, 246, 0.25),
+                0 0 80px rgba(59, 130, 246, 0.12),
+                inset 0 1px 0 rgba(255, 255, 255, 0.08),
+                inset 0 0 30px rgba(59, 130, 246, 0.05);
+    filter: brightness(1.1);
   }
   
-  /* Cyan Glow - Modern effect */
+  /* Cyan Glow - Modern, tech-forward */
   &.glow-1:hover {
     border-color: rgba(34, 211, 238, 0.6);
-    box-shadow: 0 20px 50px rgba(34, 211, 238, 0.25),
-                0 0 40px rgba(34, 211, 238, 0.15),
-                0 0 0 1px rgba(34, 211, 238, 0.3);
+    background: linear-gradient(135deg, rgba(26, 26, 26, 0.9) 0%, rgba(22, 22, 22, 0.9) 100%);
+    box-shadow: 0 24px 48px rgba(0, 0, 0, 0.5),
+                0 0 40px rgba(34, 211, 238, 0.25),
+                0 0 80px rgba(34, 211, 238, 0.12),
+                inset 0 1px 0 rgba(255, 255, 255, 0.08),
+                inset 0 0 30px rgba(34, 211, 238, 0.05);
+    filter: brightness(1.1);
   }
   
-  /* Purple Glow - Vibrant effect */
+  /* Violet Glow - Creative, premium */
   &.glow-2:hover {
     border-color: rgba(168, 85, 247, 0.6);
-    box-shadow: 0 20px 50px rgba(168, 85, 247, 0.25),
-                0 0 40px rgba(168, 85, 247, 0.15),
-                0 0 0 1px rgba(168, 85, 247, 0.3);
+    background: linear-gradient(135deg, rgba(26, 26, 26, 0.9) 0%, rgba(22, 22, 22, 0.9) 100%);
+    box-shadow: 0 24px 48px rgba(0, 0, 0, 0.5),
+                0 0 40px rgba(168, 85, 247, 0.25),
+                0 0 80px rgba(168, 85, 247, 0.12),
+                inset 0 1px 0 rgba(255, 255, 255, 0.08),
+                inset 0 0 30px rgba(168, 85, 247, 0.05);
+    filter: brightness(1.1);
   }
   
   &.center-card {
-    transform: scale(0.95) translateY(4px);
-    opacity: 0.85;
+    transform: translateY(0);
+    opacity: 0.95;
     z-index: 5;
   }
 }
 
 .card-content {
-  padding: 1.75rem;
+  padding: 2.25rem;
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: 0.75rem;
+  gap: 1.1rem;
 }
 
-/* ============================================================
-   ✅ EVENT HEADER - STRONGER HIERARCHY
-   ============================================================
-   Title is the clear focal point with proper spacing
-   and subtle status badge styling.
-   ============================================================ */
+// EVENT HEADER - STRONGER HIERARCHY
+// Title is the clear focal point with proper spacing and subtle status badge styling
 
 .event-header {
   display: flex;
   justify-content: space-between;
   align-items: flex-start;
-  margin-bottom: 1rem;
-  gap: 1rem;
+  margin-bottom: 0;
+  gap: 1.25rem;
   
   mat-card-title {
-    font-size: 1.4rem;
-    line-height: 1.4;
+    font-size: 1.5rem;
+    line-height: 1.3;
     color: #ffffff;
     font-weight: 700;
-    letter-spacing: -0.3px;
+    letter-spacing: -0.5px;
     flex: 1;
+    margin: 0;
+    text-wrap: balance;
   }
 }
 
-/* ============================================================
-   ✅ STATUS BADGES - CLEANER, MORE READABLE
-   ============================================================
-   Improved contrast, softer gradients, better visual weight.
-   ============================================================ */
+// STATUS BADGES - CLEANER, MORE READABLE
+// Improved contrast, softer gradients, better visual weight
 
 .status-upcoming { 
   color: #ffffff; 
@@ -343,33 +360,27 @@
   flex-shrink: 0;
 }
 
-/* ============================================================
-   ✅ DATE & VENUE - SECONDARY INFORMATION
-   ============================================================
-   Clear visual separation from title with proper contrast.
-   ============================================================ */
+// DATE & VENUE - SECONDARY INFORMATION
+// Clear visual separation from title with proper contrast
 
 mat-card-subtitle {
   display: block;
   margin-bottom: 0.75rem;
   color: #9ca3af;
-  font-size: 0.9rem;
+  font-size: 0.875rem;
   font-weight: 500;
-  line-height: 1.4;
-  letter-spacing: 0.2px;
+  line-height: 1.5;
+  letter-spacing: 0.3px;
 }
 
-/* ============================================================
-   ✅ DESCRIPTION - READABLE, NOT DOMINANT
-   ============================================================
-   Proper contrast and line-height for scanning.
-   ============================================================ */
+// DESCRIPTION - READABLE, NOT DOMINANT
+// Proper contrast and line-height for scanning
 
 .description {
   color: #d1d5db;
   margin-bottom: 1rem;
-  line-height: 1.6;
-  font-size: 0.95rem;
+  line-height: 1.65;
+  font-size: 0.9rem;
   flex-grow: 1;
   overflow: hidden;
   display: -webkit-box;
@@ -378,19 +389,18 @@ mat-card-subtitle {
   -webkit-box-orient: vertical;
 }
 
-/* ============================================================
-   ✅ META INFO - SUBTLE, GROUPED
-   ============================================================
-   Icons and text properly aligned with visual consistency.
-   ============================================================ */
+// META INFO - SUBTLE, GROUPED
+// Icons and text properly aligned with visual consistency
 
 .meta-info {
   display: flex;
-  gap: 1.5rem;
+  gap: 1.75rem;
   color: #9ca3af;
-  font-size: 0.85rem;
+  font-size: 0.8rem;
   font-weight: 500;
-  margin-bottom: 1rem;
+  margin-bottom: 0;
+  padding: 0.75rem 0;
+  border-top: 1px solid rgba(59, 130, 246, 0.08);
   
   span {
     display: flex;
@@ -398,50 +408,47 @@ mat-card-subtitle {
     gap: 0.5rem;
     
     mat-icon {
-      font-size: 16px;
-      width: 16px;
-      height: 16px;
-      color: #3b82f6;
+      font-size: 15px;
+      width: 15px;
+      height: 15px;
+      color: rgba(59, 130, 246, 0.6);
     }
   }
 }
 
-/* ============================================================
-   ✅ ACTION BUTTONS - PREMIUM, RESPONSIVE
-   ============================================================
-   Clear visual hierarchy, smooth interactions, proper spacing.
-   ============================================================ */
+// ACTION BUTTONS - PREMIUM, RESPONSIVE
+// Clear visual hierarchy, smooth interactions, proper spacing
 
 mat-card-actions {
-  padding: 1.25rem 1.75rem !important;
-  gap: 0.75rem !important;
-  border-top: 1px solid rgba(59, 130, 246, 0.15);
+  padding: 1.5rem 2.25rem !important;
+  gap: 0.5rem !important;
+  border-top: 1px solid rgba(59, 130, 246, 0.08);
   display: flex;
   justify-content: flex-end;
   align-items: center;
   
   button {
-    border-radius: 8px !important;
+    border-radius: 10px !important;
     font-weight: 600 !important;
     text-transform: uppercase !important;
-    font-size: 0.75rem !important;
-    letter-spacing: 0.6px !important;
-    transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1) !important;
-    padding: 0.6rem 1.2rem !important;
+    font-size: 0.7rem !important;
+    letter-spacing: 0.7px !important;
+    transition: all 0.3s cubic-bezier(0.34, 1.56, 0.64, 1) !important;
+    padding: 0.65rem 1.3rem !important;
     
     /* Primary action button (Register/Action) */
     &[color="primary"] {
       background: linear-gradient(135deg, #3b82f6 0%, #1e40af 100%) !important;
       color: white !important;
-      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.2) !important;
+      box-shadow: 0 4px 12px rgba(59, 130, 246, 0.25) !important;
       
       &:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 20px rgba(59, 130, 246, 0.4) !important;
+        transform: translateY(-3px);
+        box-shadow: 0 8px 24px rgba(59, 130, 246, 0.4) !important;
       }
       
       &:active {
-        transform: translateY(0);
+        transform: translateY(-1px);
       }
     }
   }
@@ -479,11 +486,8 @@ mat-card-actions {
   }
 }
 
-/* ============================================================
-   ✅ LOADING & EMPTY STATES - PROFESSIONAL FEEDBACK
-   ============================================================
-   Clear, minimal, and consistent with overall design language.
-   ============================================================ */
+// LOADING & EMPTY STATES - PROFESSIONAL FEEDBACK
+// Clear, minimal, and consistent with overall design language
 
 .loading-state {
   display: flex;
@@ -536,11 +540,8 @@ mat-card-actions {
   }
 }
 
-/* ============================================================
-   ✅ ANIMATIONS - SMOOTH, PROFESSIONAL
-   ============================================================
-   Entrance effects for cards and smooth transitions throughout.
-   ============================================================ */
+// ANIMATIONS - SMOOTH, PROFESSIONAL
+// Entrance effects for cards and smooth transitions throughout
 
 @keyframes slideInLeft {
   from {
@@ -573,11 +574,8 @@ mat-card-actions {
   }
 }
 
-/* ============================================================
-   ✅ RESPONSIVE DESIGN - MOBILE & TABLET
-   ============================================================
-   Maintains design integrity and functionality across devices.
-   ============================================================ */
+// RESPONSIVE DESIGN - MOBILE & TABLET
+// Maintains design integrity and functionality across devices
 
 @media (max-width: 900px) {
   .events-container {

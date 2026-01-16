@@ -4,7 +4,6 @@ import { RouterModule } from '@angular/router';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatButtonModule } from '@angular/material/button';
 import { MatIconModule } from '@angular/material/icon';
-// ✅ IMPORT MAT-TOOLTIP
 import { MatTooltipModule } from '@angular/material/tooltip'; 
 import { AuthService } from '../../core/services/auth.service';
 
@@ -17,7 +16,7 @@ import { AuthService } from '../../core/services/auth.service';
     MatToolbarModule,
     MatButtonModule,
     MatIconModule,
-    MatTooltipModule // ✅ ADD TO IMPORTS ARRAY
+    MatTooltipModule
   ],
   templateUrl: './header.component.html',
   styleUrl: './header.component.scss'

@@ -2,7 +2,18 @@
   <div class="header">
     <div class="title-section">
       <h1>My Registered Events</h1>
-      <p>Events you've joined and are attending</p>
+      <p *ngIf="viewMode === 'upcoming'">Events you've joined and are attending</p>
+      <p *ngIf="viewMode === 'archived'">Events you've attended in the past</p>
+    </div>
+    <div class="actions">
+      <button 
+        mat-raised-button 
+        [class.active]="viewMode === 'archived'"
+        class="archive-toggle-btn"
+        (click)="toggleViewMode()">
+        <mat-icon>{{ viewMode === 'upcoming' ? 'history' : 'event_available' }}</mat-icon>
+        {{ viewMode === 'upcoming' ? 'PAST EVENTS' : 'UPCOMING' }}
+      </button>
     </div>
   </div>
 
@@ -11,10 +22,11 @@
   </div>
 
   <div *ngIf="!isLoading && registeredEvents.length === 0" class="empty-state">
-    <mat-icon>event_note</mat-icon>
-    <h3>No registered events yet</h3>
-    <p>Browse and register for upcoming events on the Events page</p>
-    <button mat-raised-button color="primary" routerLink="/events">
+    <mat-icon>{{ viewMode === 'upcoming' ? 'event_note' : 'event_busy' }}</mat-icon>
+    <h3>{{ viewMode === 'upcoming' ? 'No upcoming registered events' : 'No past registered events' }}</h3>
+    <p *ngIf="viewMode === 'upcoming'">Browse and register for upcoming events on the Events page</p>
+    <p *ngIf="viewMode === 'archived'">You haven't attended any events yet</p>
+    <button *ngIf="viewMode === 'upcoming'" mat-raised-button color="primary" routerLink="/events">
       <mat-icon>explore</mat-icon> Browse Events
     </button>
   </div>
@@ -51,6 +63,7 @@
           VIEW DETAILS
         </button>
         <button 
+          *ngIf="eventService.isEventUpcoming(event.date)"
           mat-button 
           color="warn"
           (click)="unregisterEvent(getEventId(event))">

@@ -115,7 +115,7 @@ export class CreateEventComponent {
   }
 
   /**
-   * ✅ VALIDATOR: Ensure selected date is not in the past
+   * VALIDATOR: Ensure selected date is not in the past
    */
   private futureDateValidator(control: AbstractControl): ValidationErrors | null {
     if (!control.value) return null;

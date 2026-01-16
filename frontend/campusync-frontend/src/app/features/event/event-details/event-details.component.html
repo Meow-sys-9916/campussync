@@ -2,117 +2,140 @@
   <!-- LOADING STATE -->
   <div *ngIf="loading" class="state-container">
     <div class="loading-spinner">
-      <mat-icon>hourglass_empty</mat-icon>
+      <mat-icon class="spinner-icon">schedule</mat-icon>
       <p>Loading event details...</p>
     </div>
   </div>
 
   <!-- ERROR STATE -->
   <div *ngIf="!loading && error" class="state-container">
-    <mat-card class="error-card">
-      <mat-card-content>
-        <div class="error-message">
-          <mat-icon>error_outline</mat-icon>
-          <p>{{ error }}</p>
-          <button mat-stroked-button routerLink="/events">
-            <mat-icon>arrow_back</mat-icon> Back to Events
-          </button>
-        </div>
-      </mat-card-content>
-    </mat-card>
+    <div class="error-container">
+      <div class="error-content">
+        <mat-icon class="error-icon">error_outline</mat-icon>
+        <h2 class="error-title">Unable to Load Event</h2>
+        <p class="error-message">{{ error }}</p>
+        <button mat-raised-button color="primary" routerLink="/events" class="error-action">
+          <mat-icon>arrow_back</mat-icon>
+          <span>Back to Events</span>
+        </button>
+      </div>
+    </div>
   </div>
 
   <!-- SUCCESS STATE - EVENT LOADED -->
   <div *ngIf="!loading && !error && event" class="details-container">
+    <!-- Navigation -->
     <button mat-button routerLink="/events" class="back-btn">
-      <mat-icon>arrow_back</mat-icon> Back to Feed
+      <mat-icon>arrow_back</mat-icon>
+      <span>Back to Feed</span>
     </button>
 
-    <mat-card class="event-card">
-      <mat-card-header>
-        <mat-card-title>Event Details</mat-card-title>
-      </mat-card-header>
-      
-      <mat-card-content>
-        <!-- Event Title -->
-        <div class="form-row full-width">
-          <div class="field">
-            <label>Event Title</label>
-            <p class="field-value">{{ event.title }}</p>
+    <!-- Event Details Card -->
+    <div class="event-details-card">
+      <!-- Header Section -->
+      <div class="card-header-section">
+        <h1 class="event-title">{{ event.title }}</h1>
+        <p class="event-status">Upcoming Event</p>
+      </div>
+
+      <!-- Content Sections -->
+      <div class="card-content">
+        <!-- Key Metadata Grid -->
+        <div class="metadata-grid">
+          <div class="metadata-item">
+            <span class="metadata-icon">
+              <mat-icon>calendar_today</mat-icon>
+            </span>
+            <div class="metadata-content">
+              <span class="metadata-label">Date</span>
+              <span class="metadata-value">{{ event.date | date:'mediumDate' }}</span>
+            </div>
+          </div>
+
+          <div class="metadata-item">
+            <span class="metadata-icon">
+              <mat-icon>location_on</mat-icon>
+            </span>
+            <div class="metadata-content">
+              <span class="metadata-label">Venue</span>
+              <span class="metadata-value">{{ event.venue }}</span>
+            </div>
+          </div>
+
+          <div class="metadata-item">
+            <span class="metadata-icon">
+              <mat-icon>category</mat-icon>
+            </span>
+            <div class="metadata-content">
+              <span class="metadata-label">Category</span>
+              <span class="metadata-value">{{ event.category }}</span>
+            </div>
+          </div>
+
+          <div class="metadata-item">
+            <span class="metadata-icon">
+              <mat-icon>group</mat-icon>
+            </span>
+            <div class="metadata-content">
+              <span class="metadata-label">Capacity</span>
+              <span class="metadata-value">{{ event.capacity || event.attendees?.length || '0' }} Attendees</span>
+            </div>
           </div>
         </div>
 
-        <!-- Date & Venue -->
-        <div class="form-row">
-          <div class="field">
-            <label>Date</label>
-            <p class="field-value">{{ event.date | date:'mediumDate' }}</p>
-          </div>
+        <!-- Divider -->
+        <div class="card-divider"></div>
 
-          <div class="field">
-            <label>Venue</label>
-            <p class="field-value">{{ event.venue }}</p>
-          </div>
+        <!-- Description Section -->
+        <div class="description-section">
+          <h3 class="section-title">About This Event</h3>
+          <p class="description-text">{{ event.description }}</p>
         </div>
 
-        <!-- Category & Capacity -->
-        <div class="form-row">
-          <div class="field">
-            <label>Category</label>
-            <p class="field-value">{{ event.category }}</p>
-          </div>
+        <!-- Divider -->
+        <div class="card-divider"></div>
 
-          <div class="field">
-            <label>Capacity</label>
-            <p class="field-value">{{ event.capacity || event.attendees?.length || '0' }}</p>
-          </div>
-        </div>
-
-        <!-- Description -->
-        <div class="form-row full-width">
-          <div class="field">
-            <label>Description</label>
-            <p class="field-value description">{{ event.description }}</p>
-          </div>
-        </div>
-
-        <!-- Action Buttons -->
-        <div class="actions">
-          <button mat-button routerLink="/events" class="cancel-btn">CANCEL</button>
+        <!-- Action Section -->
+        <div class="action-section">
           <div class="action-buttons">
             <button 
               *ngIf="!isUserRegistered()" 
               mat-raised-button 
               color="primary" 
               (click)="register()" 
-              class="register-btn">
-              REGISTER FOR EVENT
+              class="primary-action">
+              <mat-icon>check_circle</mat-icon>
+              <span>Register for Event</span>
             </button>
             <button 
               *ngIf="isUserRegistered()" 
-              mat-raised-button 
+              mat-stroked-button 
               (click)="unregister()" 
-              class="unregister-btn">
-              UNREGISTER
+              class="secondary-action danger">
+              <mat-icon>close</mat-icon>
+              <span>Unregister</span>
             </button>
           </div>
+          <button mat-button routerLink="/events" class="back-action">
+            <span>Back to Feed</span>
+          </button>
         </div>
-      </mat-card-content>
-    </mat-card>
+      </div>
+    </div>
   </div>
 
   <!-- EMPTY STATE -->
   <div *ngIf="!loading && !error && !event" class="state-container">
-    <mat-card class="empty-card">
-      <mat-card-content>
-        <div class="empty-message">
-          <mat-icon>event_busy</mat-icon>
-          <p>Event not found</p>
-          <button mat-stroked-button routerLink="/events">
-            <mat-icon>arrow_back</mat-icon> Back to Events
-          </button>
-        </div>
-      </mat-card-content>
-    </mat-card>
+    <div class="empty-container">
+      <div class="empty-content">
+        <mat-icon class="empty-icon">event_busy</mat-icon>
+        <h2 class="empty-title">Event Not Found</h2>
+        <p class="empty-message">The event you're looking for doesn't exist or may have been removed.</p>
+        <button mat-raised-button color="primary" routerLink="/events" class="empty-action">
+          <mat-icon>arrow_back</mat-icon>
+          <span>Back to Events</span>
+        </button>
+      </div>
+    </div>
   </div>
 </div>

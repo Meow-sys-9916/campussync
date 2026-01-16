@@ -1,12 +1,11 @@
-/* ✅ Main Navbar Container */
+// Main Navbar Container
 .navbar {
   display: flex;
   align-items: center;
   justify-content: space-between;
   padding: 0 24px;
-  /* ✅ Reduced height from 64px to 50px to shrink the grey area */
-  height: 50px; 
-  background-color: #121212; /* Slightly darker to match dashboard */
+  height: 50px;
+  background-color: #121212;
   color: white;
   position: sticky;
   top: 0;
@@ -14,7 +13,7 @@
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
 }
 
-/* ✅ Logo Styling */
+// Logo Styling
 .logo-container {
   display: flex;
   align-items: center;
@@ -23,30 +22,27 @@
   user-select: none;
 
   img {
-    height: 35px; /* Smaller logo for better fit */
+    height: 35px;
     width: auto;
     object-fit: contain;
   }
 
   .logo-text {
-  /* ✅ New Modern Font */
-  font-family: 'Outfit', sans-serif; 
-  font-weight: 700;
-  font-size: 1.4rem;
-  letter-spacing: -0.5px;
-  background: linear-gradient(45deg, #ffffff, #a5a5a5);
-  -webkit-background-clip: text;
-  -webkit-text-fill-color: transparent;
- }
+    font-family: 'Outfit', sans-serif;
+    font-weight: 700;
+    font-size: 1.4rem;
+    letter-spacing: -0.5px;
+    background: linear-gradient(45deg, #ffffff, #a5a5a5);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
 }
 
-/* ✅ Navigation Links */
+// Navigation Links
 .nav-links {
   display: flex;
-  gap: 4px; /* Tighter gap */
+  gap: 4px;
   align-items: center;
-
-  /* REMOVED 'display: none' so it shows on all screens */
   
   a {
     color: rgba(255, 255, 255, 0.8);
@@ -94,7 +90,7 @@
   flex: 1 1 auto;
 }
 
-/* ✅ User Info & Logout */
+// User Info & Logout
 .user-actions {
   display: flex;
   align-items: center;
@@ -105,7 +101,6 @@
     font-weight: 500;
     margin-right: 8px;
     
-    /* Hide name on small screens */
     display: none; 
     @media (min-width: 700px) {
       display: inline;

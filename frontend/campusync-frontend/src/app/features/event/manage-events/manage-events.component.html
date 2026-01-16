@@ -1,66 +1,116 @@
 <div class="manage-layout">
-  <div class="header">
-    <div class="title-section">
-      <h1>Manage Your Events</h1>
-      <p>View and manage all events you're hosting</p>
+  <!-- Page Header -->
+  <div class="page-header">
+    <div class="header-content">
+      <h1 class="page-title">Manage Your Events</h1>
+      <p class="header-subtitle">View and manage all events you're hosting</p>
     </div>
     
-    <div class="button-group">
-      <button mat-flat-button routerLink="/hosted-archive" color="accent">
-        <mat-icon>archive</mat-icon> View Archive
+    <div class="header-actions">
+      <button mat-stroked-button routerLink="/hosted-archive" class="action-btn secondary-btn">
+        <mat-icon>archive</mat-icon>
+        <span>View Archive</span>
       </button>
-      <button mat-flat-button color="primary" (click)="createEvent()">
-        <mat-icon>add</mat-icon> Create New Event
+      <button mat-raised-button color="primary" (click)="createEvent()" class="action-btn primary-btn">
+        <mat-icon>add_circle</mat-icon>
+        <span>Create New Event</span>
       </button>
     </div>
   </div>
 
-  <div *ngIf="isLoading" class="loading-state">
-    <p>Loading your events...</p>
+  <!-- Loading State -->
+  <div *ngIf="isLoading" class="state-container loading-state">
+    <div class="state-content">
+      <mat-icon class="state-icon">schedule</mat-icon>
+      <p class="state-text">Loading your events...</p>
+    </div>
   </div>
 
-  <div *ngIf="!isLoading && hostedEvents.length === 0" class="empty-state">
-    <mat-icon>event_note</mat-icon>
-    <h3>No events hosted yet</h3>
-    <p>Create your first event and start hosting!</p>
-    <button mat-raised-button color="primary" (click)="createEvent()">
-      <mat-icon>add</mat-icon> Create Event
-    </button>
+  <!-- Empty State -->
+  <div *ngIf="!isLoading && hostedEvents.length === 0" class="state-container empty-state">
+    <div class="state-content">
+      <mat-icon class="state-icon">event_note</mat-icon>
+      <h3 class="state-title">No events hosted yet</h3>
+      <p class="state-description">Create your first event and start hosting amazing experiences</p>
+      <button mat-raised-button color="primary" (click)="createEvent()" class="state-action">
+        <mat-icon>add_circle</mat-icon>
+        <span>Create Your First Event</span>
+      </button>
+    </div>
   </div>
 
-  <div class="events-grid" *ngIf="!isLoading && hostedEvents.length > 0">
-    <mat-card *ngFor="let event of hostedEvents" class="event-card">
-      <div class="card-content">
-        <div class="event-header">
-          <mat-card-title>{{ event.title }}</mat-card-title>
-          <mat-chip-set>
-            <mat-chip [class]="'status-' + (event.status || 'upcoming')">
-              {{ (event.status || 'UPCOMING') | uppercase }}
-            </mat-chip>
-          </mat-chip-set>
-        </div>
+  <!-- Events Grid -->
+  <div class="events-container" *ngIf="!isLoading && hostedEvents.length > 0">
+    <div class="events-grid">
+      <div *ngFor="let event of hostedEvents; let i = index" 
+           class="event-card-wrapper" 
+           [ngClass]="'accent-' + getAccentColor(event, i)">
+        <div class="event-card">
+          <!-- Card Header with Status Badge -->
+          <div class="card-header">
+            <div class="event-title-section">
+              <h3 class="event-title">{{ event.title }}</h3>
+              <span class="event-status" [class]="'status-' + (event.status || 'upcoming')">
+                {{ (event.status || 'UPCOMING') | uppercase }}
+              </span>
+            </div>
+          </div>
 
-        <mat-card-subtitle>
-          {{ event.date | date:'mediumDate' }} • {{ event.venue }}
-        </mat-card-subtitle>
+          <!-- Card Body -->
+          <div class="card-body">
+            <!-- Date and Location -->
+            <div class="event-meta-row">
+              <span class="meta-item">
+                <mat-icon class="meta-icon">calendar_today</mat-icon>
+                <span>{{ event.date | date:'mediumDate' }}</span>
+              </span>
+              <span class="meta-item">
+                <mat-icon class="meta-icon">location_on</mat-icon>
+                <span>{{ event.venue }}</span>
+              </span>
+            </div>
 
-        <p class="description">{{ event.description }}</p>
+            <!-- Description -->
+            <p class="event-description">{{ event.description }}</p>
 
-        <div class="meta-info">
-          <span><mat-icon>group</mat-icon> {{ event.registeredCount || 0 }} / {{ event.capacity }}</span>
-          <span><mat-icon>category</mat-icon> {{ event.category }}</span>
+            <!-- Event Stats -->
+            <div class="event-stats">
+              <div class="stat-item">
+                <mat-icon class="stat-icon">group</mat-icon>
+                <div class="stat-content">
+                  <span class="stat-label">Registered</span>
+                  <span class="stat-value">{{ event.registeredCount || 0 }} / {{ event.capacity }}</span>
+                </div>
+              </div>
+              <div class="stat-item">
+                <mat-icon class="stat-icon">category</mat-icon>
+                <div class="stat-content">
+                  <span class="stat-label">Category</span>
+                  <span class="stat-value">{{ event.category }}</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Card Actions -->
+          <div class="card-actions">
+            <button mat-stroked-button 
+                    color="primary" 
+                    [routerLink]="['/events', getEventId(event)]"
+                    class="action-button primary-action">
+              <mat-icon>visibility</mat-icon>
+              <span>View Details</span>
+            </button>
+            
+            <button mat-stroked-button 
+                    (click)="deleteEvent(getEventId(event))"
+                    class="action-button danger-action">
+              <mat-icon>delete_outline</mat-icon>
+              <span>Delete</span>
+            </button>
+          </div>
         </div>
       </div>
-
-      <mat-card-actions align="end">
-        <button mat-button color="primary" [routerLink]="['/events', getEventId(event)]">
-          VIEW DETAILS
-        </button>
-        
-        <button mat-flat-button color="warn" (click)="deleteEvent(getEventId(event))">
-          DELETE
-        </button>
-      </mat-card-actions>
-    </mat-card>
+    </div>
   </div>
 </div>

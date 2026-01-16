@@ -1,8 +1,5 @@
-/* ============================================================
-   ✅ ARCHIVE PAGE STYLING
-   ============================================================
-   Reuses Event List styles with archived event indicators.
-   ============================================================ */
+// ARCHIVE PAGE STYLING
+// Reuses Event List styles with archived event indicators
 
 .events-container {
   padding: 3rem 2rem;
@@ -26,9 +23,7 @@
   }
 }
 
-/* ============================================================
-   ✅ HEADER SECTION - CLEANER, MORE SPACIOUS
-   ============================================================ */
+// HEADER SECTION - CLEANER, MORE SPACIOUS
 
 .header {
   display: flex;
@@ -96,7 +91,7 @@
 }
 
 /* ============================================================
-   ✅ CAROUSEL SECTION - PREMIUM SCROLLING
+   CAROUSEL SECTION - PREMIUM SCROLLING
    ============================================================ */
 
 .carousel-wrapper {
@@ -148,9 +143,7 @@
   }
 }
 
-/* ============================================================
-   ✅ EVENT CARD STYLING - ENHANCED VISUAL HIERARCHY
-   ============================================================ */
+// EVENT CARD STYLING - ENHANCED VISUAL HIERARCHY
 
 .event-card {
   flex: 0 0 360px;
@@ -262,9 +255,7 @@
   }
 }
 
-/* ============================================================
-   ✅ ARCHIVED STATUS BADGE
-   ============================================================ */
+// ARCHIVED STATUS BADGE
 
 .status-archived {
   color: #ffffff;
@@ -326,11 +317,8 @@ mat-card-subtitle {
   }
 }
 
-/* ============================================================
-   ✅ ACTION BUTTONS - READ-ONLY MODE
-   ============================================================
-   Archive events are read-only (no registration buttons)
-   ============================================================ */
+// ACTION BUTTONS - READ-ONLY MODE
+// Archive events are read-only (no registration buttons)
 
 mat-card-actions {
   padding: 1.25rem 1.75rem !important;
@@ -364,9 +352,7 @@ mat-card-actions {
   }
 }
 
-/* ============================================================
-   ✅ LOADING & EMPTY STATES - PROFESSIONAL FEEDBACK
-   ============================================================ */
+// LOADING & EMPTY STATES - PROFESSIONAL FEEDBACK
 
 .loading-state {
   display: flex;
@@ -419,9 +405,7 @@ mat-card-actions {
   }
 }
 
-/* ============================================================
-   ✅ ANIMATIONS - SMOOTH, PROFESSIONAL
-   ============================================================ */
+// ANIMATIONS - SMOOTH, PROFESSIONAL
 
 @keyframes slideInLeft {
   from {
@@ -454,9 +438,7 @@ mat-card-actions {
   }
 }
 
-/* ============================================================
-   ✅ RESPONSIVE DESIGN - MOBILE & TABLET
-   ============================================================ */
+// RESPONSIVE DESIGN - MOBILE & TABLET
 
 @media (max-width: 900px) {
   .events-container {

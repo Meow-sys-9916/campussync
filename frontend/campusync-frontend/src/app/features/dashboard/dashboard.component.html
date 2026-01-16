@@ -1,69 +1,92 @@
 <div class="dashboard-layout">
   
   <div class="content-container">
-    <header class="dashboard-header hero-section">
-      <div class="welcome-text">
-        <h1>Hello, {{ currentUser?.firstName || currentUser?.name || 'Student' }}! 👋</h1>
-        <p>Welcome back to CampusSync.</p>
+    <header class="dashboard-header">
+      <div class="header-content">
+        <h1 class="page-title">Dashboard</h1>
+        <p class="header-subtitle">Welcome back, {{ currentUser?.firstName || currentUser?.name || 'Student' }}</p>
       </div>
+    </header>
 
-      </header>
+    <section class="cards-section">
+      <div class="action-grid">
+        <div class="action-card glow-pink" routerLink="/edit-profile">
+          <div class="card-header">
+            <div class="icon-circle neon-pink">
+              <mat-icon>person</mat-icon>
+            </div>
+          </div>
+          <h3 class="card-title">My Profile</h3>
+          <div class="card-body">
+            <p class="info-row">
+              <span class="info-label">USN:</span>
+              <span class="info-value">{{ displayUsn }}</span>
+            </p>
+            <p class="info-row">
+              <span class="info-label">Branch:</span>
+              <span class="info-value">{{ displayBranch }}</span>
+            </p>
+          </div>
+          <span class="card-cta">EDIT PROFILE</span>
+        </div>
 
-    <div class="action-grid">
-      <div class="action-card" routerLink="/edit-profile">
-        <div class="icon-circle neon-pink">
-          <mat-icon>person</mat-icon>
+        <div class="action-card featured glow-blue" routerLink="/my-registered-events">
+          <div class="card-header">
+            <div class="icon-circle neon-blue">
+              <mat-icon>event_available</mat-icon>
+            </div>
+          </div>
+          <h3 class="card-title">Next Registered Event</h3>
+          <div class="card-body">
+            <div *ngIf="nextEvent; else noEvent" class="event-info">
+              <p class="event-title"><a [routerLink]="['/events', getEventId(nextEvent)]" class="event-link">{{ nextEvent.title }}</a></p>
+              <p class="event-date">{{ nextEvent.date | date:'mediumDate' }}</p>
+            </div>
+            <ng-template #noEvent>
+              <p class="event-empty">No upcoming registrations</p>
+            </ng-template>
+          </div>
+          <span class="card-cta">VIEW EVENTS</span>
         </div>
-        <h3>My Profile</h3>
-        <p>
-          <strong>USN:</strong> {{ displayUsn }}<br>
-          <strong>Branch:</strong> {{ displayBranch }}
-        </p>
-        <span class="link-text">EDIT PROFILE &rarr;</span>
+        
+        <div class="action-card glow-orange" routerLink="/my-events">
+          <div class="card-header">
+            <div class="icon-circle neon-orange">
+              <mat-icon>campaign</mat-icon>
+            </div>
+          </div>
+          <h3 class="card-title">Your Hosted Events</h3>
+          <div class="card-body">
+            <p class="hosted-count">You have organized <span class="count-highlight">{{ hostedCount }}</span> events</p>
+          </div>
+          <span class="card-cta">MANAGE EVENTS</span>
+        </div>
       </div>
+    </section>
 
-      <div class="action-card highlight" routerLink="/my-registered-events">
-        <div class="icon-circle neon-blue">
-          <mat-icon>event_available</mat-icon>
+    <section class="stats-section">
+      <div class="stats-grid">
+        <div class="stat-card glow-cyan" routerLink="/events">
+          <div class="stat-icon neon-blue">
+            <mat-icon>public</mat-icon>
+          </div>
+          <div class="stat-content">
+            <span class="stat-label">Total Events Available</span>
+            <span class="stat-number">{{ totalEventsCount }}</span>
+          </div>
         </div>
-        <h3>Next Registered Event</h3>
-        <div *ngIf="nextEvent; else noEvent">
-          <p><strong><a [routerLink]="['/events', getEventId(nextEvent)]" class="event-title-link">{{ nextEvent.title }}</a></strong></p>
-          <p>{{ nextEvent.date | date:'mediumDate' }}</p>
-        </div>
-        <ng-template #noEvent>
-          <p>No upcoming registrations found.</p>
-        </ng-template>
-        <span class="link-text">VIEW ALL EVENTS &rarr;</span>
-      </div>
-      
-       <div class="action-card" routerLink="/my-events">
-        <div class="icon-circle neon-orange">
-          <mat-icon>campaign</mat-icon>
-        </div>
-        <h3>Your Hosted Events</h3>
-        <p>You have organized <strong>{{ hostedCount }}</strong> successful events.</p>
-        <span class="link-text">MANAGE EVENTS &rarr;</span>
-      </div>
-    </div>
 
-    <div class="stats-row">
-      <div class="stat-card">
-        <div class="stat-content">
-          <span class="stat-number">{{ totalEventsCount }}</span>
-          <span class="stat-label">Total Events Available</span>
+        <div class="stat-card glow-pink clickable" routerLink="/my-registered-events">
+          <div class="stat-icon neon-pink">
+            <mat-icon>how_to_reg</mat-icon>
+          </div>
+          <div class="stat-content">
+            <span class="stat-label">Events Joined</span>
+            <span class="stat-number">{{ registeredCount }}</span>
+          </div>
         </div>
-        <mat-icon class="neon-blue">public</mat-icon>
       </div>
-
-      <div class="stat-card" routerLink="/my-registered-events">
-        <div class="stat-content">
-          <span class="stat-number">{{ registeredCount }}</span>
-          <span class="stat-label">Events Joined</span>
-        </div>
-        <mat-icon class="neon-pink">how_to_reg</mat-icon>
-      </div>
-    </div>
+    </section>
 
   </div>
 </div>

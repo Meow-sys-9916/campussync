@@ -38,17 +38,17 @@ export class DashboardComponent implements OnInit, OnDestroy {
   private userSub: Subscription = new Subscription();
   private destroy$ = new Subject<void>();
   
-  // ✅ Display normalization for USN and Branch
+  // Display normalization for USN and Branch
   displayUsn: string = 'No USN';
   displayBranch: string = 'General';
   
-  // ✅ Counters
+  // Counters
   hostedCount: number = 0;
   registeredCount: number = 0; // Events Joined
   totalEventsCount: number = 0;
   hostedEvents: CampusEvent[] = [];
   
-  // ✅ Next Event Tracker
+  // Next Event Tracker
   nextEvent: CampusEvent | null = null;
 
   constructor(
@@ -60,7 +60,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.userSub = this.authService.currentUser$.subscribe(user => {
       this.currentUser = user;
-      // ✅ Normalize display fields from user data
+      // Normalize display fields from user data
       if (user) {
         this.displayUsn = user.studentId || user.usn || 'No USN';
         this.displayBranch = user.branch || user.major || 'General';
@@ -119,7 +119,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
              return isRegistered || isAttendee;
           });
 
-          // ✅ Events Joined Count (only upcoming/active)
+          // Events Joined Count (only upcoming/active)
           this.registeredCount = registered.length;
           
           // Next Event Logic (from upcoming registered events only)

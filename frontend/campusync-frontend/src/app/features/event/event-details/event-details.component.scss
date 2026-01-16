@@ -1,293 +1,488 @@
-// ✅ DARK THEME VARIABLES - Match CampusSync style
+/* ========================================
+   EVENT DETAILS - PREMIUM SAAS DESIGN
+   ======================================== */
+
+/* Color Variables */
 $bg-dark: #0a0a0a;
-$card-bg: #1e1e1e;
+$bg-secondary: #121212;
+$card-bg: #1a1a1a;
+$card-bg-hover: #202020;
 $text-primary: #ffffff;
 $text-secondary: #b3b3b3;
-$border-color: rgba(255, 255, 255, 0.08);
-$accent-color: rgba(255, 255, 255, 0.05);
-$primary-gradient: linear-gradient(135deg, #ff42b3, #333399);
+$text-muted: #7c8fa3;
+$border-light: rgba(255, 255, 255, 0.06);
+$border-medium: rgba(255, 255, 255, 0.12);
 
-// ✅ FULL-HEIGHT WRAPPER WITH DARK BG - CENTERED
+$accent-blue: #00c6ff;
+$accent-green: #4caf50;
+$accent-red: #ff3b3b;
+
+/* ========================================
+   LAYOUT
+   ======================================== */
+
 .details-wrapper {
   min-height: 100vh;
   background-color: $bg-dark;
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: 2rem 1rem;
+  padding: 3rem 2rem;
   font-family: 'Inter', sans-serif;
   color: $text-primary;
+
+  @media (max-width: 768px) {
+    padding: 2rem 1.5rem;
+  }
+
+  @media (max-width: 480px) {
+    padding: 1.5rem 1rem;
+  }
 }
 
-// ✅ STATE CONTAINERS (Loading, Error, Empty)
+/* ========================================
+   STATE CONTAINERS
+   ======================================== */
+
 .state-container {
   width: 100%;
-  max-width: 600px;
+  max-width: 800px;
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 400px;
+  min-height: 500px;
 }
 
 .loading-spinner,
-.error-message,
-.empty-message {
+.error-content,
+.empty-content {
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 1.5rem;
   text-align: center;
+  padding: 2rem;
+}
+
+.spinner-icon,
+.error-icon,
+.empty-icon {
+  font-size: 4rem;
+  height: 4rem;
+  width: 4rem;
+  color: $text-muted;
+  opacity: 0.6;
+}
+
+.loading-spinner .spinner-icon {
+  animation: spin-smooth 2s linear infinite;
+}
+
+@keyframes spin-smooth {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+.error-title,
+.empty-title {
+  font-size: 1.75rem;
+  font-weight: 600;
+  margin: 0.5rem 0;
+  color: $text-primary;
+}
+
+.error-message,
+.empty-message {
+  font-size: 1rem;
+  color: $text-secondary;
+  margin: 0.5rem 0 1.5rem 0;
+  max-width: 450px;
+  line-height: 1.5;
+}
+
+.error-action,
+.empty-action {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 12px 28px;
+  border-radius: 8px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  text-transform: none;
 
   mat-icon {
-    font-size: 3rem;
-    width: 3rem;
-    height: 3rem;
-    color: $text-secondary;
-  }
-
-  p {
-    font-size: 1.1rem;
-    color: $text-secondary;
-    margin: 0;
-  }
-
-  button {
-    margin-top: 1rem;
+    font-size: 20px;
+    height: 20px;
+    width: 20px;
   }
 }
 
-// ✅ MAIN CONTAINER
+/* ========================================
+   MAIN CONTAINER
+   ======================================== */
+
 .details-container {
   width: 100%;
-  max-width: 600px;
+  max-width: 800px;
+}
 
-  .back-btn {
-    display: flex;
-    align-items: center;
-    gap: 0.5rem;
-    color: $text-secondary;
-    margin-bottom: 1.5rem;
-    padding: 0;
-    text-transform: none;
-    font-weight: 500;
+.back-btn {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  color: $text-secondary;
+  margin-bottom: 2rem;
+  padding: 8px 12px;
+  text-transform: none;
+  font-weight: 500;
+  font-size: 0.95rem;
+  border-radius: 6px;
+  transition: all 0.2s ease-out;
+  cursor: pointer;
 
-    &:hover {
-      color: $text-primary;
-      background-color: transparent;
-    }
+  &:hover {
+    color: $text-primary;
+    background-color: rgba(255, 255, 255, 0.05);
+  }
 
-    mat-icon {
-      font-size: 1.2rem;
-      width: 1.2rem;
-      height: 1.2rem;
-    }
+  mat-icon {
+    font-size: 20px;
+    height: 20px;
+    width: 20px;
   }
 }
 
-// ✅ CARD STYLING - Match dashboard theme
-mat-card {
-  background-color: $card-bg !important;
-  border: 1px solid $border-color !important;
-  border-radius: 12px !important;
-  color: $text-primary;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3) !important;
+/* ========================================
+   EVENT DETAILS CARD
+   ======================================== */
 
-  &.error-card,
-  &.empty-card {
+.event-details-card {
+  background: linear-gradient(135deg, $card-bg 0%, rgba(#1a1a1a, 0.95) 100%);
+  border: 1px solid $border-light;
+  border-radius: 12px;
+  overflow: hidden;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.2);
+  transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+
+  &:hover {
+    border-color: $border-medium;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.4),
+                0 0 20px rgba($accent-blue, 0.05);
+  }
+}
+
+/* Card Header */
+.card-header-section {
+  padding: 2rem;
+  border-bottom: 1px solid $border-light;
+  background: rgba(0, 0, 0, 0.2);
+
+  .event-title {
+    font-size: 2rem;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    margin: 0 0 0.75rem 0;
+    color: $text-primary;
+    line-height: 1.2;
+  }
+
+  .event-status {
+    display: inline-block;
+    padding: 4px 12px;
+    background: rgba($accent-blue, 0.15);
+    color: $accent-blue;
+    border: 1px solid rgba($accent-blue, 0.3);
+    border-radius: 6px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    margin: 0;
+  }
+}
+
+/* Card Content */
+.card-content {
+  padding: 2rem;
+}
+
+/* Metadata Grid */
+.metadata-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 1.75rem;
+  margin-bottom: 1.5rem;
+
+  @media (max-width: 600px) {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+}
+
+.metadata-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 1rem;
+
+  .metadata-icon {
     display: flex;
     align-items: center;
     justify-content: center;
-    min-height: 300px;
+    width: 40px;
+    height: 40px;
+    background: rgba($accent-blue, 0.1);
+    border-radius: 8px;
+    color: $accent-blue;
+    flex-shrink: 0;
+
+    mat-icon {
+      font-size: 20px;
+      height: 20px;
+      width: 20px;
+    }
   }
 
-  mat-card-header {
-    margin: 0 0 1.5rem 0;
-    padding: 1rem 1rem 1rem 1rem !important;
-    border-bottom: 1px solid $border-color;
+  .metadata-content {
     display: flex;
     flex-direction: column;
-
-    mat-card-title {
-      font-size: 1.5rem;
-      font-weight: 600;
-      color: $text-primary;
-      margin: 0;
-      padding: 0;
-    }
+    flex: 1;
   }
 
-  mat-card-content {
-    padding: 1rem !important;
-  }
-}
-
-// ✅ FORM ROW LAYOUT - Two columns
-.form-row {
-  display: flex;
-  gap: 1rem;
-  margin-bottom: 1.5rem;
-
-  &.full-width {
-    flex: 1 1 100%;
-  }
-}
-
-// ✅ FIELD STYLING - Read-only text display
-.field {
-  flex: 1;
-  margin: 0;
-
-  label {
+  .metadata-label {
     display: block;
-    font-size: 0.75rem;
-    font-weight: 600;
-    color: $text-secondary;
+    font-size: 0.8rem;
+    color: $text-muted;
+    font-weight: 500;
     text-transform: uppercase;
-    letter-spacing: 0.7px;
-    margin-bottom: 0.5rem;
+    letter-spacing: 0.5px;
+    margin-bottom: 4px;
   }
 
-  .field-value {
+  .metadata-value {
+    display: block;
     font-size: 1rem;
     color: $text-primary;
-    margin: 0;
-    padding: 0.875rem 1rem;
-    background-color: $accent-color;
-    border: 1px solid $border-color;
-    border-radius: 6px;
-    word-wrap: break-word;
-    white-space: pre-wrap;
-    line-height: 1.5;
-
-    &.description {
-      min-height: 100px;
-      font-size: 0.95rem;
-    }
+    font-weight: 500;
+    line-height: 1.4;
   }
 }
 
-// ✅ ACTION BUTTONS
-.actions {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 1rem;
-  margin-top: 2rem;
-  padding-top: 1.5rem;
-  border-top: 1px solid $border-color;
+/* Divider */
+.card-divider {
+  height: 1px;
+  background: $border-light;
+  margin: 1.75rem 0;
+}
 
-  .cancel-btn {
-    text-transform: uppercase;
-    font-size: 0.85rem;
+/* Description Section */
+.description-section {
+  margin: 0;
+
+  .section-title {
+    font-size: 1rem;
     font-weight: 600;
+    color: $text-primary;
+    margin: 0 0 1rem 0;
+    letter-spacing: -0.3px;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    color: $text-muted;
     letter-spacing: 0.5px;
-    padding: 0.75rem 1.5rem !important;
-    min-width: 140px;
-    color: $text-secondary !important;
-    background-color: transparent !important;
+  }
+
+  .description-text {
+    font-size: 1rem;
+    color: $text-secondary;
+    line-height: 1.7;
+    margin: 0;
+    white-space: pre-wrap;
+    word-wrap: break-word;
+  }
+}
+
+/* Action Section */
+.action-section {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  margin: 0;
+
+  @media (max-width: 600px) {
+    flex-direction: column-reverse;
+  }
+}
+
+.action-buttons {
+  display: flex;
+  gap: 1rem;
+  flex: 1;
+
+  @media (max-width: 600px) {
+    width: 100%;
+    flex-direction: column;
+  }
+}
+
+.primary-action,
+.secondary-action {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 12px 28px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  letter-spacing: 0.3px;
+  text-transform: none;
+  transition: all 0.2s ease-out;
+  flex: 1;
+
+  mat-icon {
+    font-size: 20px;
+    height: 20px;
+    width: 20px;
+  }
+
+  @media (max-width: 600px) {
+    width: 100%;
+    padding: 12px 20px;
+  }
+}
+
+.primary-action {
+  background: linear-gradient(135deg, $accent-blue, rgba($accent-blue, 0.8));
+  color: white !important;
+  border: none !important;
+
+  &:hover {
+    box-shadow: 0 4px 16px rgba($accent-blue, 0.3);
+    transform: translateY(-2px);
+  }
+
+  &:active {
+    transform: translateY(0);
+  }
+
+  &:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+  }
+}
+
+.secondary-action {
+  color: $text-secondary !important;
+  border: 1px solid $border-light !important;
+  background: transparent;
+
+  &:hover {
+    color: $text-primary !important;
+    background: rgba(255, 255, 255, 0.05);
+    border-color: $border-medium !important;
+  }
+
+  &.danger {
+    color: $accent-red !important;
+    border-color: rgba($accent-red, 0.3) !important;
 
     &:hover {
-      color: $text-primary !important;
-      background-color: rgba(255, 255, 255, 0.05) !important;
-    }
-  }
-
-  .action-buttons {
-    display: flex;
-    gap: 1rem;
-  }
-
-  button {
-    text-transform: uppercase;
-    font-size: 0.85rem;
-    font-weight: 600;
-    letter-spacing: 0.5px;
-    padding: 0.75rem 1.5rem !important;
-    min-width: 140px;
-
-    &.register-btn {
-      background: $primary-gradient !important;
-      color: white !important;
-      border: none !important;
-
-      &:hover:not(:disabled) {
-        transform: translateY(-2px);
-        box-shadow: 0 8px 16px rgba(255, 0, 204, 0.3) !important;
-      }
-
-      &:active {
-        transform: translateY(0);
-      }
-
-      &:disabled {
-        opacity: 0.6;
-        cursor: not-allowed;
-      }
-    }
-
-    &.unregister-btn {
-      background: linear-gradient(135deg, rgba(239, 68, 68, 0.2), rgba(220, 38, 38, 0.2)) !important;
-      color: #ef4444 !important;
-      border: 1.5px solid rgba(239, 68, 68, 0.5) !important;
-      cursor: pointer !important;
-
-      &:hover:not(:disabled) {
-        background: linear-gradient(135deg, rgba(239, 68, 68, 0.3), rgba(220, 38, 38, 0.3)) !important;
-        border-color: rgba(239, 68, 68, 0.8) !important;
-        color: #fca5a5 !important;
-        transform: translateY(-2px);
-      }
-
-      &:active {
-        transform: translateY(0);
-      }
+      background: rgba($accent-red, 0.08);
+      border-color: rgba($accent-red, 0.5) !important;
+      color: lighten($accent-red, 10%) !important;
     }
   }
 }
 
-// ✅ RESPONSIVE
+.back-action {
+  color: $text-secondary;
+  text-transform: none;
+  font-weight: 500;
+  padding: 8px 16px;
+
+  &:hover {
+    color: $text-primary;
+    background-color: rgba(255, 255, 255, 0.05);
+  }
+
+  @media (max-width: 600px) {
+    width: 100%;
+    margin-top: 0.5rem;
+  }
+}
+
+/* ========================================
+   RESPONSIVE
+   ======================================== */
+
 @media (max-width: 768px) {
   .details-wrapper {
-    padding: 1rem 0.5rem;
+    padding: 2rem 1.5rem;
   }
 
   .details-container {
-    max-width: 100%;
+    width: 100%;
   }
 
-  .form-row {
-    flex-direction: column;
-    gap: 0;
+  .card-header-section {
+    padding: 1.5rem;
 
-    .field {
-      margin-bottom: 1.5rem;
-
-      &:last-child {
-        margin-bottom: 0;
-      }
+    .event-title {
+      font-size: 1.75rem;
     }
   }
 
-  .actions {
+  .card-content {
+    padding: 1.5rem;
+  }
+
+  .action-section {
     flex-direction: column-reverse;
+  }
 
-    .cancel-btn {
-      width: 100%;
-      min-width: unset;
-    }
+  .action-buttons {
+    width: 100%;
+  }
 
-    .action-buttons {
-      width: 100%;
-      flex-direction: column;
+  .back-action {
+    width: 100%;
+  }
+}
 
-      button {
-        width: 100%;
-        min-width: unset;
-      }
+@media (max-width: 480px) {
+  .details-wrapper {
+    padding: 1.5rem 1rem;
+  }
+
+  .back-btn {
+    margin-bottom: 1.5rem;
+  }
+
+  .card-header-section {
+    padding: 1.25rem;
+
+    .event-title {
+      font-size: 1.5rem;
     }
   }
 
-  mat-card {
-    border-radius: 8px !important;
+  .card-content {
+    padding: 1.25rem;
+  }
+
+  .metadata-grid {
+    grid-template-columns: 1fr;
+    gap: 1.25rem;
+  }
+
+  .primary-action,
+  .secondary-action {
+    padding: 10px 16px;
+    font-size: 0.85rem;
   }
 }

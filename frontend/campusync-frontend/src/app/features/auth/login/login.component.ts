@@ -37,7 +37,7 @@ export class LoginComponent {
 
   semesters = ['1','2','3','4','5','6','7','8'];
 
-  // 🔥 TWO FORMS (FINAL FIX)
+  // TWO FORMS
   loginForm: FormGroup;
   registerForm: FormGroup;
 
@@ -99,7 +99,7 @@ export class LoginComponent {
       }
 
       const v = this.registerForm.getRawValue();
-      console.log('✅ FINAL REGISTER DATA:', v);
+      console.log('Registering with data:', v);
 
       this.authService.register(v).subscribe({
         next: () => {
